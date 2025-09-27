@@ -349,6 +349,11 @@ async def motivate(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "ուզում ես մոդուլը գա վատ գրես նեղվես հետո նոր ուշքի գաս հա արա՞՞՞՞՞՞՞",
             "ape heraxosd shprti dasd ara", 
             "hishi vor mard ka qeznic poqr a u arden senior a",
+            "Нечетное число - это НЕ четное число",
+            "Եթե չես կարում ասես ուրեմն չգիտես:",
+            "Меня не интересуют твои примеры. Доказывай.",
+            "Конечно могу, это же я написал.",
+            "Я ответил на ваш вопрос?",
             "es im vaxtov jamy 4in ei zartnum vor matanaliz anei",
             "porsche es uzum? de sovori (iharke eskortnicayi tarberaky misht ka bayc du sovori)",
         ]
