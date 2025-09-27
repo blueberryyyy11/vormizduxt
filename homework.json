@@ -1,0 +1,28 @@
+{
+  "diffur": [
+    {
+      "task": "136-150",
+      "due": "2025-09-26",
+      "added": "2025-09-27"
+    },
+    {
+      "task": "151-160 167-171",
+      "due": "2025-10-01",
+      "added": "2025-09-27"
+    }
+  ],
+  "python": [
+    {
+      "task": "https://colab.research.google.com/drive/1UjZTuBxCMFNDHxoZnyM0lNTiFmdgNGav#scrollTo=3PBIH78f_uNR",
+      "due": "2025-10-03",
+      "added": "2025-09-27"
+    }
+  ],
+  "db": [
+    {
+      "task": "select, basic joins, basic aggregate functions, sorting and grouping",
+      "due": "2025-10-03",
+      "added": "2025-09-27"
+    }
+  ]
+}
