@@ -346,6 +346,7 @@ async def motivate(update: Update, context: ContextTypes.DEFAULT_TYPE):
         import random
         messages = [
             "soberis tryapka",
+            "а ты не только зашел???"
             "ուզում ես մոդուլը գա վատ գրես նեղվես հետո նոր ուշքի գաս հա արա՞՞՞՞՞՞՞",
             "ape heraxosd shprti dasd ara", 
             "hishi vor mard ka qeznic poqr a u arden senior a",
