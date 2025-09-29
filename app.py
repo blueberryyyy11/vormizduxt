@@ -184,14 +184,13 @@ async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_sticker(STICKERS["dead"])
             return
         
-        if any(word in text for word in ["сплю", "спать", "sleep", "устал", "tired", "бессонница"]):
+        if any(word in text for word in ["сплю", "спать", "sleep", "устал", "tired", "бессонница", "mera"]):
             await update.message.reply_sticker(STICKERS["sleep"])
             return
         
         if any(word in text for word in ["чё", "что", "как", "why", "how", "wtf", "шо"]):
-            if "?" in text:
-                await update.message.reply_sticker(STICKERS["confused"])
-                return
+            await update.message.reply_sticker(STICKERS["confused"])
+            return
         
         if any(word in text for word in ["боль", "страдание", "pain", "больно", "мучение"]):
             await update.message.reply_sticker(STICKERS["pain"])
@@ -201,7 +200,7 @@ async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_sticker(STICKERS["celebrate"])
             return
         
-        if any(word in text for word in ["ахаха", "хаха", "лол", "lol", "lmao", "кек"]):
+        if any(word in text for word in ["ахаха", "хаха", "лол", "lol", "lmao", "кек", "аххаха", "AHAHAHAHA", "пхпх"]):
             await update.message.reply_sticker(STICKERS["laugh"])
             return
         
@@ -213,15 +212,15 @@ async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_sticker(STICKERS["angry"])
             return
         
-        if any(word in text for word in ["кофе", "coffee", "энергос", "energy", "нужна сила"]):
+        if any(word in text for word in ["кофе", "coffee", "энергос", "energy", "нужна сила", "kofe"]):
             await update.message.reply_sticker(STICKERS["coffee"])
             return
         
-        if any(word in text for word in ["вау", "wow", "охренеть", "damn", "holy", "ого"]):
+        if any(word in text for word in ["вау", "wow", "охренеть", "damn", "holy", "ого", "ахуеть", "нихуя"]):
             await update.message.reply_sticker(STICKERS["shock"])
             return
         
-        if any(word in text for word in ["молюсь", "pray", "надеюсь", "hope", "пожалуйста"]):
+        if any(word in text for word in ["молюсь", "pray", "надеюсь", "hope", "пожалуйста", "пж"]):
             await update.message.reply_sticker(STICKERS["pray"])
             return
         
@@ -229,7 +228,7 @@ async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_sticker(STICKERS["bruh"])
             return
         
-        if any(word in text for word in ["думаю", "thinking", "не понимаю", "confused", "непонятно"]):
+        if any(word in text for word in ["думаю", "thinking", "не понимаю", "confused", "непонятно", "idk", "xz"]):
             await update.message.reply_sticker(STICKERS["thinking"])
             return
         
