@@ -176,7 +176,7 @@ async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_sticker(STICKERS["stress"])
             return
         
-        if any(word in text for word in ["дз", "домашка", "homework", "hw", "задание"]):
+        if any(word in text for word in ["дз", "домашка", "homework", "hw", "задание", "ape"]):
             await update.message.reply_sticker(random.choice([STICKERS["cry"], STICKERS["tired"], STICKERS["work"]]))
             return
         
