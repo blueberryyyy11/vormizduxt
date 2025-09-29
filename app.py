@@ -4,8 +4,9 @@ import asyncio
 import logging
 import os
 import fcntl
+import random
 from telegram import Update, BotCommand
-from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters
 import signal
 import sys
 from typing import Dict
@@ -32,6 +33,37 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
+
+# ====== STICKER COLLECTIONS ======
+STICKERS = {
+    "stress": "CAACAgIAAxkBAAECkndo2u-pgNSiXqSMeNDvdrS-vt3yYAAChBMAAuuquEgOf8HdunQHjTYE",
+    "celebrate": "CAACAgIAAxkBAAECknZo2u-pSSdgq4vwyi8UX1-aubclhQACxB4AAiCOkEuFz5GsOsnUTDYE",
+    "cry": "CAACAgIAAxkBAAECknVo2u-p2CgVxUGa43Zzr0a7Rg-YWgACiRoAAv0wkEuDOdj_SdSV4DYE",
+    "sleep": "CAACAgIAAxkBAAECknRo2u-pYsuR5wABl1q5-GRTduNZgrsAAkIgAAKUiJFLW40uOLeycs82BA",
+    "work": "CAACAgIAAxkBAAECknNo2u-pxi_1GYNS5h5Dr8xPE0t_xgAC1h8AAr9riUuvu7eCKR0JSDYE",
+    "angry": "CAACAgIAAxkBAAECknJo2u-pw_smUX5pKHG83ghjGnakPAAC51EAAro4kEnwzyMt5OPpWDYE",
+    "confused": "CAACAgIAAxkBAAECknFo2u-puXCWcgABj_OypF8T709WEjkAApM3AALJa1BKgbG_gmO66xQ2BA",
+    "tired": "CAACAgIAAxkBAAECkm9o2u-SolPVkaobOfxz9KpY3sncMwAC3xcAAhFNWEkhD_kjrm9yzzYE",
+    "dead": "CAACAgIAAxkBAAECkm1o2u-KJU1kFS7MCLOsN1zaCTS0pQACcj0AAmD1oEjRhhL8f7KAGTYE",
+    "panic": "CAACAgIAAxkBAAECkmto2u-Dlc7uWG2-WDeOIXWiD6J2wAACgRQAAvf7-EpFM1eGT1ilZDYE",
+    "laugh": "CAACAgIAAxkBAAECkmlo2u9rp7-5rHdTgRGuYOl0TCWYwgACJBIAAoAtGUtvNedn4Ee6djYE",
+    "shock": "CAACAgIAAxkBAAECkmVo2u9mGPX6kGSWxMjrvlAjq9rqmQACvh4AAgfjkUueTHbYvz3lljYE",
+    "thinking": "CAACAgIAAxkBAAECkmNo2u9kZ57z6H2qdNGkxGQTbeZ3WQAC4CoAArXCWUrbcGieBpxAuzYE",
+    "pray": "CAACAgIAAxkBAAECklNo2uv3xv6SLAxR93yBi31shSZFYgACAkAAApwloUjc17eau14B7TYE",
+    "study": "CAACAgIAAxkBAAECkmFo2u9hHlVd0AjuVFY6vn_mROj46QACGBAAAvXHqEp6poRMYqqaWzYE",
+    "smart": "CAACAgIAAxkBAAECkllo2u9VjJVZaWhbAmcS2pcrHryNqgAClmoAAuwh0EnADfKixblOjjYE",
+    "fire": "CAACAgIAAxkBAAECklVo2u9QOroLQ7v2ASzgXtRzxv3I9QACumAAAiTvWUnBdVmjdyuV2jYE",
+    "coffee": "CAACAgIAAxkBAAECkldo2u9S5_1YPGZZle24-0NMRomd-AACOxUAApVdwUkJcXStuJuE3TYE",
+    "gg": "CAACAgIAAxkBAAECkl9o2u9euYY071_Ow9uz_13VkzzIlwACqRMAAmFLqUrg1HUMkrVV8zYE",
+    "sus": "CAACAgIAAxkBAAECklto2u9X3MkTjSpxyfX7iUnmEdBdywAC_Q4AAsCMqUp-bJgun9LPEjYE",
+    "bruh": "CAACAgIAAxkBAAECkl1o2u9aitnfvWskobeNgTl32dovaAAC_xIAAiZVoUrGDRz2ljOfwTYE",
+    "pain": "CAACAgIAAxkBAAECkmdo2u9oxXhhM-6MplQ0LZ6OV1o_HQACRyMAAtigiUvF_gTASDX7cjYE",
+}
+
+HOMEWORK_STICKERS = [
+    STICKERS["work"], STICKERS["stress"], STICKERS["panic"], 
+    STICKERS["cry"], STICKERS["tired"], STICKERS["pray"]
+]
 
 # ====== TIMETABLE ======
 TIMETABLE = {
@@ -99,7 +131,6 @@ def save_homework(hw):
     save_json_file(HOMEWORK_FILE, hw)
 
 def acquire_lock():
-    """Acquire a file lock to ensure only one instance runs"""
     global lock_file
     try:
         lock_file = open(LOCK_FILE, 'w')
@@ -113,7 +144,6 @@ def acquire_lock():
         return False
 
 def release_lock():
-    """Release the file lock"""
     global lock_file
     if lock_file:
         try:
@@ -125,20 +155,89 @@ def release_lock():
 
 # ====== UTILITY FUNCTIONS ======
 def get_week_type() -> str:
-    """Determine if it's четная (even) or нечетная (odd) week"""
     week_num = datetime.date.today().isocalendar()[1]
     return "ч/н" if week_num % 2 == 0 else "н/ч"
 
 def is_lesson_this_week(lesson: Dict) -> bool:
-    """Check if a lesson happens this week"""
     if "week" not in lesson:
         return True
     current_week = get_week_type()
     return lesson["week"] == current_week
 
+# ====== STICKER MESSAGE HANDLER ======
+async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    try:
+        if not update.message or not update.message.text:
+            return
+        
+        text = update.message.text.lower()
+        
+        if any(word in text for word in ["модуль", "экзамен", "тест", "контрольная", "дедлайн", "deadline"]):
+            await update.message.reply_sticker(STICKERS["stress"])
+            return
+        
+        if any(word in text for word in ["дз", "домашка", "homework", "hw", "задание"]):
+            await update.message.reply_sticker(random.choice([STICKERS["cry"], STICKERS["tired"], STICKERS["work"]]))
+            return
+        
+        if any(word in text for word in ["умираю", "сдохну", "dying", "dead", "погиб"]):
+            await update.message.reply_sticker(STICKERS["dead"])
+            return
+        
+        if any(word in text for word in ["сплю", "спать", "sleep", "устал", "tired", "бессонница"]):
+            await update.message.reply_sticker(STICKERS["sleep"])
+            return
+        
+        if any(word in text for word in ["чё", "что", "как", "why", "how", "wtf", "шо"]):
+            if "?" in text:
+                await update.message.reply_sticker(STICKERS["confused"])
+                return
+        
+        if any(word in text for word in ["боль", "страдание", "pain", "больно", "мучение"]):
+            await update.message.reply_sticker(STICKERS["pain"])
+            return
+        
+        if any(word in text for word in ["ура", "победа", "сдал", "got it", "done", "готово", "finally"]):
+            await update.message.reply_sticker(STICKERS["celebrate"])
+            return
+        
+        if any(word in text for word in ["ахаха", "хаха", "лол", "lol", "lmao", "кек"]):
+            await update.message.reply_sticker(STICKERS["laugh"])
+            return
+        
+        if any(word in text for word in ["списал", "подсказ", "cheat", "copy", "украл"]):
+            await update.message.reply_sticker(STICKERS["sus"])
+            return
+        
+        if any(word in text for word in ["бесит", "злой", "angry", "hate", "ненавижу", "rage"]):
+            await update.message.reply_sticker(STICKERS["angry"])
+            return
+        
+        if any(word in text for word in ["кофе", "coffee", "энергос", "energy", "нужна сила"]):
+            await update.message.reply_sticker(STICKERS["coffee"])
+            return
+        
+        if any(word in text for word in ["вау", "wow", "охренеть", "damn", "holy", "ого"]):
+            await update.message.reply_sticker(STICKERS["shock"])
+            return
+        
+        if any(word in text for word in ["молюсь", "pray", "надеюсь", "hope", "пожалуйста"]):
+            await update.message.reply_sticker(STICKERS["pray"])
+            return
+        
+        if any(word in text for word in ["bruh", "бро", "серьёзно", "seriously", "опять", "again"]):
+            await update.message.reply_sticker(STICKERS["bruh"])
+            return
+        
+        if any(word in text for word in ["думаю", "thinking", "не понимаю", "confused", "непонятно"]):
+            await update.message.reply_sticker(STICKERS["thinking"])
+            return
+        
+    except Exception as e:
+        logger.error(f"Error handling message: {e}")
+
 # ====== COMMANDS ======
 async def hw_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Show homework statistics"""
     try:
         hw = load_homework()
         if not hw:
@@ -166,6 +265,21 @@ async def hw_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 except ValueError:
                     logger.error(f"Invalid date format in homework: {task}")
         
+        if overdue >= 5:
+            sticker = STICKERS["dead"]
+        elif overdue >= 3:
+            sticker = STICKERS["panic"]
+        elif due_today >= 3:
+            sticker = STICKERS["stress"]
+        elif total == 0:
+            sticker = STICKERS["celebrate"]
+        elif total <= 2:
+            sticker = STICKERS["gg"]
+        else:
+            sticker = STICKERS["work"]
+        
+        await update.message.reply_sticker(sticker)
+        
         msg = f"Homework Statistics:\n\n"
         msg += f"Total pending: {total}\n"
         msg += f"Overdue: {overdue}\n"
@@ -185,7 +299,6 @@ async def hw_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Error getting homework statistics")
 
 async def hw_clean(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Remove all overdue homework older than 30 days"""
     try:
         hw = load_homework()
         if not hw:
@@ -205,7 +318,6 @@ async def hw_clean(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     else:
                         cleaned_count += 1
                 except ValueError:
-                    # Keep tasks with invalid dates for manual review
                     tasks_to_keep.append(task)
             
             if tasks_to_keep:
@@ -224,7 +336,6 @@ async def hw_clean(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Error cleaning homework")
 
 async def hw_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Show homework due today"""
     try:
         hw = load_homework()
         today = datetime.date.today().isoformat()
@@ -249,7 +360,6 @@ async def hw_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Error getting today's homework")
 
 async def schedule_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Show today's schedule"""
     try:
         day = datetime.date.today().strftime("%A")
         lessons = TIMETABLE.get(day, [])
@@ -277,12 +387,10 @@ async def schedule_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Error getting today's schedule")
 
 async def next_class(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Show next upcoming class"""
     try:
         today = datetime.date.today()
         current_day = today.strftime("%A")
         
-        # Check remaining classes today first
         lessons_today = TIMETABLE.get(current_day, [])
         
         if lessons_today:
@@ -299,11 +407,10 @@ async def next_class(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await update.message.reply_text(msg)
                 return
         
-        # Find next day with classes
         days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
         current_day_idx = days.index(current_day)
         
-        for i in range(1, 8):  # Check next 7 days
+        for i in range(1, 8):
             next_day_idx = (current_day_idx + i) % 7
             next_day = days[next_day_idx]
             next_date = today + datetime.timedelta(days=i)
@@ -328,10 +435,11 @@ async def next_class(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def kys(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
-        import random
         messages = [
             "nigga?",
             "hambal",
+            "а ты не только зашел???",
+            "likvid.",
             "es el qez em sirum", 
             "poshol naxuy",
         ]
@@ -343,10 +451,8 @@ async def kys(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def motivate(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
-        import random
         messages = [
             "soberis tryapka",
-            "а ты не только зашел???"
             "ուզում ես մոդուլը գա վատ գրես նեղվես հետո նոր ուշքի գաս հա արա՞՞՞՞՞՞՞",
             "ape heraxosd shprti dasd ara", 
             "hishi vor mard ka qeznic poqr a u arden senior a",
@@ -365,7 +471,6 @@ async def motivate(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logger.error(f"Error in motivate: {e}")
 
 async def hw_add(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Add homework"""
     try:
         if len(context.args) < 3:
             await update.message.reply_text(
@@ -378,7 +483,6 @@ async def hw_add(update: Update, context: ContextTypes.DEFAULT_TYPE):
         due_date = context.args[-1]
         task = " ".join(context.args[1:-1])
         
-        # Validate date format
         try:
             datetime.datetime.strptime(due_date, '%Y-%m-%d')
         except ValueError:
@@ -402,14 +506,12 @@ async def hw_add(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Error adding homework")
 
 def escape_markdown(text: str) -> str:
-    """Escape special characters for Telegram Markdown"""
     special_chars = ['*', '_', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!']
     for char in special_chars:
         text = text.replace(char, f'\\{char}')
     return text
 
 async def hw_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """List all homework grouped by subject with subject indexes"""
     try:
         hw = load_homework()
         if not hw:
@@ -418,13 +520,11 @@ async def hw_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         msg = "Current Homework:\n\n"
         
-        # Sort subjects alphabetically and add indexes
         sorted_subjects = sorted(hw.keys())
         for subject_idx, subject in enumerate(sorted_subjects, 1):
             msg += f"{subject_idx}. *{escape_markdown(subject)}*:\n"
             tasks = hw[subject]
             
-            # Sort tasks by due date within each subject
             tasks_with_status = []
             for i, task in enumerate(tasks, 1):
                 try:
@@ -445,7 +545,6 @@ async def hw_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 except ValueError:
                     tasks_with_status.append((i, task, "Invalid date", None))
             
-            # Sort by due date (handle None values)
             tasks_with_status.sort(key=lambda x: x[3] if x[3] else datetime.date.max)
             
             for i, task, status, _ in tasks_with_status:
@@ -453,12 +552,10 @@ async def hw_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 msg += f"   {i}\\. {safe_task} \\- Due {task['due']} \\({status}\\)\n"
             msg += "\n"
         
-        # Try markdown first, fallback to plain text if it fails
         try:
             await update.message.reply_text(msg, parse_mode='MarkdownV2')
         except Exception as markdown_error:
             logger.warning(f"MarkdownV2 failed, trying plain text: {markdown_error}")
-            # Create plain text version
             plain_msg = "Current Homework:\n\n"
             for subject_idx, subject in enumerate(sorted_subjects, 1):
                 plain_msg += f"{subject_idx}. {subject}:\n"
@@ -497,7 +594,6 @@ async def hw_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Error listing homework")
 
 async def hw_remove(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Remove homework by subject index/name and homework index"""
     try:
         if len(context.args) < 2:
             await update.message.reply_text(
@@ -519,7 +615,6 @@ async def hw_remove(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("No homework found")
             return
 
-        # Check if first argument is a number (subject index) or subject name
         subject = None
         try:
             subject_idx = int(subject_input) - 1
@@ -530,7 +625,6 @@ async def hw_remove(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await update.message.reply_text(f"Invalid subject index. Available subjects: 1-{len(sorted_subjects)}")
                 return
         except ValueError:
-            # It's a subject name
             if subject_input in hw:
                 subject = subject_input
             else:
@@ -541,10 +635,8 @@ async def hw_remove(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(f"Invalid homework index. {subject} has {len(hw[subject])} homework items")
             return
 
-        # Remove the homework item
         removed_task = hw[subject].pop(homework_index)
         
-        # Remove subject if no tasks left
         if not hw[subject]:
             del hw[subject]
         
@@ -556,22 +648,18 @@ async def hw_remove(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # ====== REMINDERS ======
 async def send_daily_reminder():
-    """Send daily class reminders at midnight and morning"""
     try:
         if not app:
             return
         
         now = datetime.datetime.now()
         
-        # Midnight reminder (00:00)
         if now.hour == 0 and now.minute == 0:
             await send_midnight_reminder()
         
-        # Morning reminder (08:00)
         elif now.hour == 8 and now.minute == 0:
             await send_morning_reminder()
         
-        # Evening homework reminder (20:00)
         elif now.hour == 20 and now.minute == 0:
             await send_homework_reminder()
             
@@ -579,7 +667,6 @@ async def send_daily_reminder():
         logger.error(f"Error in daily reminder: {e}")
 
 async def send_midnight_reminder():
-    """Send today's classes at midnight"""
     try:
         day = datetime.date.today().strftime("%A")
         lessons = TIMETABLE.get(day, [])
@@ -598,13 +685,16 @@ async def send_midnight_reminder():
                 msg += f"{lesson_count}. {lesson['subject']} - {lesson['room']}{type_info}{week_info}\n"
         
         if lesson_count > 0:
+            await app.bot.send_sticker(
+                chat_id=YOUR_GROUP_CHAT_ID, 
+                sticker=random.choice([STICKERS["sleep"], STICKERS["tired"], STICKERS["work"]])
+            )
             await app.bot.send_message(chat_id=YOUR_GROUP_CHAT_ID, text=msg)
         
     except Exception as e:
         logger.error(f"Error sending midnight reminder: {e}")
 
 async def send_morning_reminder():
-    """Send today's classes at 8 AM"""
     try:
         day = datetime.date.today().strftime("%A")
         lessons = TIMETABLE.get(day, [])
@@ -623,13 +713,16 @@ async def send_morning_reminder():
                 msg += f"{lesson_count}. {lesson['subject']} - {lesson['room']}{type_info}{week_info}\n"
         
         if lesson_count > 0:
+            await app.bot.send_sticker(
+                chat_id=YOUR_GROUP_CHAT_ID, 
+                sticker=random.choice([STICKERS["coffee"], STICKERS["fire"], STICKERS["study"]])
+            )
             await app.bot.send_message(chat_id=YOUR_GROUP_CHAT_ID, text=msg)
         
     except Exception as e:
         logger.error(f"Error sending morning reminder: {e}")
 
 async def send_homework_reminder():
-    """Send homework reminders for tomorrow's classes at 8 PM"""
     try:
         tomorrow = datetime.date.today() + datetime.timedelta(days=1)
         tomorrow_name = tomorrow.strftime("%A")
@@ -639,26 +732,36 @@ async def send_homework_reminder():
         if not lessons:
             return
         
-        # Get tomorrow's subjects
         tomorrow_subjects = []
         for lesson in lessons:
             if lesson["subject"] and is_lesson_this_week(lesson):
                 tomorrow_subjects.append(lesson["subject"])
         
-        # Check for homework for tomorrow's subjects
         homework_reminders = []
-        for subject in set(tomorrow_subjects):  # Remove duplicates
+        overdue_count = 0
+        
+        for subject in set(tomorrow_subjects):
             if subject in hw:
                 for task in hw[subject]:
                     try:
                         due_date = datetime.datetime.strptime(task["due"], "%Y-%m-%d").date()
-                        # Show homework due tomorrow or overdue
-                        if due_date <= tomorrow + datetime.timedelta(days=2):  # Due within 2 days
+                        if due_date <= tomorrow + datetime.timedelta(days=2):
                             homework_reminders.append((subject, task))
+                            if due_date < tomorrow:
+                                overdue_count += 1
                     except ValueError:
                         logger.error(f"Invalid date in homework reminder: {task}")
         
         if homework_reminders:
+            if overdue_count > 2:
+                sticker = STICKERS["dead"]
+            elif overdue_count > 0:
+                sticker = STICKERS["panic"]
+            else:
+                sticker = random.choice(HOMEWORK_STICKERS)
+            
+            await app.bot.send_sticker(chat_id=YOUR_GROUP_CHAT_ID, sticker=sticker)
+            
             msg = f"Homework reminder for tomorrow's classes ({tomorrow_name}):\n\n"
             
             for subject, task in homework_reminders:
@@ -683,13 +786,12 @@ async def send_homework_reminder():
         logger.error(f"Error sending homework reminder: {e}")
 
 async def reminder_scheduler():
-    """Main scheduler that runs every minute"""
     while not shutdown_event.is_set():
         try:
             await send_daily_reminder()
             await asyncio.wait_for(shutdown_event.wait(), timeout=60.0)
         except asyncio.TimeoutError:
-            continue  # Normal timeout, continue loop
+            continue
         except asyncio.CancelledError:
             logger.info("Reminder scheduler cancelled")
             break
@@ -714,7 +816,6 @@ def signal_handler(signum, frame):
 async def main():
     global app, reminder_task
     
-    # Check if another instance is already running
     if not acquire_lock():
         logger.error("Another instance of the bot is already running. Exiting...")
         print("Error: Another instance of the bot is already running.")
@@ -723,15 +824,12 @@ async def main():
     
     logger.info("Starting simple study bot...")
     
-    # Set up signal handlers
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
     
     try:
-        # Create the Application
         app = Application.builder().token(TOKEN).build()
 
-        # Add command handlers
         app.add_handler(CommandHandler("hw_add", hw_add))
         app.add_handler(CommandHandler("hw_list", hw_list))
         app.add_handler(CommandHandler("hw_remove", hw_remove))
@@ -743,7 +841,9 @@ async def main():
         app.add_handler(CommandHandler("kys", kys))
         app.add_handler(CommandHandler("motivate", motivate))
 
-        # Set commands for Telegram menu
+        # Add message handler for sticker responses
+        app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_messages))
+
         commands = [
             BotCommand("hw_add", "Add homework"),
             BotCommand("hw_list", "List homework"),
@@ -759,19 +859,15 @@ async def main():
         
         await app.bot.set_my_commands(commands)
 
-        # Initialize the bot
         await app.initialize()
 
-        # Start reminder scheduler as a background task
         reminder_task = asyncio.create_task(reminder_scheduler())
         
         logger.info("Simple study bot started successfully")
 
-        # Run the bot with proper polling
         await app.start()
         await app.updater.start_polling(drop_pending_updates=True)
         
-        # Keep the bot running until shutdown
         await shutdown_event.wait()
         
     except Exception as e:
