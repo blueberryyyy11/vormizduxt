@@ -5,6 +5,7 @@ import logging
 import os
 import fcntl
 import random
+import pytz
 from telegram import Update, BotCommand
 from telegram.ext import Application, CommandHandler, ContextTypes
 import signal
@@ -16,6 +17,7 @@ TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gn
 YOUR_GROUP_CHAT_ID = os.getenv("GROUP_CHAT_ID", "-1003007240886")
 HOMEWORK_FILE = "homework.json"
 LOCK_FILE = "bot.lock"
+ARMENIA_TZ = pytz.timezone('Asia/Yerevan')
 
 if not TOKEN:
     raise ValueError("TELEGRAM_BOT_TOKEN environment variable is required")
@@ -604,7 +606,8 @@ async def send_daily_reminder():
         if not app:
             return
         
-        now = datetime.datetime.now()
+        # Get current time in Armenia timezone
+        now = datetime.datetime.now(ARMENIA_TZ)
         
         if now.hour == 0 and now.minute == 0:
             await send_midnight_reminder()
