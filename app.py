@@ -123,15 +123,19 @@ def release_lock():
             pass
 
 # ====== UTILITY FUNCTIONS ======
-def get_week_type() -> str:
-    week_num = datetime.date.today().isocalendar()[1]
+def get_week_type(date: datetime.date = None) -> str:
+    """Get week type for a specific date (defaults to today)"""
+    if date is None:
+        date = datetime.date.today()
+    week_num = date.isocalendar()[1]
     return "ч/н" if week_num % 2 == 0 else "н/ч"
 
-def is_lesson_this_week(lesson: Dict) -> bool:
+def is_lesson_this_week(lesson: Dict, date: datetime.date = None) -> bool:
+    """Check if a lesson happens on the given date (defaults to today)"""
     if "week" not in lesson:
         return True
-    current_week = get_week_type()
-    return lesson["week"] == current_week
+    week_type = get_week_type(date)
+    return lesson["week"] == week_type
 
 # ====== COMMANDS ======
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -330,22 +334,25 @@ async def next_class(update: Update, context: ContextTypes.DEFAULT_TYPE):
         today = datetime.date.today()
         current_day = today.strftime("%A")
         
+        # Check remaining classes today
         lessons_today = TIMETABLE.get(current_day, [])
         
         if lessons_today:
-            msg = f"📚 Remaining classes today ({current_day}):\n\n"
-            lesson_count = 0
+            remaining_lessons = []
             for lesson in lessons_today:
-                if lesson["subject"] and is_lesson_this_week(lesson):
-                    lesson_count += 1
+                if lesson["subject"] and is_lesson_this_week(lesson, today):
+                    remaining_lessons.append(lesson)
+            
+            if remaining_lessons:
+                msg = f"📚 Remaining classes today ({current_day}):\n\n"
+                for idx, lesson in enumerate(remaining_lessons, 1):
                     type_info = f" ({lesson['type']})" if lesson.get('type') else ""
                     week_info = f" [{lesson['week']}]" if lesson.get('week') else ""
-                    msg += f"{lesson_count}. {lesson['subject']} - {lesson['room']}{type_info}{week_info}\n"
-            
-            if lesson_count > 0:
+                    msg += f"{idx}. {lesson['subject']} - {lesson['room']}{type_info}{week_info}\n"
                 await update.message.reply_text(msg)
                 return
         
+        # Find next day with classes
         days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
         current_day_idx = days.index(current_day)
         
@@ -355,15 +362,18 @@ async def next_class(update: Update, context: ContextTypes.DEFAULT_TYPE):
             next_date = today + datetime.timedelta(days=i)
             
             lessons = TIMETABLE.get(next_day, [])
-            if lessons and any(lesson["subject"] and is_lesson_this_week(lesson) for lesson in lessons):
+            upcoming_lessons = []
+            
+            for lesson in lessons:
+                if lesson["subject"] and is_lesson_this_week(lesson, next_date):
+                    upcoming_lessons.append(lesson)
+            
+            if upcoming_lessons:
                 msg = f"📅 Next classes ({next_day} {next_date.strftime('%m-%d')}):\n\n"
-                lesson_count = 0
-                for lesson in lessons:
-                    if lesson["subject"] and is_lesson_this_week(lesson):
-                        lesson_count += 1
-                        type_info = f" ({lesson['type']})" if lesson.get('type') else ""
-                        week_info = f" [{lesson['week']}]" if lesson.get('week') else ""
-                        msg += f"{lesson_count}. {lesson['subject']} - {lesson['room']}{type_info}{week_info}\n"
+                for idx, lesson in enumerate(upcoming_lessons, 1):
+                    type_info = f" ({lesson['type']})" if lesson.get('type') else ""
+                    week_info = f" [{lesson['week']}]" if lesson.get('week') else ""
+                    msg += f"{idx}. {lesson['subject']} - {lesson['room']}{type_info}{week_info}\n"
                 await update.message.reply_text(msg)
                 return
         
@@ -457,35 +467,7 @@ async def hw_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("No homework logged")
             return
         
-        # Auto-remove overdue homework
-        today = datetime.date.today()
-        removed_count = 0
-        
-        for subject in list(hw.keys()):
-            tasks_to_keep = []
-            for task in hw[subject]:
-                try:
-                    due_date = datetime.datetime.strptime(task["due"], "%Y-%m-%d").date()
-                    if due_date >= today:
-                        tasks_to_keep.append(task)
-                    else:
-                        removed_count += 1
-                except ValueError:
-                    tasks_to_keep.append(task)
-            
-            if tasks_to_keep:
-                hw[subject] = tasks_to_keep
-            else:
-                del hw[subject]
-        
-        if removed_count > 0:
-            save_homework(hw)
-            logger.info(f"Auto-removed {removed_count} overdue homework items")
-        
-        if not hw:
-            await update.message.reply_text("No homework logged")
-            return
-        
+        # Don't auto-remove, just display all homework
         msg = "📝 Current Homework:\n\n"
         
         sorted_subjects = sorted(hw.keys())
@@ -501,7 +483,7 @@ async def hw_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     days_left = (due_date - today).days
                     
                     if days_left < 0:
-                        status = f"OVERDUE ({abs(days_left)} days)"
+                        status = f"OVERDUE \\({abs(days_left)} days\\)"
                     elif days_left == 0:
                         status = "DUE TODAY"
                     elif days_left == 1:
@@ -513,17 +495,20 @@ async def hw_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 except ValueError:
                     tasks_with_status.append((i, task, "Invalid date", None))
             
+            # Sort by due date
             tasks_with_status.sort(key=lambda x: x[3] if x[3] else datetime.date.max)
             
             for i, task, status, _ in tasks_with_status:
                 safe_task = escape_markdown(task['task'])
-                msg += f"   {i}\\. {safe_task} \\- Due {task['due']} \\({status}\\)\n"
+                safe_due = escape_markdown(task['due'])
+                msg += f"   {i}\\. {safe_task} \\- Due {safe_due} \\({status}\\)\n"
             msg += "\n"
         
         try:
             await update.message.reply_text(msg, parse_mode='MarkdownV2')
         except Exception as markdown_error:
             logger.warning(f"MarkdownV2 failed, trying plain text: {markdown_error}")
+            # Fallback to plain text
             plain_msg = "📝 Current Homework:\n\n"
             for subject_idx, subject in enumerate(sorted_subjects, 1):
                 plain_msg += f"{subject_idx}. {subject}:\n"
@@ -695,7 +680,7 @@ async def send_homework_reminder():
         
         tomorrow_subjects = []
         for lesson in lessons:
-            if lesson["subject"] and is_lesson_this_week(lesson):
+            if lesson["subject"] and is_lesson_this_week(lesson, tomorrow):
                 tomorrow_subjects.append(lesson["subject"])
         
         homework_reminders = []
@@ -746,7 +731,7 @@ async def send_evening_homework_reminder():
         
         tomorrow_subjects = []
         for lesson in lessons:
-            if lesson["subject"] and is_lesson_this_week(lesson):
+            if lesson["subject"] and is_lesson_this_week(lesson, tomorrow):
                 tomorrow_subjects.append(lesson["subject"])
         
         if not tomorrow_subjects:
@@ -790,6 +775,7 @@ async def send_evening_homework_reminder():
 
 async def reminder_scheduler():
     """Background task that runs every minute to check for scheduled reminders"""
+    logger.info("Reminder scheduler started")
     while not shutdown_event.is_set():
         try:
             await send_daily_reminder()
@@ -873,17 +859,21 @@ async def main():
         await app.initialize()
         await app.start()
         
-        logger.info("Bot started successfully")
+        logger.info("Bot started successfully - polling for updates")
         
         # Start reminder scheduler in background
         reminder_task = asyncio.create_task(reminder_scheduler())
-        logger.info("Reminder scheduler started")
+        logger.info("Reminder scheduler task created")
         
         # Start polling
-        await app.updater.start_polling(drop_pending_updates=True)
-        logger.info("Polling started")
+        await app.updater.start_polling(
+            drop_pending_updates=True,
+            allowed_updates=Update.ALL_TYPES
+        )
+        logger.info("Updater started - bot is now running")
         
-        # Wait for shutdown signal
+        # Keep the bot running
+        logger.info("Bot is running. Press Ctrl+C to stop.")
         await shutdown_event.wait()
         
     except Exception as e:
@@ -897,15 +887,18 @@ async def main():
             try:
                 await reminder_task
             except asyncio.CancelledError:
-                pass
+                logger.info("Reminder task cancelled successfully")
         
         # Stop the bot
         if app:
             try:
-                await app.updater.stop()
+                if app.updater and app.updater.running:
+                    await app.updater.stop()
+                    logger.info("Updater stopped")
                 await app.stop()
+                logger.info("Application stopped")
                 await app.shutdown()
-                logger.info("Bot stopped successfully")
+                logger.info("Application shutdown complete")
             except Exception as e:
                 logger.error(f"Error stopping bot: {e}")
         
