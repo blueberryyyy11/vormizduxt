@@ -134,6 +134,25 @@ def is_lesson_this_week(lesson: Dict) -> bool:
     return lesson["week"] == current_week
 
 # ====== COMMANDS ======
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Start command handler"""
+    welcome_msg = (
+        "Welcome to Study Bot!\n\n"
+        "Available commands:\n"
+        "/hw_add Subject Task YYYY-MM-DD - Add homework\n"
+        "/hw_list - List all homework\n"
+        "/hw_remove Subject index - Remove homework\n"
+        "/hw_today - Show today's homework\n"
+        "/hw_overdue - Show overdue homework\n"
+        "/hw_stats - Show homework statistics\n"
+        "/hw_clean - Clean old homework\n"
+        "/schedule_today - Today's schedule\n"
+        "/next_class - Next class info\n"
+        "/motivate - Get motivated\n"
+        "/kys - Random message"
+    )
+    await update.message.reply_text(welcome_msg)
+
 async def hw_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         hw = load_homework()
@@ -162,18 +181,18 @@ async def hw_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 except ValueError:
                     logger.error(f"Invalid date format in homework: {task}")
         
-        msg = f"Homework Statistics:\n\n"
+        msg = f"📊 Homework Statistics:\n\n"
         msg += f"Total pending: {total}\n"
         msg += f"Overdue: {overdue}\n"
         msg += f"Due today: {due_today}\n"
         msg += f"Due tomorrow: {due_tomorrow}\n"
         
         if overdue > 0:
-            msg += f"\nYou have {overdue} overdue assignments"
+            msg += f"\n⚠️ You have {overdue} overdue assignments"
         elif due_today > 0:
-            msg += f"\nYou have {due_today} assignments due today"
+            msg += f"\n⏰ You have {due_today} assignments due today"
         else:
-            msg += f"\nYou're on track"
+            msg += f"\n✅ You're on track"
         
         await update.message.reply_text(msg)
     except Exception as e:
@@ -210,7 +229,7 @@ async def hw_clean(update: Update, context: ContextTypes.DEFAULT_TYPE):
         save_homework(hw)
         
         if cleaned_count > 0:
-            await update.message.reply_text(f"Cleaned {cleaned_count} old overdue assignments")
+            await update.message.reply_text(f"🧹 Cleaned {cleaned_count} old overdue assignments")
         else:
             await update.message.reply_text("No old assignments to clean")
     except Exception as e:
@@ -229,10 +248,10 @@ async def hw_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     today_hw.append((subject, task))
         
         if not today_hw:
-            await update.message.reply_text("No homework due today")
+            await update.message.reply_text("No homework due today ✅")
             return
         
-        msg = "Homework due today:\n\n"
+        msg = "📅 Homework due today:\n\n"
         for i, (subject, task) in enumerate(today_hw, 1):
             msg += f"{i}. {subject}: {task['task']}\n"
         
@@ -262,13 +281,13 @@ async def hw_overdue(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     logger.error(f"Invalid date format in homework: {task}")
         
         if not overdue_hw:
-            await update.message.reply_text("No overdue homework! You're all caught up!")
+            await update.message.reply_text("No overdue homework! You're all caught up! 🎉")
             return
         
         # Sort by most overdue first
         overdue_hw.sort(key=lambda x: x[3])
         
-        msg = f"Overdue Homework ({len(overdue_hw)} items):\n\n"
+        msg = f"⚠️ Overdue Homework ({len(overdue_hw)} items):\n\n"
         
         for i, (subject, task, days_overdue, due_date) in enumerate(overdue_hw, 1):
             msg += f"{i}. {subject}: {task['task']}\n"
@@ -285,10 +304,10 @@ async def schedule_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
         lessons = TIMETABLE.get(day, [])
         
         if not lessons:
-            await update.message.reply_text("No classes today")
+            await update.message.reply_text("No classes today 🎉")
             return
         
-        msg = f"Today's schedule ({day}):\n\n"
+        msg = f"📚 Today's schedule ({day}):\n\n"
         
         lesson_count = 0
         for lesson in lessons:
@@ -314,7 +333,7 @@ async def next_class(update: Update, context: ContextTypes.DEFAULT_TYPE):
         lessons_today = TIMETABLE.get(current_day, [])
         
         if lessons_today:
-            msg = f"Remaining classes today ({current_day}):\n\n"
+            msg = f"📚 Remaining classes today ({current_day}):\n\n"
             lesson_count = 0
             for lesson in lessons_today:
                 if lesson["subject"] and is_lesson_this_week(lesson):
@@ -337,7 +356,7 @@ async def next_class(update: Update, context: ContextTypes.DEFAULT_TYPE):
             
             lessons = TIMETABLE.get(next_day, [])
             if lessons and any(lesson["subject"] and is_lesson_this_week(lesson) for lesson in lessons):
-                msg = f"Next classes ({next_day} {next_date.strftime('%m-%d')}):\n\n"
+                msg = f"📅 Next classes ({next_day} {next_date.strftime('%m-%d')}):\n\n"
                 lesson_count = 0
                 for lesson in lessons:
                     if lesson["subject"] and is_lesson_this_week(lesson):
@@ -419,7 +438,7 @@ async def hw_add(update: Update, context: ContextTypes.DEFAULT_TYPE):
         hw.setdefault(subject, []).append(hw_item)
         save_homework(hw)
         
-        await update.message.reply_text(f"Added homework for {subject}: {task} (due {due_date})")
+        await update.message.reply_text(f"✅ Added homework for {subject}: {task} (due {due_date})")
         logger.info(f"User added HW: {subject} - {task} ({due_date})")
     except Exception as e:
         logger.error(f"Error in hw_add: {e}")
@@ -467,7 +486,7 @@ async def hw_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("No homework logged")
             return
         
-        msg = "Current Homework:\n\n"
+        msg = "📝 Current Homework:\n\n"
         
         sorted_subjects = sorted(hw.keys())
         for subject_idx, subject in enumerate(sorted_subjects, 1):
@@ -505,7 +524,7 @@ async def hw_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(msg, parse_mode='MarkdownV2')
         except Exception as markdown_error:
             logger.warning(f"MarkdownV2 failed, trying plain text: {markdown_error}")
-            plain_msg = "Current Homework:\n\n"
+            plain_msg = "📝 Current Homework:\n\n"
             for subject_idx, subject in enumerate(sorted_subjects, 1):
                 plain_msg += f"{subject_idx}. {subject}:\n"
                 tasks = hw[subject]
@@ -590,7 +609,7 @@ async def hw_remove(update: Update, context: ContextTypes.DEFAULT_TYPE):
             del hw[subject]
         
         save_homework(hw)
-        await update.message.reply_text(f"Removed: {subject} - {removed_task['task']}")
+        await update.message.reply_text(f"✅ Removed: {subject} - {removed_task['task']}")
     except Exception as e:
         logger.error(f"Error in hw_remove: {e}")
         await update.message.reply_text("Error removing homework")
@@ -624,7 +643,7 @@ async def send_midnight_reminder():
         if not lessons:
             return
         
-        msg = f"Today ({day}) classes:\n\n"
+        msg = f"🌙 Today ({day}) classes:\n\n"
         lesson_count = 0
         
         for lesson in lessons:
@@ -648,7 +667,7 @@ async def send_morning_reminder():
         if not lessons:
             return
         
-        msg = f"Good morning! Today's classes:\n\n"
+        msg = f"☀️ Good morning! Today's classes:\n\n"
         lesson_count = 0
         
         for lesson in lessons:
@@ -692,7 +711,7 @@ async def send_homework_reminder():
                         logger.error(f"Invalid date in homework reminder: {task}")
         
         if homework_reminders:
-            msg = f"Homework reminder for tomorrow's classes ({tomorrow_name}):\n\n"
+            msg = f"📚 Homework reminder for tomorrow's classes ({tomorrow_name}):\n\n"
             
             for subject, task in homework_reminders:
                 try:
@@ -706,9 +725,9 @@ async def send_homework_reminder():
                     else:
                         status = f"due {task['due']}"
                     
-                    msg += f"{subject}: {task['task']} ({status})\n"
+                    msg += f"• {subject}: {task['task']} ({status})\n"
                 except ValueError:
-                    msg += f"{subject}: {task['task']} (invalid date)\n"
+                    msg += f"• {subject}: {task['task']} (invalid date)\n"
             
             await app.bot.send_message(chat_id=YOUR_GROUP_CHAT_ID, text=msg)
         
@@ -746,7 +765,7 @@ async def send_evening_homework_reminder():
                         logger.error(f"Invalid date in evening homework reminder: {task}")
         
         if homework_reminders:
-            msg = f"Evening homework check for tomorrow ({tomorrow_name}):\n\n"
+            msg = f"🌆 Evening homework check for tomorrow ({tomorrow_name}):\n\n"
             
             for subject, task in homework_reminders:
                 try:
@@ -770,6 +789,7 @@ async def send_evening_homework_reminder():
         logger.error(f"Error sending evening homework reminder: {e}")
 
 async def reminder_scheduler():
+    """Background task that runs every minute to check for scheduled reminders"""
     while not shutdown_event.is_set():
         try:
             await send_daily_reminder()
@@ -788,28 +808,116 @@ async def reminder_scheduler():
 
 # ====== SIGNAL HANDLERS ======
 def signal_handler(signum, frame):
+    """Handle shutdown signals gracefully"""
     logger.info(f"Received signal {signum}, shutting down...")
-    global reminder_task
-    if reminder_task:
-        reminder_task.cancel()
-    release_lock()
     shutdown_event.set()
-    sys.exit(0)
 
 # ====== MAIN ======
+async def post_init(application: Application):
+    """Set up bot commands after initialization"""
+    commands = [
+        BotCommand("start", "Start the bot and see available commands"),
+        BotCommand("hw_add", "Add homework: /hw_add Subject Task YYYY-MM-DD"),
+        BotCommand("hw_list", "List all homework"),
+        BotCommand("hw_remove", "Remove homework: /hw_remove Subject index"),
+        BotCommand("hw_today", "Show today's homework"),
+        BotCommand("hw_overdue", "Show overdue homework"),
+        BotCommand("hw_stats", "Show homework statistics"),
+        BotCommand("hw_clean", "Clean old homework (30+ days)"),
+        BotCommand("schedule_today", "Show today's schedule"),
+        BotCommand("next_class", "Show next class"),
+        BotCommand("motivate", "Get motivated"),
+        BotCommand("kys", "Random message"),
+    ]
+    await application.bot.set_my_commands(commands)
+    logger.info("Bot commands set successfully")
+
 async def main():
+    """Main function to run the bot"""
     global app, reminder_task
     
+    # Acquire lock to prevent multiple instances
     if not acquire_lock():
         logger.error("Another instance of the bot is already running. Exiting...")
         print("Error: Another instance of the bot is already running.")
         print("If you're sure no other instance is running, delete the 'bot.lock' file and try again.")
         sys.exit(1)
     
-    logger.info("Starting simple study bot...")
+    logger.info("Starting study bot...")
     
+    # Set up signal handlers
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
     
+    try:
+        # Build application
+        app = Application.builder().token(TOKEN).post_init(post_init).build()
+        
+        # Register command handlers
+        app.add_handler(CommandHandler("start", start))
+        app.add_handler(CommandHandler("hw_add", hw_add))
+        app.add_handler(CommandHandler("hw_list", hw_list))
+        app.add_handler(CommandHandler("hw_remove", hw_remove))
+        app.add_handler(CommandHandler("hw_today", hw_today))
+        app.add_handler(CommandHandler("hw_overdue", hw_overdue))
+        app.add_handler(CommandHandler("hw_stats", hw_stats))
+        app.add_handler(CommandHandler("hw_clean", hw_clean))
+        app.add_handler(CommandHandler("schedule_today", schedule_today))
+        app.add_handler(CommandHandler("next_class", next_class))
+        app.add_handler(CommandHandler("motivate", motivate))
+        app.add_handler(CommandHandler("kys", kys))
+        
+        logger.info("All command handlers registered")
+        
+        # Initialize the bot
+        await app.initialize()
+        await app.start()
+        
+        logger.info("Bot started successfully")
+        
+        # Start reminder scheduler in background
+        reminder_task = asyncio.create_task(reminder_scheduler())
+        logger.info("Reminder scheduler started")
+        
+        # Start polling
+        await app.updater.start_polling(drop_pending_updates=True)
+        logger.info("Polling started")
+        
+        # Wait for shutdown signal
+        await shutdown_event.wait()
+        
+    except Exception as e:
+        logger.error(f"Error in main: {e}", exc_info=True)
+    finally:
+        logger.info("Shutting down bot...")
+        
+        # Cancel reminder task
+        if reminder_task:
+            reminder_task.cancel()
+            try:
+                await reminder_task
+            except asyncio.CancelledError:
+                pass
+        
+        # Stop the bot
+        if app:
+            try:
+                await app.updater.stop()
+                await app.stop()
+                await app.shutdown()
+                logger.info("Bot stopped successfully")
+            except Exception as e:
+                logger.error(f"Error stopping bot: {e}")
+        
+        # Release lock
+        release_lock()
+        logger.info("Lock released, exiting")
 
-    app = Application.builder().token(TOKEN).build()
+if __name__ == "__main__":
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        logger.info("Received KeyboardInterrupt, exiting...")
+    except Exception as e:
+        logger.error(f"Fatal error: {e}", exc_info=True)
+        sys.exit(1)
