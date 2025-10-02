@@ -601,52 +601,43 @@ async def hw_remove(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Error removing homework")
 
 # ====== REMINDERS ======
+last_reminder_date = None
+last_reminder_times = set()
+
 async def send_daily_reminder():
+    global last_reminder_date, last_reminder_times
+    
     try:
         if not app:
             return
         
         # Get current time in Armenia timezone
         now = datetime.datetime.now(ARMENIA_TZ)
+        today_date = now.date()
+        current_time = now.strftime("%H:%M")
         
-        if now.hour == 0 and now.minute == 0:
-            await send_midnight_reminder()
-            await send_homework_reminder()
+        # Reset tracking at midnight
+        if last_reminder_date != today_date:
+            last_reminder_date = today_date
+            last_reminder_times = set()
         
-        elif now.hour == 8 and now.minute == 0:
+        # 8:00 AM - Morning schedule reminder
+        if current_time == "08:00" and "08:00" not in last_reminder_times:
             await send_morning_reminder()
+            last_reminder_times.add("08:00")
+            logger.info("Sent 8:00 AM morning reminder")
         
-        elif now.hour == 18 and now.minute == 0:
+        # 6:00 PM (18:00) - Evening homework reminder
+        elif current_time == "18:00" and "18:00" not in last_reminder_times:
             await send_evening_homework_reminder()
+            last_reminder_times.add("18:00")
+            logger.info("Sent 6:00 PM evening homework reminder")
             
     except Exception as e:
         logger.error(f"Error in daily reminder: {e}")
 
-async def send_midnight_reminder():
-    try:
-        day = datetime.date.today().strftime("%A")
-        lessons = TIMETABLE.get(day, [])
-        
-        if not lessons:
-            return
-        
-        msg = f"Today ({day}):\n\n"
-        lesson_count = 0
-        
-        for lesson in lessons:
-            if lesson["subject"] and is_lesson_this_week(lesson):
-                lesson_count += 1
-                type_info = f" ({lesson['type']})" if lesson.get('type') else ""
-                week_info = f" [{lesson['week']}]" if lesson.get('week') else ""
-                msg += f"{lesson_count}. {lesson['subject']} - {lesson['room']}{type_info}{week_info}\n"
-        
-        if lesson_count > 0:
-            await app.bot.send_message(chat_id=YOUR_GROUP_CHAT_ID, text=msg)
-        
-    except Exception as e:
-        logger.error(f"Error sending midnight reminder: {e}")
-
 async def send_morning_reminder():
+    """8:00 AM - Remind about today's schedule"""
     try:
         day = datetime.date.today().strftime("%A")
         lessons = TIMETABLE.get(day, [])
@@ -654,7 +645,7 @@ async def send_morning_reminder():
         if not lessons:
             return
         
-        msg = f"Good morning. Today's classes:\n\n"
+        msg = f"☀️ Good morning! Today's classes ({day}):\n\n"
         lesson_count = 0
         
         for lesson in lessons:
@@ -670,107 +661,46 @@ async def send_morning_reminder():
     except Exception as e:
         logger.error(f"Error sending morning reminder: {e}")
 
-async def send_homework_reminder():
-    try:
-        tomorrow = datetime.date.today() + datetime.timedelta(days=1)
-        tomorrow_name = tomorrow.strftime("%A")
-        lessons = TIMETABLE.get(tomorrow_name, [])
-        hw = load_homework()
-        
-        if not lessons:
-            return
-        
-        tomorrow_subjects = []
-        for lesson in lessons:
-            if lesson["subject"] and is_lesson_this_week(lesson, tomorrow):
-                tomorrow_subjects.append(lesson["subject"])
-        
-        homework_reminders = []
-        
-        for subject in set(tomorrow_subjects):
-            if subject in hw:
-                for task in hw[subject]:
-                    try:
-                        due_date = datetime.datetime.strptime(task["due"], "%Y-%m-%d").date()
-                        if due_date <= tomorrow + datetime.timedelta(days=2):
-                            homework_reminders.append((subject, task))
-                    except ValueError:
-                        logger.error(f"Invalid date in homework reminder: {task}")
-        
-        if homework_reminders:
-            msg = f"Homework reminder ({tomorrow_name}):\n\n"
-            
-            for subject, task in homework_reminders:
-                try:
-                    due_date = datetime.datetime.strptime(task["due"], "%Y-%m-%d").date()
-                    days_left = (due_date - tomorrow).days
-                    
-                    if days_left < 0:
-                        status = f"OVERDUE ({abs(days_left)} days)"
-                    elif days_left == 0:
-                        status = "DUE TOMORROW"
-                    else:
-                        status = f"due {task['due']}"
-                    
-                    msg += f"• {subject}: {task['task']} ({status})\n"
-                except ValueError:
-                    msg += f"• {subject}: {task['task']} (invalid date)\n"
-            
-            await app.bot.send_message(chat_id=YOUR_GROUP_CHAT_ID, text=msg)
-        
-    except Exception as e:
-        logger.error(f"Error sending homework reminder: {e}")
-
 async def send_evening_homework_reminder():
+    """6:00 PM - Remind about homework due today or overdue"""
     try:
-        tomorrow = datetime.date.today() + datetime.timedelta(days=1)
-        tomorrow_name = tomorrow.strftime("%A")
-        lessons = TIMETABLE.get(tomorrow_name, [])
+        today = datetime.date.today()
         hw = load_homework()
         
-        if not lessons:
-            return
-        
-        tomorrow_subjects = []
-        for lesson in lessons:
-            if lesson["subject"] and is_lesson_this_week(lesson, tomorrow):
-                tomorrow_subjects.append(lesson["subject"])
-        
-        if not tomorrow_subjects:
+        if not hw:
             return
         
         homework_reminders = []
         
-        for subject in set(tomorrow_subjects):
-            if subject in hw:
-                for task in hw[subject]:
-                    try:
-                        due_date = datetime.datetime.strptime(task["due"], "%Y-%m-%d").date()
-                        if due_date <= tomorrow:
-                            homework_reminders.append((subject, task))
-                    except ValueError:
-                        logger.error(f"Invalid date in evening homework reminder: {task}")
-        
-        if homework_reminders:
-            msg = f"Evening check ({tomorrow_name}):\n\n"
-            
-            for subject, task in homework_reminders:
+        # Find homework due today or overdue
+        for subject, tasks in hw.items():
+            for task in tasks:
                 try:
                     due_date = datetime.datetime.strptime(task["due"], "%Y-%m-%d").date()
-                    days_left = (due_date - tomorrow).days
-                    
-                    if days_left < 0:
-                        status = f"OVERDUE"
-                    elif days_left == 0:
-                        status = "DUE TOMORROW"
-                    else:
-                        status = f"due {task['due']}"
-                    
-                    msg += f"• {subject}: {task['task']} ({status})\n"
+                    if due_date <= today:
+                        homework_reminders.append((subject, task, due_date))
                 except ValueError:
-                    msg += f"• {subject}: {task['task']} (invalid date)\n"
+                    logger.error(f"Invalid date in evening homework reminder: {task}")
+        
+        if not homework_reminders:
+            return
+        
+        # Sort by due date (oldest first)
+        homework_reminders.sort(key=lambda x: x[2])
+        
+        msg = f"📚 Evening homework check:\n\n"
+        
+        for subject, task, due_date in homework_reminders:
+            days_overdue = (today - due_date).days
             
-            await app.bot.send_message(chat_id=YOUR_GROUP_CHAT_ID, text=msg)
+            if days_overdue > 0:
+                status = f"⚠️ OVERDUE ({days_overdue} days)"
+            else:
+                status = "📌 DUE TODAY"
+            
+            msg += f"• {subject}: {task['task']}\n  {status} - {task['due']}\n\n"
+        
+        await app.bot.send_message(chat_id=YOUR_GROUP_CHAT_ID, text=msg)
         
     except Exception as e:
         logger.error(f"Error sending evening homework reminder: {e}")
