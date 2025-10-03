@@ -242,29 +242,41 @@ async def hw_task(update: Update, context: ContextTypes.DEFAULT_TYPE):
             context.user_data['hw_task'] = full_task
             logger.info(f"hw_task: Task completed ({len(full_task)} chars)")
             
-            keyboard = [
-                [
-                    InlineKeyboardButton("Today", callback_data="date_today"),
-                    InlineKeyboardButton("Tomorrow", callback_data="date_tomorrow"),
-                ],
-                [
-                    InlineKeyboardButton("In 3 days", callback_data="date_3days"),
-                    InlineKeyboardButton("In 1 week", callback_data="date_week"),
-                ],
-                [
-                    InlineKeyboardButton("Custom date", callback_data="date_custom")
+            try:
+                keyboard = [
+                    [
+                        InlineKeyboardButton("Today", callback_data="date_today"),
+                        InlineKeyboardButton("Tomorrow", callback_data="date_tomorrow"),
+                    ],
+                    [
+                        InlineKeyboardButton("In 3 days", callback_data="date_3days"),
+                        InlineKeyboardButton("In 1 week", callback_data="date_week"),
+                    ],
+                    [
+                        InlineKeyboardButton("Custom date", callback_data="date_custom")
+                    ]
                 ]
-            ]
-            reply_markup = InlineKeyboardMarkup(keyboard)
-            
-            preview = full_task[:100] + "..." if len(full_task) > 100 else full_task
-            await update.message.reply_text(
-                f"Task saved!\n\n"
-                f"Preview: {preview}\n\n"
-                f"When is this due?",
-                reply_markup=reply_markup
-            )
-            return DUE_DATE
+                reply_markup = InlineKeyboardMarkup(keyboard)
+                
+                preview = full_task[:100] + "..." if len(full_task) > 100 else full_task
+                await update.message.reply_text(
+                    f"Task saved!\n\n"
+                    f"Preview: {preview}\n\n"
+                    f"When is this due?",
+                    reply_markup=reply_markup
+                )
+                logger.info("hw_task: Date selection buttons sent successfully")
+                return DUE_DATE
+            except Exception as keyboard_error:
+                logger.error(f"Error sending keyboard in hw_task: {keyboard_error}", exc_info=True)
+                # Fallback: ask for text input instead
+                await update.message.reply_text(
+                    f"Task saved!\n\n"
+                    f"Preview: {preview}\n\n"
+                    f"When is this due?\n"
+                    f"Enter: tomorrow, today, next week, +N (days), or YYYY-MM-DD"
+                )
+                return DUE_DATE
         else:
             context.user_data['hw_task_parts'].append(update.message.text)
             part_count = len(context.user_data['hw_task_parts'])
