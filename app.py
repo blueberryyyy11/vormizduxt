@@ -6,8 +6,16 @@ import os
 import fcntl
 import random
 import pytz
-from telegram import Update, BotCommand
-from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram import Update, BotCommand, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import (
+    Application, 
+    CommandHandler, 
+    ContextTypes,
+    ConversationHandler,
+    CallbackQueryHandler,
+    MessageHandler,
+    filters
+)
 import signal
 import sys
 from typing import Dict
@@ -35,6 +43,9 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
+
+# ====== CONVERSATION STATES ======
+SUBJECT, TASK, DUE_DATE, CONFIRM = range(4)
 
 # ====== TIMETABLE ======
 TIMETABLE = {
@@ -139,26 +150,324 @@ def is_lesson_this_week(lesson: Dict, date: datetime.date = None) -> bool:
     week_type = get_week_type(date)
     return lesson["week"] == week_type
 
-# ====== COMMANDS ======
+def parse_flexible_date(date_str: str) -> datetime.date:
+    """Parse flexible date formats"""
+    today = datetime.date.today()
+    date_lower = date_str.lower().strip()
+    
+    if date_lower == "today":
+        return today
+    elif date_lower == "tomorrow":
+        return today + datetime.timedelta(days=1)
+    elif date_lower == "next week":
+        return today + datetime.timedelta(days=7)
+    elif date_lower.startswith('+'):
+        try:
+            days = int(date_lower[1:])
+            return today + datetime.timedelta(days=days)
+        except ValueError:
+            raise ValueError(f"Invalid relative date: {date_str}")
+    else:
+        # Try parsing as YYYY-MM-DD
+        return datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
+
+# ====== BASIC COMMANDS ======
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Start command handler"""
     welcome_msg = (
         "Study Bot\n\n"
-        "Commands:\n"
-        "/hw_add Subject Task YYYY-MM-DD\n"
-        "/hw_list\n"
-        "/hw_remove Subject index\n"
-        "/hw_today\n"
-        "/hw_overdue\n"
-        "/hw_stats\n"
-        "/hw_clean\n"
-        "/schedule\n"
-        "/next\n"
-        "/motivate\n"
-        "/kys"
+        "New Homework System:\n"
+        "/hw_add - Step-by-step (best for complex tasks)\n"
+        "/hw_quick - Quick one-liner\n\n"
+        "Homework Management:\n"
+        "/hw_list - List all homework\n"
+        "/hw_remove - Remove homework\n"
+        "/hw_today - Show today's homework\n"
+        "/hw_overdue - Show overdue homework\n"
+        "/hw_stats - Show statistics\n"
+        "/hw_clean - Clean old homework\n\n"
+        "Schedule:\n"
+        "/schedule - Today's schedule\n"
+        "/next - Next class\n\n"
+        "Motivation:\n"
+        "/motivate - type of motivation you always needed\n"
+        "/kys - )))"
     )
     await update.message.reply_text(welcome_msg)
 
+# ====== IMPROVED HOMEWORK SYSTEM ======
+# Method 1: Conversational Flow
+
+async def hw_add_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Start conversational homework addition"""
+    await update.message.reply_text(
+        "Add homework!\n\n"
+        "What subject is this for?\n"
+        "(or /cancel to stop)"
+    )
+    return SUBJECT
+
+async def hw_subject(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Store subject and ask for task"""
+    context.user_data['hw_subject'] = update.message.text
+    
+    await update.message.reply_text(
+        f"Subject: {update.message.text}\n\n"
+        "Now, describe the homework task.\n"
+        "You can write as much as you need - multiple lines are okay!\n\n"
+        "When done, send /done"
+    )
+    context.user_data['hw_task_parts'] = []
+    return TASK
+
+async def hw_task(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Collect task description (can be multiple messages)"""
+    if update.message.text == '/done':
+        if not context.user_data.get('hw_task_parts'):
+            await update.message.reply_text("You haven't entered any task description yet!")
+            return TASK
+        
+        full_task = "\n".join(context.user_data['hw_task_parts'])
+        context.user_data['hw_task'] = full_task
+        
+        # Show quick date buttons
+        keyboard = [
+            [
+                InlineKeyboardButton("Today", callback_data="date_today"),
+                InlineKeyboardButton("Tomorrow", callback_data="date_tomorrow"),
+            ],
+            [
+                InlineKeyboardButton("In 3 days", callback_data="date_3days"),
+                InlineKeyboardButton("In 1 week", callback_data="date_week"),
+            ],
+            [
+                InlineKeyboardButton("Custom date", callback_data="date_custom")
+            ]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        
+        preview = full_task[:100] + "..." if len(full_task) > 100 else full_task
+        await update.message.reply_text(
+            f"Task saved!\n\n"
+            f"Preview: {preview}\n\n"
+            f"When is this due?",
+            reply_markup=reply_markup
+        )
+        return DUE_DATE
+    else:
+        # Accumulate task description
+        context.user_data['hw_task_parts'].append(update.message.text)
+        part_count = len(context.user_data['hw_task_parts'])
+        await update.message.reply_text(
+            f"Part {part_count} added.\n"
+            f"Continue writing or send /done when finished."
+        )
+        return TASK
+
+async def hw_date_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle quick date selection"""
+    query = update.callback_query
+    await query.answer()
+    
+    today = datetime.date.today()
+    
+    if query.data == "date_today":
+        due_date = today
+    elif query.data == "date_tomorrow":
+        due_date = today + datetime.timedelta(days=1)
+    elif query.data == "date_3days":
+        due_date = today + datetime.timedelta(days=3)
+    elif query.data == "date_week":
+        due_date = today + datetime.timedelta(days=7)
+    elif query.data == "date_custom":
+        await query.edit_message_text(
+            "Enter the due date in YYYY-MM-DD format\n"
+            "Example: 2025-10-15\n\n"
+            "Or use: tomorrow, today, next week, +N (days)"
+        )
+        return DUE_DATE
+    else:
+        return DUE_DATE
+    
+    context.user_data['hw_due'] = due_date.isoformat()
+    
+    # Show confirmation
+    await show_homework_confirmation(query, context)
+    return CONFIRM
+
+async def hw_date_custom(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle custom date input"""
+    try:
+        due_date = parse_flexible_date(update.message.text)
+        context.user_data['hw_due'] = due_date.isoformat()
+        
+        # Show confirmation
+        subject = context.user_data['hw_subject']
+        task = context.user_data['hw_task']
+        preview = task[:200] + "..." if len(task) > 200 else task
+        
+        keyboard = [
+            [
+                InlineKeyboardButton("✅ Confirm", callback_data="confirm_yes"),
+                InlineKeyboardButton("❌ Cancel", callback_data="confirm_no"),
+            ]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        
+        await update.message.reply_text(
+            f"Review your homework:\n\n"
+            f"Subject: {subject}\n"
+            f"Due: {due_date.strftime('%Y-%m-%d (%A)')}\n\n"
+            f"Task:\n{preview}\n\n"
+            f"Is this correct?",
+            reply_markup=reply_markup
+        )
+        return CONFIRM
+    except ValueError as e:
+        await update.message.reply_text(
+            f"Invalid date format: {str(e)}\n\n"
+            "Please use one of these formats:\n"
+            "• YYYY-MM-DD (e.g., 2025-10-15)\n"
+            "• tomorrow\n"
+            "• today\n"
+            "• next week\n"
+            "• +N (e.g., +3 for 3 days from now)"
+        )
+        return DUE_DATE
+
+async def show_homework_confirmation(query, context: ContextTypes.DEFAULT_TYPE):
+    """Show homework confirmation message"""
+    subject = context.user_data['hw_subject']
+    task = context.user_data['hw_task']
+    due_date = datetime.datetime.strptime(context.user_data['hw_due'], '%Y-%m-%d').date()
+    preview = task[:200] + "..." if len(task) > 200 else task
+    
+    keyboard = [
+        [
+            InlineKeyboardButton("✅ Confirm", callback_data="confirm_yes"),
+            InlineKeyboardButton("❌ Cancel", callback_data="confirm_no"),
+        ]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    
+    await query.edit_message_text(
+        f"Review your homework:\n\n"
+        f"Subject: {subject}\n"
+        f"Due: {due_date.strftime('%Y-%m-%d (%A)')}\n\n"
+        f"Task:\n{preview}\n\n"
+        f"Is this correct?",
+        reply_markup=reply_markup
+    )
+
+async def hw_confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Save homework after confirmation"""
+    query = update.callback_query
+    await query.answer()
+    
+    if query.data == "confirm_yes":
+        # Save homework
+        hw = load_homework()
+        subject = context.user_data['hw_subject']
+        
+        hw_item = {
+            "task": context.user_data['hw_task'],
+            "due": context.user_data['hw_due'],
+            "added": datetime.date.today().isoformat()
+        }
+        
+        hw.setdefault(subject, []).append(hw_item)
+        save_homework(hw)
+        
+        task_preview = hw_item['task'][:80] + "..." if len(hw_item['task']) > 80 else hw_item['task']
+        
+        await query.edit_message_text(
+            f"Homework added successfully!\n\n"
+            f"Subject: {subject}\n"
+            f"Task: {task_preview}\n"
+            f"Due: {context.user_data['hw_due']}"
+        )
+        logger.info(f"Added homework: {subject} - {hw_item['task'][:50]}...")
+    else:
+        await query.edit_message_text("Homework addition cancelled.")
+    
+    # Clear user data
+    context.user_data.clear()
+    return ConversationHandler.END
+
+async def hw_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Cancel homework addition"""
+    await update.message.reply_text("Homework addition cancelled.")
+    context.user_data.clear()
+    return ConversationHandler.END
+
+# Method 2: Quick one-liner
+
+async def hw_quick(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Quick homework add - just type everything naturally"""
+    if len(context.args) < 1:
+        await update.message.reply_text(
+            "⚡ Quick add format:\n"
+            "/hw_quick Subject | Task description | due date\n\n"
+            "Examples:\n"
+            "• /hw_quick Diffur | Solve problems 1-10 from chapter 3 | tomorrow\n"
+            "• /hw_quick Python | Create web scraper with error handling | 2025-10-15\n"
+            "• /hw_quick Physics | Lab report on electromagnetic induction | next week\n"
+            "• /hw_quick Database | Complete assignment on normalization | +5\n\n"
+            "Date formats:\n"
+            "• tomorrow, today, next week\n"
+            "• YYYY-MM-DD (e.g., 2025-10-15)\n"
+            "• +N (e.g., +3 for 3 days from now)"
+        )
+        return
+    
+    full_text = " ".join(context.args)
+    parts = [p.strip() for p in full_text.split('|')]
+    
+    if len(parts) < 3:
+        await update.message.reply_text(
+            "Format: Subject | Task | Due date\n"
+            "Use | to separate parts\n\n"
+            "Example:\n"
+            "/hw_quick Python | Create API client | tomorrow"
+        )
+        return
+    
+    subject = parts[0]
+    task = parts[1]
+    date_str = parts[2]
+    
+    # Parse flexible date formats
+    try:
+        due_date = parse_flexible_date(date_str)
+    except ValueError as e:
+        await update.message.reply_text(
+            f"Invalid date: {date_str}\n\n"
+            "Use: tomorrow, today, next week, +N (days), or YYYY-MM-DD"
+        )
+        return
+    
+    # Save homework
+    hw = load_homework()
+    hw_item = {
+        "task": task,
+        "due": due_date.isoformat(),
+        "added": datetime.date.today().isoformat()
+    }
+    
+    hw.setdefault(subject, []).append(hw_item)
+    save_homework(hw)
+    
+    task_preview = task[:100] + "..." if len(task) > 100 else task
+    
+    await update.message.reply_text(
+        f"Added homework:\n\n"
+        f"{subject}\n"
+        f"{task_preview}\n"
+        f"Due: {due_date.strftime('%Y-%m-%d (%A)')}"
+    )
+    logger.info(f"Quick added homework: {subject} - {task[:50]}...")
+
+# ====== HOMEWORK MANAGEMENT ======
 async def hw_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         hw = load_homework()
@@ -187,7 +496,7 @@ async def hw_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 except ValueError:
                     logger.error(f"Invalid date format in homework: {task}")
         
-        msg = f"📊 Homework Statistics:\n\n"
+        msg = f"Homework Statistics:\n\n"
         msg += f"Total pending: {total}\n"
         msg += f"Overdue: {overdue}\n"
         msg += f"Due today: {due_today}\n"
@@ -196,9 +505,9 @@ async def hw_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if overdue > 0:
             msg += f"\n⚠️ You have {overdue} overdue assignments"
         elif due_today > 0:
-            msg += f"\n⏰ You have {due_today} assignments due today"
+            msg += f"\nYou have {due_today} assignments due today"
         else:
-            msg += f"\n✅ You're on track"
+            msg += f"\nYou're on track"
         
         await update.message.reply_text(msg)
     except Exception as e:
@@ -259,7 +568,8 @@ async def hw_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         msg = "Due today:\n\n"
         for i, (subject, task) in enumerate(today_hw, 1):
-            msg += f"{i}. {subject}: {task['task']}\n"
+            task_preview = task['task'][:80] + "..." if len(task['task']) > 80 else task['task']
+            msg += f"{i}. {subject}: {task_preview}\n\n"
         
         await update.message.reply_text(msg)
     except Exception as e:
@@ -292,10 +602,11 @@ async def hw_overdue(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         overdue_hw.sort(key=lambda x: x[3])
         
-        msg = f"Overdue ({len(overdue_hw)}):\n\n"
+        msg = f"⚠️ Overdue ({len(overdue_hw)}):\n\n"
         
         for i, (subject, task, days_overdue, due_date) in enumerate(overdue_hw, 1):
-            msg += f"{i}. {subject}: {task['task']}\n"
+            task_preview = task['task'][:60] + "..." if len(task['task']) > 60 else task['task']
+            msg += f"{i}. {subject}: {task_preview}\n"
             msg += f"   {task['due']} ({days_overdue}d overdue)\n\n"
         
         await update.message.reply_text(msg)
@@ -303,13 +614,163 @@ async def hw_overdue(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logger.error(f"Error in hw_overdue: {e}")
         await update.message.reply_text("Error getting overdue homework")
 
+def escape_markdown(text: str) -> str:
+    special_chars = ['*', '_', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!']
+    for char in special_chars:
+        text = text.replace(char, f'\\{char}')
+    return text
+
+async def hw_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    try:
+        hw = load_homework()
+        if not hw:
+            await update.message.reply_text("No homework logged")
+            return
+        
+        msg = "Homework:\n\n"
+        
+        sorted_subjects = sorted(hw.keys())
+        for subject_idx, subject in enumerate(sorted_subjects, 1):
+            msg += f"{subject_idx}. *{escape_markdown(subject)}*:\n"
+            tasks = hw[subject]
+            
+            tasks_with_status = []
+            for i, task in enumerate(tasks, 1):
+                try:
+                    due_date = datetime.datetime.strptime(task["due"], "%Y-%m-%d").date()
+                    today = datetime.date.today()
+                    days_left = (due_date - today).days
+                    
+                    if days_left < 0:
+                        status = f"OVERDUE \\({abs(days_left)} days\\)"
+                    elif days_left == 0:
+                        status = "DUE TODAY"
+                    elif days_left == 1:
+                        status = "DUE TOMORROW"
+                    else:
+                        status = f"{days_left} days left"
+                    
+                    tasks_with_status.append((i, task, status, due_date))
+                except ValueError:
+                    tasks_with_status.append((i, task, "Invalid date", None))
+            
+            tasks_with_status.sort(key=lambda x: x[3] if x[3] else datetime.date.max)
+            
+            for i, task, status, _ in tasks_with_status:
+                task_text = task['task'][:100] + "..." if len(task['task']) > 100 else task['task']
+                safe_task = escape_markdown(task_text)
+                safe_due = escape_markdown(task['due'])
+                msg += f"   {i}\\. {safe_task}\n      Due {safe_due} \\({status}\\)\n"
+            msg += "\n"
+        
+        try:
+            await update.message.reply_text(msg, parse_mode='MarkdownV2')
+        except Exception as markdown_error:
+            logger.warning(f"MarkdownV2 failed, trying plain text: {markdown_error}")
+            # Fallback to plain text
+            plain_msg = "📚 Homework:\n\n"
+            for subject_idx, subject in enumerate(sorted_subjects, 1):
+                plain_msg += f"{subject_idx}. {subject}:\n"
+                tasks = hw[subject]
+                
+                tasks_with_status = []
+                for i, task in enumerate(tasks, 1):
+                    try:
+                        due_date = datetime.datetime.strptime(task["due"], "%Y-%m-%d").date()
+                        today = datetime.date.today()
+                        days_left = (due_date - today).days
+                        
+                        if days_left < 0:
+                            status = f"OVERDUE ({abs(days_left)} days)"
+                        elif days_left == 0:
+                            status = "DUE TODAY"
+                        elif days_left == 1:
+                            status = "DUE TOMORROW"
+                        else:
+                            status = f"{days_left} days left"
+                        
+                        tasks_with_status.append((i, task, status, due_date))
+                    except ValueError:
+                        tasks_with_status.append((i, task, "Invalid date", None))
+                
+                tasks_with_status.sort(key=lambda x: x[3] if x[3] else datetime.date.max)
+                
+                for i, task, status, _ in tasks_with_status:
+                    task_text = task['task'][:100] + "..." if len(task['task']) > 100 else task['task']
+                    plain_msg += f"   {i}. {task_text}\n      Due {task['due']} ({status})\n"
+                plain_msg += "\n"
+            
+            await update.message.reply_text(plain_msg)
+            
+    except Exception as e:
+        logger.error(f"Error in hw_list: {e}")
+        await update.message.reply_text("Error listing homework")
+
+async def hw_remove(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    try:
+        if len(context.args) < 2:
+            await update.message.reply_text(
+                "Usage: /hw_remove Subject homework_index\n"
+                "       /hw_remove subject_index homework_index\n"
+                "Examples:\n"
+                "• /hw_remove Diffur 1\n"
+                "• /hw_remove 2 1"
+            )
+            return
+
+        subject_input = context.args[0]
+        try:
+            homework_index = int(context.args[1]) - 1
+        except ValueError:
+            await update.message.reply_text("❌ Homework index must be a number")
+            return
+
+        hw = load_homework()
+        if not hw:
+            await update.message.reply_text("No homework found")
+            return
+
+        subject = None
+        try:
+            subject_idx = int(subject_input) - 1
+            sorted_subjects = sorted(hw.keys())
+            if 0 <= subject_idx < len(sorted_subjects):
+                subject = sorted_subjects[subject_idx]
+            else:
+                await update.message.reply_text(f"❌ Invalid subject index. Available subjects: 1-{len(sorted_subjects)}")
+                return
+        except ValueError:
+            if subject_input in hw:
+                subject = subject_input
+            else:
+                await update.message.reply_text(f"❌ Subject '{subject_input}' not found")
+                return
+        
+        if homework_index < 0 or homework_index >= len(hw[subject]):
+            await update.message.reply_text(f"❌ Invalid homework index. {subject} has {len(hw[subject])} homework items")
+            return
+
+        removed_task = hw[subject].pop(homework_index)
+        
+        if not hw[subject]:
+            del hw[subject]
+        
+        save_homework(hw)
+        task_preview = removed_task['task'][:60] + "..." if len(removed_task['task']) > 60 else removed_task['task']
+        await update.message.reply_text(f"✅ Removed: {subject} - {task_preview}")
+        logger.info(f"Removed homework: {subject} - {removed_task['task'][:50]}...")
+    except Exception as e:
+        logger.error(f"Error in hw_remove: {e}")
+        await update.message.reply_text("Error removing homework")
+
+# ====== SCHEDULE COMMANDS ======
 async def schedule_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         day = datetime.date.today().strftime("%A")
         lessons = TIMETABLE.get(day, [])
         
         if not lessons:
-            await update.message.reply_text("No classes today")
+            await update.message.reply_text("📅 No classes today")
             return
         
         msg = f"{day}:\n\n"
@@ -323,7 +784,7 @@ async def schedule_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 msg += f"{lesson_count}. {lesson['subject']} - {lesson['room']}{type_info}{week_info}\n"
         
         if lesson_count == 0:
-            await update.message.reply_text("No classes this week")
+            await update.message.reply_text("📅 No classes this week")
         else:
             await update.message.reply_text(msg)
     except Exception as e:
@@ -345,7 +806,7 @@ async def next_class(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     remaining_lessons.append(lesson)
             
             if remaining_lessons:
-                msg = f"Remaining today ({current_day}):\n\n"
+                msg = f"📍 Remaining today ({current_day}):\n\n"
                 for idx, lesson in enumerate(remaining_lessons, 1):
                     type_info = f" ({lesson['type']})" if lesson.get('type') else ""
                     week_info = f" [{lesson['week']}]" if lesson.get('week') else ""
@@ -370,7 +831,7 @@ async def next_class(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     upcoming_lessons.append(lesson)
             
             if upcoming_lessons:
-                msg = f"Next ({next_day} {next_date.strftime('%m-%d')}):\n\n"
+                msg = f"📍 Next ({next_day} {next_date.strftime('%m-%d')}):\n\n"
                 for idx, lesson in enumerate(upcoming_lessons, 1):
                     type_info = f" ({lesson['type']})" if lesson.get('type') else ""
                     week_info = f" [{lesson['week']}]" if lesson.get('week') else ""
@@ -378,11 +839,12 @@ async def next_class(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await update.message.reply_text(msg)
                 return
         
-        await update.message.reply_text("No upcoming classes")
+        await update.message.reply_text("📅 No upcoming classes")
     except Exception as e:
         logger.error(f"Error in next_class: {e}")
         await update.message.reply_text("Error getting next class")
 
+# ====== FUN COMMANDS ======
 async def kys(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         messages = [
@@ -419,186 +881,6 @@ async def motivate(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(message)
     except Exception as e:
         logger.error(f"Error in motivate: {e}")
-
-async def hw_add(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    try:
-        if len(context.args) < 3:
-            await update.message.reply_text(
-                "Usage: /hw_add Subject Task YYYY-MM-DD\n"
-                "Example: /hw_add Diffur kaxvel:) 2025-01-15"
-            )
-            return
-        
-        subject = context.args[0]
-        due_date = context.args[-1]
-        task = " ".join(context.args[1:-1])
-        
-        try:
-            datetime.datetime.strptime(due_date, '%Y-%m-%d')
-        except ValueError:
-            await update.message.reply_text("Invalid date format. Use YYYY-MM-DD")
-            return
-        
-        hw = load_homework()
-        hw_item = {
-            "task": task,
-            "due": due_date,
-            "added": datetime.date.today().isoformat()
-        }
-        
-        hw.setdefault(subject, []).append(hw_item)
-        save_homework(hw)
-        
-        await update.message.reply_text(f"Added: {subject} - {task} (due {due_date})")
-        logger.info(f"User added HW: {subject} - {task} ({due_date})")
-    except Exception as e:
-        logger.error(f"Error in hw_add: {e}")
-        await update.message.reply_text("Error adding homework")
-
-def escape_markdown(text: str) -> str:
-    special_chars = ['*', '_', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!']
-    for char in special_chars:
-        text = text.replace(char, f'\\{char}')
-    return text
-
-async def hw_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    try:
-        hw = load_homework()
-        if not hw:
-            await update.message.reply_text("No homework logged")
-            return
-        
-        # Don't auto-remove, just display all homework
-        msg = "Homework:\n\n"
-        
-        sorted_subjects = sorted(hw.keys())
-        for subject_idx, subject in enumerate(sorted_subjects, 1):
-            msg += f"{subject_idx}. *{escape_markdown(subject)}*:\n"
-            tasks = hw[subject]
-            
-            tasks_with_status = []
-            for i, task in enumerate(tasks, 1):
-                try:
-                    due_date = datetime.datetime.strptime(task["due"], "%Y-%m-%d").date()
-                    today = datetime.date.today()
-                    days_left = (due_date - today).days
-                    
-                    if days_left < 0:
-                        status = f"OVERDUE \\({abs(days_left)} days\\)"
-                    elif days_left == 0:
-                        status = "DUE TODAY"
-                    elif days_left == 1:
-                        status = "DUE TOMORROW"
-                    else:
-                        status = f"{days_left} days left"
-                    
-                    tasks_with_status.append((i, task, status, due_date))
-                except ValueError:
-                    tasks_with_status.append((i, task, "Invalid date", None))
-            
-            # Sort by due date
-            tasks_with_status.sort(key=lambda x: x[3] if x[3] else datetime.date.max)
-            
-            for i, task, status, _ in tasks_with_status:
-                safe_task = escape_markdown(task['task'])
-                safe_due = escape_markdown(task['due'])
-                msg += f"   {i}\\. {safe_task} \\- Due {safe_due} \\({status}\\)\n"
-            msg += "\n"
-        
-        try:
-            await update.message.reply_text(msg, parse_mode='MarkdownV2')
-        except Exception as markdown_error:
-            logger.warning(f"MarkdownV2 failed, trying plain text: {markdown_error}")
-            # Fallback to plain text
-            plain_msg = "Homework:\n\n"
-            for subject_idx, subject in enumerate(sorted_subjects, 1):
-                plain_msg += f"{subject_idx}. {subject}:\n"
-                tasks = hw[subject]
-                
-                tasks_with_status = []
-                for i, task in enumerate(tasks, 1):
-                    try:
-                        due_date = datetime.datetime.strptime(task["due"], "%Y-%m-%d").date()
-                        today = datetime.date.today()
-                        days_left = (due_date - today).days
-                        
-                        if days_left < 0:
-                            status = f"OVERDUE ({abs(days_left)} days)"
-                        elif days_left == 0:
-                            status = "DUE TODAY"
-                        elif days_left == 1:
-                            status = "DUE TOMORROW"
-                        else:
-                            status = f"{days_left} days left"
-                        
-                        tasks_with_status.append((i, task, status, due_date))
-                    except ValueError:
-                        tasks_with_status.append((i, task, "Invalid date", None))
-                
-                tasks_with_status.sort(key=lambda x: x[3] if x[3] else datetime.date.max)
-                
-                for i, task, status, _ in tasks_with_status:
-                    plain_msg += f"   {i}. {task['task']} - Due {task['due']} ({status})\n"
-                plain_msg += "\n"
-            
-            await update.message.reply_text(plain_msg)
-            
-    except Exception as e:
-        logger.error(f"Error in hw_list: {e}")
-        await update.message.reply_text("Error listing homework")
-
-async def hw_remove(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    try:
-        if len(context.args) < 2:
-            await update.message.reply_text(
-                "Usage: /hw_remove Subject homework_index\n"
-                "       /hw_remove subject_index homework_index\n"
-                "Examples: /hw_remove Diffur 1\n"
-            )
-            return
-
-        subject_input = context.args[0]
-        try:
-            homework_index = int(context.args[1]) - 1
-        except ValueError:
-            await update.message.reply_text("Homework index must be a number")
-            return
-
-        hw = load_homework()
-        if not hw:
-            await update.message.reply_text("No homework found")
-            return
-
-        subject = None
-        try:
-            subject_idx = int(subject_input) - 1
-            sorted_subjects = sorted(hw.keys())
-            if 0 <= subject_idx < len(sorted_subjects):
-                subject = sorted_subjects[subject_idx]
-            else:
-                await update.message.reply_text(f"Invalid subject index. Available subjects: 1-{len(sorted_subjects)}")
-                return
-        except ValueError:
-            if subject_input in hw:
-                subject = subject_input
-            else:
-                await update.message.reply_text(f"Subject '{subject_input}' not found")
-                return
-        
-        if homework_index < 0 or homework_index >= len(hw[subject]):
-            await update.message.reply_text(f"Invalid homework index. {subject} has {len(hw[subject])} homework items")
-            return
-
-        removed_task = hw[subject].pop(homework_index)
-        
-        if not hw[subject]:
-            del hw[subject]
-        
-        save_homework(hw)
-        await update.message.reply_text(f"Removed: {subject} - {removed_task['task']}")
-    except Exception as e:
-        logger.error(f"Error in hw_remove: {e}")
-        await update.message.reply_text("Error removing homework")
 
 # ====== REMINDERS ======
 last_reminder_date = None
@@ -698,7 +980,8 @@ async def send_evening_homework_reminder():
             else:
                 status = "📌 DUE TODAY"
             
-            msg += f"• {subject}: {task['task']}\n  {status} - {task['due']}\n\n"
+            task_preview = task['task'][:60] + "..." if len(task['task']) > 60 else task['task']
+            msg += f"• {subject}: {task_preview}\n  {status} - {task['due']}\n\n"
         
         await app.bot.send_message(chat_id=YOUR_GROUP_CHAT_ID, text=msg)
         
@@ -735,7 +1018,8 @@ async def post_init(application: Application):
     """Set up bot commands after initialization"""
     commands = [
         BotCommand("start", "Start the bot and see available commands"),
-        BotCommand("hw_add", "Add homework: /hw_add Subject Task YYYY-MM-DD"),
+        BotCommand("hw_add", "Add homework (step-by-step)"),
+        BotCommand("hw_quick", "Quick add: Subject | Task | Date"),
         BotCommand("hw_list", "List all homework"),
         BotCommand("hw_remove", "Remove homework: /hw_remove Subject index"),
         BotCommand("hw_today", "Show today's homework"),
@@ -771,9 +1055,26 @@ async def main():
         # Build application
         app = Application.builder().token(TOKEN).post_init(post_init).build()
         
-        # Register command handlers
+        # Register conversation handler for hw_add
+        conv_handler = ConversationHandler(
+            entry_points=[CommandHandler("hw_add", hw_add_start)],
+            states={
+                SUBJECT: [MessageHandler(filters.TEXT & ~filters.COMMAND, hw_subject)],
+                TASK: [MessageHandler(filters.TEXT & ~filters.COMMAND, hw_task)],
+                DUE_DATE: [
+                    CallbackQueryHandler(hw_date_button, pattern="^date_"),
+                    MessageHandler(filters.TEXT & ~filters.COMMAND, hw_date_custom)
+                ],
+                CONFIRM: [CallbackQueryHandler(hw_confirm, pattern="^confirm_")]
+            },
+            fallbacks=[CommandHandler("cancel", hw_cancel)]
+        )
+        
+        app.add_handler(conv_handler)
+        
+        # Register other command handlers
         app.add_handler(CommandHandler("start", start))
-        app.add_handler(CommandHandler("hw_add", hw_add))
+        app.add_handler(CommandHandler("hw_quick", hw_quick))
         app.add_handler(CommandHandler("hw_list", hw_list))
         app.add_handler(CommandHandler("hw_remove", hw_remove))
         app.add_handler(CommandHandler("hw_today", hw_today))
