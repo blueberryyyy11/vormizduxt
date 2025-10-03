@@ -219,3 +219,1274 @@
 2025-10-02 00:27:17,519 [INFO] Application.stop() complete
 2025-10-02 00:27:17,521 [INFO] Bot stopped successfully
 2025-10-02 00:27:17,522 [INFO] Lock released, exiting
+2025-10-04 00:16:55,738 [INFO] Starting bot...
+2025-10-04 00:16:55,757 [INFO] Handlers registered
+2025-10-04 00:16:56,078 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getMe "HTTP/1.1 200 OK"
+2025-10-04 00:16:56,080 [INFO] Scheduler started
+2025-10-04 00:16:56,081 [INFO] Application started
+2025-10-04 00:16:56,081 [INFO] Bot started - polling
+2025-10-04 00:16:56,082 [INFO] Reminder task created
+2025-10-04 00:16:56,084 [INFO] Reminder scheduler started
+2025-10-04 00:16:56,153 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/deleteWebhook "HTTP/1.1 200 OK"
+2025-10-04 00:16:56,155 [INFO] Bot running. Press Ctrl+C to stop.
+2025-10-04 00:17:06,362 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:17:16,512 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:17:26,686 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:17:32,120 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:17:32,348 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:17:36,664 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:17:36,800 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:17:42,076 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:17:42,531 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:17:46,097 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:17:46,207 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:17:49,371 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:17:49,517 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:17:53,590 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:17:53,779 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:18:02,047 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:18:02,300 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:18:02,303 [INFO] Removed: db - select, basic joins, basic aggregate functions, so...
+2025-10-04 00:18:12,121 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:18:15,800 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:18:16,104 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:18:16,106 [INFO] Removed: python - https://colab.research.google.com/drive/1UjZTuBxCM...
+2025-10-04 00:18:18,547 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:18:18,663 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:18:28,619 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:18:36,747 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:18:36,748 [INFO] hw_add_start called by user 5725090631
+2025-10-04 00:18:37,028 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:18:46,838 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:18:56,919 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:19:00,272 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:19:10,119 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:19:10,450 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:19:13,885 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:19:23,956 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:19:34,023 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:19:44,092 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:19:54,159 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:20:04,227 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:20:14,918 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:20:25,043 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:20:35,906 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:20:45,979 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:20:56,914 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:21:06,987 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:21:17,415 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:21:27,486 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:21:37,560 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:21:48,161 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:21:58,589 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:22:08,669 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:22:18,760 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:22:29,187 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:22:39,265 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:22:49,379 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:22:53,608 [ERROR] Another instance is running
+2025-10-04 00:22:59,371 [INFO] Received signal 2, shutting down...
+2025-10-04 00:22:59,932 [INFO] Shutting down...
+2025-10-04 00:22:59,932 [INFO] Reminder scheduler cancelled
+2025-10-04 00:22:59,934 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:23:00,032 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:23:00,033 [INFO] Application is stopping. This might take a moment.
+2025-10-04 00:23:00,033 [INFO] Scheduler has been shut down
+2025-10-04 00:23:00,044 [INFO] Application.stop() complete
+2025-10-04 00:23:00,045 [INFO] App shutdown complete
+2025-10-04 00:23:00,045 [INFO] Lock released
+2025-10-04 00:23:08,040 [INFO] Starting bot...
+2025-10-04 00:23:08,057 [INFO] Handlers registered
+2025-10-04 00:23:08,357 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getMe "HTTP/1.1 200 OK"
+2025-10-04 00:23:08,360 [INFO] Scheduler started
+2025-10-04 00:23:08,361 [INFO] Application started
+2025-10-04 00:23:08,361 [INFO] Bot started - polling
+2025-10-04 00:23:08,361 [INFO] Reminder task created
+2025-10-04 00:23:08,363 [INFO] Reminder scheduler started
+2025-10-04 00:23:08,436 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/deleteWebhook "HTTP/1.1 200 OK"
+2025-10-04 00:23:08,436 [INFO] Bot running. Press Ctrl+C to stop.
+2025-10-04 00:23:18,262 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:23:18,572 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:23:20,280 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:23:20,282 [INFO] hw_add_start called by user 5725090631
+2025-10-04 00:23:20,383 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:23:23,660 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:23:23,663 [INFO] hw_subject: User entered subject 'db'
+2025-10-04 00:23:24,916 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:23:33,738 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:23:37,608 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:23:37,609 [INFO] hw_task: Added part 1
+2025-10-04 00:23:38,179 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:23:41,472 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:23:47,106 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:23:47,404 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:23:50,627 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:24:00,767 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:24:10,837 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:24:20,906 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:24:30,976 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:24:41,049 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:24:44,912 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:24:44,912 [INFO] hw_task: Added part 2
+2025-10-04 00:24:45,253 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:24:52,485 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:24:52,486 [INFO] hw_task: Added part 3
+2025-10-04 00:24:52,719 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:24:57,737 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:25:07,813 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:25:11,991 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:25:11,993 [INFO] hw_task: Added part 4
+2025-10-04 00:25:12,254 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:25:16,983 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:25:19,917 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:25:19,920 [INFO] hw_task: Added part 5
+2025-10-04 00:25:20,173 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:25:23,410 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:25:33,917 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:25:44,007 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:25:54,075 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:26:04,143 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:26:14,265 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:26:24,354 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:26:31,221 [INFO] Received signal 2, shutting down...
+2025-10-04 00:26:34,428 [INFO] Shutting down...
+2025-10-04 00:26:34,429 [INFO] Reminder scheduler cancelled
+2025-10-04 00:26:34,430 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:26:34,502 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:26:34,503 [INFO] Application is stopping. This might take a moment.
+2025-10-04 00:26:34,504 [INFO] Scheduler has been shut down
+2025-10-04 00:26:34,515 [INFO] Application.stop() complete
+2025-10-04 00:26:34,517 [INFO] App shutdown complete
+2025-10-04 00:26:34,518 [INFO] Lock released
+2025-10-04 00:26:39,638 [INFO] Starting bot...
+2025-10-04 00:26:39,656 [INFO] Handlers registered
+2025-10-04 00:26:39,985 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getMe "HTTP/1.1 200 OK"
+2025-10-04 00:26:39,989 [INFO] Scheduler started
+2025-10-04 00:26:39,990 [INFO] Application started
+2025-10-04 00:26:39,990 [INFO] Bot started - polling
+2025-10-04 00:26:39,990 [INFO] Reminder task created
+2025-10-04 00:26:39,993 [INFO] Reminder scheduler started
+2025-10-04 00:26:40,059 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/deleteWebhook "HTTP/1.1 200 OK"
+2025-10-04 00:26:40,060 [INFO] Bot running. Press Ctrl+C to stop.
+2025-10-04 00:26:50,033 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:26:50,255 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:26:53,704 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:26:53,706 [INFO] hw_add_start called by user 5725090631
+2025-10-04 00:26:53,798 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:26:56,551 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:26:56,552 [INFO] hw_subject: User entered subject 'db'
+2025-10-04 00:26:56,682 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:27:06,646 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:27:16,718 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:27:26,790 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:27:36,904 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:27:40,889 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:27:50,962 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:27:59,025 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:27:59,027 [INFO] hw_task: Received message: 'https://notifications.googleapis.com/email/redirect?t=AFG8qyVmJRvK2acPV_pGbvFbI-pxo58MNzDOb777obEQJSyle55bmtGiv7fX-2ThctSKpRrifMbQbS_2SkTYTWASL9heB0uJVXu2m95ps7piX_lnH--lQskBHF6BYdcYqkKdrECZ2mPCsTOsL1qZRDIQYMPVz67yUZL__eVazlvJjoYqUJC2vpb2Fr051WT6cutrbhJdv3CxCGTUg5GCgg-s-C45i5A6jcX1mx6vhFvjUB4oUNW834fvMh9_VOYqfE_2YG9W8GAmo0FEZ1RjQUWoHKE1sOaEWsc1P7jCqJKvmU3EN0z76jm71e1Itywb0cS2JclSdg&r=eJzLKCkpKLbS10_JTy7WS8_PT89J1UvOzwXxS3NT80r0U_QNXT1TTC0j002jQircjTKjjDwKHMtCnYvLIywMq3SLggK8EiNyIrKdo9zSkvVTUzJL7EuLC2yLMxKLMvPSNQGCuSIA&s=ALHZ2r6SlQyeDsX90cUbDMY4wwqs'
+2025-10-04 00:27:59,027 [INFO] hw_task: Added part 1, current state: TASK
+2025-10-04 00:27:59,261 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:28:01,995 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:28:12,063 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:28:22,544 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:28:32,618 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:28:42,690 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:28:52,762 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:29:02,834 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:29:12,903 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:29:22,978 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:29:33,047 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:29:33,648 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:29:33,918 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:29:43,920 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:29:53,988 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:30:04,086 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:30:14,158 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:30:24,327 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:30:34,921 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:30:44,992 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:30:55,060 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:31:05,127 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:31:15,194 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:31:25,272 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:31:35,341 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:31:45,409 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:31:55,478 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:32:05,545 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:32:15,612 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:32:25,682 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:32:27,381 [INFO] Received signal 2, shutting down...
+2025-10-04 00:32:35,401 [INFO] Received signal 2, shutting down...
+2025-10-04 00:32:35,932 [INFO] Shutting down...
+2025-10-04 00:32:35,932 [INFO] Reminder scheduler cancelled
+2025-10-04 00:32:35,933 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:32:35,998 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:32:35,998 [INFO] Application is stopping. This might take a moment.
+2025-10-04 00:32:35,999 [INFO] Scheduler has been shut down
+2025-10-04 00:32:36,009 [INFO] Application.stop() complete
+2025-10-04 00:32:36,011 [INFO] App shutdown complete
+2025-10-04 00:32:36,011 [INFO] Lock released
+2025-10-04 00:32:39,249 [INFO] Starting bot...
+2025-10-04 00:32:39,267 [ERROR] Error in main: name 'hw_add' is not defined
+Traceback (most recent call last):
+  File "/home/blueberry/vorminsduxt/app.py", line 1057, in main
+    app.add_handler(CommandHandler("hw_add", hw_add))
+                                             ^^^^^^
+NameError: name 'hw_add' is not defined
+2025-10-04 00:32:39,268 [INFO] Shutting down...
+2025-10-04 00:32:39,268 [ERROR] Error stopping: This Application is not running!
+2025-10-04 00:32:39,268 [INFO] Lock released
+2025-10-04 00:32:49,484 [INFO] Starting bot...
+2025-10-04 00:32:49,503 [ERROR] Error in main: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+Traceback (most recent call last):
+  File "/home/blueberry/vorminsduxt/app.py", line 1053, in main
+    app = Application.builder().token(TOKEN).post_init(post_init).build()
+  File "/home/blueberry/vorminsduxt/.venv/lib64/python3.13/site-packages/telegram/ext/_applicationbuilder.py", line 312, in build
+    updater = Updater(bot=bot, update_queue=update_queue)
+  File "/home/blueberry/vorminsduxt/.venv/lib64/python3.13/site-packages/telegram/ext/_updater.py", line 128, in __init__
+    self.__polling_cleanup_cb: Optional[Callable[[], Coroutine[Any, Any, None]]] = None
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-10-04 00:32:49,507 [INFO] Shutting down...
+2025-10-04 00:32:49,507 [INFO] Lock released
+2025-10-04 00:34:42,006 [INFO] Starting bot...
+2025-10-04 00:34:42,023 [ERROR] Error in main: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+Traceback (most recent call last):
+  File "/home/blueberry/vorminsduxt/app.py", line 1053, in main
+    app = Application.builder().token(TOKEN).post_init(post_init).build()
+  File "/home/blueberry/vorminsduxt/.venv/lib64/python3.13/site-packages/telegram/ext/_applicationbuilder.py", line 312, in build
+    updater = Updater(bot=bot, update_queue=update_queue)
+  File "/home/blueberry/vorminsduxt/.venv/lib64/python3.13/site-packages/telegram/ext/_updater.py", line 128, in __init__
+    self.__polling_cleanup_cb: Optional[Callable[[], Coroutine[Any, Any, None]]] = None
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-10-04 00:34:42,026 [INFO] Shutting down...
+2025-10-04 00:34:42,027 [INFO] Lock released
+2025-10-04 00:36:38,248 [INFO] Starting bot...
+2025-10-04 00:36:38,265 [ERROR] Error in main: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+Traceback (most recent call last):
+  File "/home/blueberry/vorminsduxt/app.py", line 1053, in main
+    app = Application.builder().token(TOKEN).post_init(post_init).build()
+  File "/home/blueberry/vorminsduxt/.venv/lib64/python3.13/site-packages/telegram/ext/_applicationbuilder.py", line 312, in build
+    updater = Updater(bot=bot, update_queue=update_queue)
+  File "/home/blueberry/vorminsduxt/.venv/lib64/python3.13/site-packages/telegram/ext/_updater.py", line 128, in __init__
+    self.__polling_cleanup_cb: Optional[Callable[[], Coroutine[Any, Any, None]]] = None
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-10-04 00:36:38,268 [INFO] Shutting down...
+2025-10-04 00:36:38,270 [INFO] Lock released
+2025-10-04 00:36:57,252 [INFO] Starting bot...
+2025-10-04 00:36:57,274 [ERROR] Error in main: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+Traceback (most recent call last):
+  File "/home/blueberry/vorminsduxt/app.py", line 1053, in main
+    app = Application.builder().token(TOKEN).post_init(post_init).build()
+  File "/home/blueberry/vorminsduxt/.venv/lib64/python3.13/site-packages/telegram/ext/_applicationbuilder.py", line 312, in build
+    updater = Updater(bot=bot, update_queue=update_queue)
+  File "/home/blueberry/vorminsduxt/.venv/lib64/python3.13/site-packages/telegram/ext/_updater.py", line 128, in __init__
+    self.__polling_cleanup_cb: Optional[Callable[[], Coroutine[Any, Any, None]]] = None
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-10-04 00:36:57,276 [INFO] Shutting down...
+2025-10-04 00:36:57,277 [INFO] Lock released
+2025-10-04 00:46:41,584 [INFO] Starting bot...
+2025-10-04 00:46:41,610 [ERROR] Error in main: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+Traceback (most recent call last):
+  File "/home/blueberry/vorminsduxt/app.py", line 904, in main
+    app = Application.builder().token(TOKEN).post_init(post_init).build()
+  File "/home/blueberry/vorminsduxt/.venv/lib64/python3.13/site-packages/telegram/ext/_applicationbuilder.py", line 312, in build
+    updater = Updater(bot=bot, update_queue=update_queue)
+  File "/home/blueberry/vorminsduxt/.venv/lib64/python3.13/site-packages/telegram/ext/_updater.py", line 128, in __init__
+    self.__polling_cleanup_cb: Optional[Callable[[], Coroutine[Any, Any, None]]] = None
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-10-04 00:46:41,614 [INFO] Shutting down...
+2025-10-04 00:46:41,614 [INFO] Lock released
+2025-10-04 00:47:11,664 [INFO] Starting bot...
+2025-10-04 00:47:11,684 [INFO] Handlers registered
+2025-10-04 00:47:11,930 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getMe "HTTP/1.1 200 OK"
+2025-10-04 00:47:11,935 [INFO] Scheduler started
+2025-10-04 00:47:11,936 [INFO] Application started
+2025-10-04 00:47:11,936 [INFO] Bot started - polling
+2025-10-04 00:47:11,936 [INFO] Reminder task created
+2025-10-04 00:47:11,940 [INFO] Reminder scheduler started
+2025-10-04 00:47:12,010 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/deleteWebhook "HTTP/1.1 200 OK"
+2025-10-04 00:47:12,011 [INFO] Bot running. Press Ctrl+C to stop.
+2025-10-04 00:47:22,222 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:47:25,462 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:47:25,742 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:47:35,559 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:47:35,626 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:47:35,628 [INFO] hw_add_start called by user 5725090631
+2025-10-04 00:47:35,848 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:47:39,065 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:47:39,066 [INFO] hw_subject: User entered subject 'db'
+2025-10-04 00:47:39,156 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:47:45,767 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:47:45,768 [INFO] hw_task: Received message: 'https://notifications.googleapis.com/email/redirect?t=AFG8qyVmJRvK2acPV_pGbvFbI-pxo58MNzDOb777obEQJSyle55bmtGiv7fX-2ThctSKpRrifMbQbS_2SkTYTWASL9heB0uJVXu2m95ps7piX_lnH--lQskBHF6BYdcYqkKdrECZ2mPCsTOsL1qZRDIQYMPVz67yUZL__eVazlvJjoYqUJC2vpb2Fr051WT6cutrbhJdv3CxCGTUg5GCgg-s-C45i5A6jcX1mx6vhFvjUB4oUNW834fvMh9_VOYqfE_2YG9W8GAmo0FEZ1RjQUWoHKE1sOaEWsc1P7jCqJKvmU3EN0z76jm71e1Itywb0cS2JclSdg&r=eJzLKCkpKLbS10_JTy7WS8_PT89J1UvOzwXxS3NT80r0U_QNXT1TTC0j002jQircjTKjjDwKHMtCnYvLIywMq3SLggK8EiNyIrKdo9zSkvVTUzJL7EuLC2yLMxKLMvPSNQGCuSIA&s=ALHZ2r6SlQyeDsX90cUbDMY4wwqs'
+2025-10-04 00:47:45,768 [INFO] hw_task: Added part 1, current state: TASK
+2025-10-04 00:47:45,988 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:47:48,639 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:47:52,471 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:47:55,992 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:47:55,993 [INFO] hw_task: Received message: 'done'
+2025-10-04 00:47:55,993 [INFO] hw_task: Added part 2, current state: TASK
+2025-10-04 00:47:56,215 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:47:58,726 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:48:01,040 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:48:02,138 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:48:12,210 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:48:22,282 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:48:32,351 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:48:42,428 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:48:43,670 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:47,843 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:48,644 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:48,945 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:49,153 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:49,275 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:49,496 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:49,689 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:49,878 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:50,074 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:50,227 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:50,400 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:50,499 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:50,691 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:50,833 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:51,334 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:51,364 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:51,394 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:51,424 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:51,453 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:51,484 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:51,511 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:51,540 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:51,574 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:51,605 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:51,634 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:51,667 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:51,696 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:51,725 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:51,767 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:51,797 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:51,824 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:52,215 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:52,448 [INFO] Received signal 2, shutting down...
+2025-10-04 00:48:52,501 [INFO] Shutting down...
+2025-10-04 00:48:52,502 [INFO] Reminder scheduler cancelled
+2025-10-04 00:48:52,504 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:48:52,576 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:48:52,578 [INFO] Application is stopping. This might take a moment.
+2025-10-04 00:48:52,579 [INFO] Scheduler has been shut down
+2025-10-04 00:48:52,590 [INFO] Application.stop() complete
+2025-10-04 00:48:52,592 [INFO] App shutdown complete
+2025-10-04 00:48:52,593 [INFO] Lock released
+2025-10-04 00:49:21,101 [INFO] Starting bot...
+2025-10-04 00:49:21,121 [INFO] Handlers registered
+2025-10-04 00:49:21,341 [INFO] HTTP Request: POST https://api.telegram.org/botyour_token_here/getMe "HTTP/1.1 404 Not Found"
+2025-10-04 00:49:21,345 [ERROR] Error in main: The token `your_token_here` was rejected by the server.
+Traceback (most recent call last):
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 854, in initialize
+    await self.get_me()
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 1999, in get_me
+    return await super().get_me(
+           ^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 985, in get_me
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 372, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.InvalidToken: Not Found
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/blueberry/vorminsduxt/app.py", line 925, in main
+    await app.initialize()
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_application.py", line 489, in initialize
+    await self.bot.initialize()
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 318, in initialize
+    await super().initialize()
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 856, in initialize
+    raise InvalidToken(f"The token `{self._token}` was rejected by the server.") from exc
+telegram.error.InvalidToken: The token `your_token_here` was rejected by the server.
+2025-10-04 00:49:21,378 [INFO] Shutting down...
+2025-10-04 00:49:21,379 [ERROR] Error stopping: This Application is not running!
+2025-10-04 00:49:21,379 [INFO] Lock released
+2025-10-04 00:54:41,394 [INFO] Starting bot...
+2025-10-04 00:54:41,427 [INFO] Handlers registered
+2025-10-04 00:54:41,720 [INFO] HTTP Request: POST https://api.telegram.org/botyour_token_here/getMe "HTTP/1.1 404 Not Found"
+2025-10-04 00:54:41,724 [ERROR] Error in main: The token `your_token_here` was rejected by the server.
+Traceback (most recent call last):
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 854, in initialize
+    await self.get_me()
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 1999, in get_me
+    return await super().get_me(
+           ^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 985, in get_me
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 372, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.InvalidToken: Not Found
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/blueberry/vorminsduxt/app.py", line 943, in main
+    await app.initialize()
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_application.py", line 489, in initialize
+    await self.bot.initialize()
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 318, in initialize
+    await super().initialize()
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 856, in initialize
+    raise InvalidToken(f"The token `{self._token}` was rejected by the server.") from exc
+telegram.error.InvalidToken: The token `your_token_here` was rejected by the server.
+2025-10-04 00:54:41,744 [INFO] Shutting down...
+2025-10-04 00:54:41,751 [ERROR] Error stopping: This Application is not running!
+2025-10-04 00:54:41,752 [INFO] Lock released
+2025-10-04 00:56:09,733 [INFO] Starting bot...
+2025-10-04 00:56:09,761 [INFO] Handlers registered
+2025-10-04 00:56:09,981 [INFO] HTTP Request: POST https://api.telegram.org/botyour_token_here/getMe "HTTP/1.1 404 Not Found"
+2025-10-04 00:56:09,985 [ERROR] Error in main: The token `your_token_here` was rejected by the server.
+Traceback (most recent call last):
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 854, in initialize
+    await self.get_me()
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 1999, in get_me
+    return await super().get_me(
+           ^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 985, in get_me
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 372, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.InvalidToken: Not Found
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/blueberry/vorminsduxt/app.py", line 943, in main
+    await app.initialize()
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_application.py", line 489, in initialize
+    await self.bot.initialize()
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 318, in initialize
+    await super().initialize()
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 856, in initialize
+    raise InvalidToken(f"The token `{self._token}` was rejected by the server.") from exc
+telegram.error.InvalidToken: The token `your_token_here` was rejected by the server.
+2025-10-04 00:56:10,000 [INFO] Shutting down...
+2025-10-04 00:56:10,001 [ERROR] Error stopping: This Application is not running!
+2025-10-04 00:56:10,001 [INFO] Lock released
+2025-10-04 00:57:22,275 [INFO] Starting bot...
+2025-10-04 00:57:22,305 [INFO] Handlers registered
+2025-10-04 00:57:25,965 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getMe "HTTP/1.1 200 OK"
+2025-10-04 00:57:25,969 [INFO] Scheduler started
+2025-10-04 00:57:25,970 [INFO] Application started
+2025-10-04 00:57:25,970 [INFO] Bot started - polling
+2025-10-04 00:57:25,970 [INFO] Reminder task created
+2025-10-04 00:57:25,973 [INFO] Reminder scheduler started
+2025-10-04 00:57:26,040 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/deleteWebhook "HTTP/1.1 200 OK"
+2025-10-04 00:57:26,042 [INFO] Bot running. Press Ctrl+C to stop.
+2025-10-04 00:57:36,144 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:57:36,373 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:57:36,466 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 00:57:46,318 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:57:56,466 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:58:06,602 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:58:16,743 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:58:26,878 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:58:37,004 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:58:47,154 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:58:57,228 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:59:07,296 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:59:17,368 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:59:27,437 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:59:37,511 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:59:47,580 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 00:59:57,684 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:00:07,940 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:00:18,011 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:00:28,086 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:00:38,156 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:00:48,293 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:00:58,942 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:01:09,009 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:01:19,082 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:01:29,151 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:01:39,219 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:01:49,324 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:01:59,565 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:02:08,123 [INFO] Received signal 2, shutting down...
+2025-10-04 01:02:09,702 [INFO] Shutting down...
+2025-10-04 01:02:09,703 [INFO] Reminder scheduler cancelled
+2025-10-04 01:02:09,705 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:02:09,775 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:02:09,776 [INFO] Application is stopping. This might take a moment.
+2025-10-04 01:02:09,777 [INFO] Scheduler has been shut down
+2025-10-04 01:02:09,788 [INFO] Application.stop() complete
+2025-10-04 01:02:09,790 [INFO] App shutdown complete
+2025-10-04 01:02:09,791 [INFO] Lock released
+2025-10-04 01:02:30,963 [INFO] Starting bot...
+2025-10-04 01:02:31,003 [INFO] Handlers registered
+2025-10-04 01:02:31,262 [INFO] HTTP Request: POST https://api.telegram.org/botyour_token/getMe "HTTP/1.1 404 Not Found"
+2025-10-04 01:02:31,265 [ERROR] Error in main: The token `your_token` was rejected by the server.
+Traceback (most recent call last):
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 854, in initialize
+    await self.get_me()
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 1999, in get_me
+    return await super().get_me(
+           ^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 985, in get_me
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 372, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.InvalidToken: Not Found
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/blueberry/vorminsduxt/app.py", line 946, in main
+    await app.initialize()
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_application.py", line 489, in initialize
+    await self.bot.initialize()
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 318, in initialize
+    await super().initialize()
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 856, in initialize
+    raise InvalidToken(f"The token `{self._token}` was rejected by the server.") from exc
+telegram.error.InvalidToken: The token `your_token` was rejected by the server.
+2025-10-04 01:02:31,300 [INFO] Shutting down...
+2025-10-04 01:02:31,301 [ERROR] Error stopping: This Application is not running!
+2025-10-04 01:02:31,302 [INFO] Lock released
+2025-10-04 01:04:55,116 [INFO] Starting bot...
+2025-10-04 01:04:55,153 [INFO] Handlers registered
+2025-10-04 01:04:55,391 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getMe "HTTP/1.1 200 OK"
+2025-10-04 01:04:55,395 [INFO] Scheduler started
+2025-10-04 01:04:55,395 [INFO] Application started
+2025-10-04 01:04:55,396 [INFO] Bot started - polling
+2025-10-04 01:04:55,396 [INFO] Reminder task created
+2025-10-04 01:04:55,398 [INFO] Reminder scheduler started
+2025-10-04 01:04:55,464 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/deleteWebhook "HTTP/1.1 200 OK"
+2025-10-04 01:04:55,466 [INFO] Bot running. Press Ctrl+C to stop.
+2025-10-04 01:05:05,776 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:05:07,508 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:05:07,743 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:05:10,869 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:05:10,873 [INFO] hw_add_start called by user 5725090631
+2025-10-04 01:05:11,003 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:05:13,544 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:05:13,548 [INFO] hw_subject: User entered subject 'db'
+2025-10-04 01:05:13,655 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:05:23,445 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:05:23,447 [INFO] hw_task: Received message: 'https://notifications.googleapis.com/email/redirect?t=AFG8qyVmJRvK2acPV_pGbvFbI-pxo58MNzDOb777obEQJSyle55bmtGiv7fX-2ThctSKpRrifMbQbS_2SkTYTWASL9heB0uJVXu2m95ps7piX_lnH--lQskBHF6BYdcYqkKdrECZ2mPCsTOsL1qZRDIQYMPVz67yUZL__eVazlvJjoYqUJC2vpb2Fr051WT6cutrbhJdv3CxCGTUg5GCgg-s-C45i5A6jcX1mx6vhFvjUB4oUNW834fvMh9_VOYqfE_2YG9W8GAmo0FEZ1RjQUWoHKE1sOaEWsc1P7jCqJKvmU3EN0z76jm71e1Itywb0cS2JclSdg&r=eJzLKCkpKLbS10_JTy7WS8_PT89J1UvOzwXxS3NT80r0U_QNXT1TTC0j002jQircjTKjjDwKHMtCnYvLIywMq3SLggK8EiNyIrKdo9zSkvVTUzJL7EuLC2yLMxKLMvPSNQGCuSIA&s=ALHZ2r6SlQyeDsX90cUbDMY4wwqs'
+2025-10-04 01:05:23,448 [INFO] hw_task: Added part 1, current state: TASK
+2025-10-04 01:05:23,700 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:05:25,074 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:05:25,077 [INFO] hw_task: Received message: '/done'
+2025-10-04 01:05:25,077 [INFO] hw_task: /done received, task_parts count: 1
+2025-10-04 01:05:25,077 [INFO] hw_task: Task saved, length: 554 chars
+2025-10-04 01:05:25,078 [INFO] hw_task: Attempting to send date prompt...
+2025-10-04 01:05:25,176 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:05:25,178 [INFO] hw_task: Date prompt sent successfully, returning DUE_DATE state
+2025-10-04 01:05:34,838 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:05:34,842 [INFO] hw_date_input: User entered 'next week'
+2025-10-04 01:05:35,180 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:05:35,183 [INFO] hw_date_input: Waiting for confirmation
+2025-10-04 01:05:41,535 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:05:41,539 [INFO] hw_confirm_text: User responded 'no'
+2025-10-04 01:05:41,847 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:05:46,771 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:05:46,774 [INFO] hw_add_start called by user 5725090631
+2025-10-04 01:05:47,054 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:05:48,819 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:05:48,823 [INFO] hw_subject: User entered subject 'db'
+2025-10-04 01:05:48,920 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:05:55,125 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:05:55,128 [INFO] hw_task: Received message: 'https://notifications.googleapis.com/email/redirect?t=AFG8qyVmJRvK2acPV_pGbvFbI-pxo58MNzDOb777obEQJSyle55bmtGiv7fX-2ThctSKpRrifMbQbS_2SkTYTWASL9heB0uJVXu2m95ps7piX_lnH--lQskBHF6BYdcYqkKdrECZ2mPCsTOsL1qZRDIQYMPVz67yUZL__eVazlvJjoYqUJC2vpb2Fr051WT6cutrbhJdv3CxCGTUg5GCgg-s-C45i5A6jcX1mx6vhFvjUB4oUNW834fvMh9_VOYqfE_2YG9W8GAmo0FEZ1RjQUWoHKE1sOaEWsc1P7jCqJKvmU3EN0z76jm71e1Itywb0cS2JclSdg&r=eJzLKCkpKLbS10_JTy7WS8_PT89J1UvOzwXxS3NT80r0U_QNXT1TTC0j002jQircjTKjjDwKHMtCnYvLIywMq3SLggK8EiNyIrKdo9zSkvVTUzJL7EuLC2yLMxKLMvPSNQGCuSIA&s=ALHZ2r6SlQyeDsX90cUbDMY4wwqs'
+2025-10-04 01:05:55,129 [INFO] hw_task: Added part 1, current state: TASK
+2025-10-04 01:05:55,360 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:05:58,898 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:05:58,900 [INFO] hw_task: Received message: '/done'
+2025-10-04 01:05:58,900 [INFO] hw_task: /done received, task_parts count: 1
+2025-10-04 01:05:58,900 [INFO] hw_task: Task saved, length: 554 chars
+2025-10-04 01:05:58,901 [INFO] hw_task: Attempting to send date prompt...
+2025-10-04 01:05:58,990 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:05:58,993 [INFO] hw_task: Date prompt sent successfully, returning DUE_DATE state
+2025-10-04 01:06:09,017 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:06:10,603 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:06:10,605 [INFO] hw_date_input: User entered '2025-10-10'
+2025-10-04 01:06:10,838 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:06:10,839 [INFO] hw_date_input: Waiting for confirmation
+2025-10-04 01:06:14,747 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:06:14,750 [INFO] hw_confirm_text: User responded 'yes'
+2025-10-04 01:06:14,874 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:06:14,877 [INFO] Added homework: db - https://notifications.googleapis.com/email/redirec...
+2025-10-04 01:06:19,949 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:06:20,193 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:06:30,108 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:06:40,245 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:06:50,384 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:06:55,972 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:07:03,191 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:07:03,195 [INFO] hw_add_start called by user 5725090631
+2025-10-04 01:07:03,448 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:07:05,912 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:07:05,916 [INFO] hw_subject: User entered subject 'diffur'
+2025-10-04 01:07:06,099 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:07:16,085 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:07:21,377 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:07:21,380 [INFO] hw_task: Received message: '186-210 filippov'
+2025-10-04 01:07:21,380 [INFO] hw_task: Added part 1, current state: TASK
+2025-10-04 01:07:21,621 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:07:27,097 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:07:27,100 [INFO] hw_task: Received message: '/done'
+2025-10-04 01:07:27,100 [INFO] hw_task: /done received, task_parts count: 1
+2025-10-04 01:07:27,100 [INFO] hw_task: Task saved, length: 16 chars
+2025-10-04 01:07:27,101 [INFO] hw_task: Attempting to send date prompt...
+2025-10-04 01:07:27,345 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:07:27,348 [INFO] hw_task: Date prompt sent successfully, returning DUE_DATE state
+2025-10-04 01:07:37,282 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:07:46,293 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:07:46,295 [INFO] hw_date_input: User entered '2025-10-10'
+2025-10-04 01:07:46,624 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:07:46,626 [INFO] hw_date_input: Waiting for confirmation
+2025-10-04 01:07:49,747 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:07:49,751 [INFO] hw_confirm_text: User responded 'yes'
+2025-10-04 01:07:49,849 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:07:49,853 [INFO] Added homework: diffur - 186-210 filippov...
+2025-10-04 01:07:59,826 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:08:01,109 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:08:04,550 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:08:04,552 [INFO] hw_add_start called by user 5725090631
+2025-10-04 01:08:04,806 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:08:13,236 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:08:13,240 [INFO] hw_subject: User entered subject 'diffur'
+2025-10-04 01:08:13,528 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:08:23,311 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:08:24,771 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:08:24,775 [INFO] hw_task: Received message: '234-241 (Darbu), 242-251 (Rikatti) Karapetyanic'
+2025-10-04 01:08:24,775 [INFO] hw_task: Added part 1, current state: TASK
+2025-10-04 01:08:25,069 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:08:26,893 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:08:26,897 [INFO] hw_task: Received message: '/done'
+2025-10-04 01:08:26,897 [INFO] hw_task: /done received, task_parts count: 1
+2025-10-04 01:08:26,897 [INFO] hw_task: Task saved, length: 47 chars
+2025-10-04 01:08:26,897 [INFO] hw_task: Attempting to send date prompt...
+2025-10-04 01:08:27,153 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:08:27,156 [INFO] hw_task: Date prompt sent successfully, returning DUE_DATE state
+2025-10-04 01:08:34,985 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:08:34,988 [INFO] hw_date_input: User entered '2025-10-10'
+2025-10-04 01:08:35,273 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:08:35,275 [INFO] hw_date_input: Waiting for confirmation
+2025-10-04 01:08:37,308 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:08:37,311 [INFO] hw_confirm_text: User responded 'yes'
+2025-10-04 01:08:37,403 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:08:37,406 [INFO] Added homework: diffur - 234-241 (Darbu), 242-251 (Rikatti) Karapetyanic...
+2025-10-04 01:08:47,393 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:08:49,234 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:08:49,237 [INFO] hw_add_start called by user 5725090631
+2025-10-04 01:08:49,550 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:08:53,836 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:08:53,839 [INFO] hw_subject: User entered subject 'python'
+2025-10-04 01:08:53,982 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:08:57,486 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:08:57,488 [INFO] hw_task: Received message: 'https://colab.research.google.com/drive/1UjZTuBxCMFNDHxoZnyM0lNTiFmdgNGav#scrollTo=3PBIH78f_uNR'
+2025-10-04 01:08:57,489 [INFO] hw_task: Added part 1, current state: TASK
+2025-10-04 01:08:57,625 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:09:07,601 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:09:16,117 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:09:16,121 [INFO] hw_task: Received message: '2025-10-10'
+2025-10-04 01:09:16,121 [INFO] hw_task: Added part 2, current state: TASK
+2025-10-04 01:09:16,357 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:09:21,035 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:09:21,038 [INFO] hw_task: Received message: '/done'
+2025-10-04 01:09:21,038 [INFO] hw_task: /done received, task_parts count: 2
+2025-10-04 01:09:21,039 [INFO] hw_task: Task saved, length: 106 chars
+2025-10-04 01:09:21,039 [INFO] hw_task: Attempting to send date prompt...
+2025-10-04 01:09:21,136 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:09:21,139 [INFO] hw_task: Date prompt sent successfully, returning DUE_DATE state
+2025-10-04 01:09:31,152 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:09:41,290 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:09:42,315 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:09:42,318 [INFO] hw_date_input: User entered 'next week'
+2025-10-04 01:09:42,573 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:09:42,576 [INFO] hw_date_input: Waiting for confirmation
+2025-10-04 01:09:43,833 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:09:43,836 [INFO] hw_confirm_text: User responded 'no'
+2025-10-04 01:09:43,926 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:09:46,530 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:09:50,902 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:09:50,905 [INFO] hw_add_start called by user 5725090631
+2025-10-04 01:09:51,250 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:09:55,011 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:09:55,015 [INFO] hw_subject: User entered subject 'python'
+2025-10-04 01:09:55,105 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:09:56,616 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:09:56,619 [INFO] hw_task: Received message: 'https://colab.research.google.com/drive/1UjZTuBxCMFNDHxoZnyM0lNTiFmdgNGav#scrollTo=3PBIH78f_uNR'
+2025-10-04 01:09:56,619 [INFO] hw_task: Added part 1, current state: TASK
+2025-10-04 01:09:56,712 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:09:58,258 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:09:58,262 [INFO] hw_task: Received message: '/done'
+2025-10-04 01:09:58,262 [INFO] hw_task: /done received, task_parts count: 1
+2025-10-04 01:09:58,263 [INFO] hw_task: Task saved, length: 95 chars
+2025-10-04 01:09:58,263 [INFO] hw_task: Attempting to send date prompt...
+2025-10-04 01:09:58,362 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:09:58,365 [INFO] hw_task: Date prompt sent successfully, returning DUE_DATE state
+2025-10-04 01:10:02,983 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:10:02,986 [INFO] hw_date_input: User entered '2025-10-10'
+2025-10-04 01:10:03,088 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:10:03,091 [INFO] hw_date_input: Waiting for confirmation
+2025-10-04 01:10:05,458 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:10:05,462 [INFO] hw_confirm_text: User responded 'yes'
+2025-10-04 01:10:05,575 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:10:05,577 [INFO] Added homework: python - https://colab.research.google.com/drive/1UjZTuBxCM...
+2025-10-04 01:10:15,544 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:10:25,630 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:10:29,855 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:10:33,367 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:10:33,371 [INFO] hw_add_start called by user 5725090631
+2025-10-04 01:10:33,626 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:10:35,898 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:10:35,900 [INFO] hw_subject: User entered subject 'kombalg'
+2025-10-04 01:10:35,992 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:10:45,869 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:10:45,872 [INFO] hw_task: Received message: '1ДЗ-3 2, 4'
+2025-10-04 01:10:45,873 [INFO] hw_task: Added part 1, current state: TASK
+2025-10-04 01:10:46,124 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:10:47,599 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:10:47,602 [INFO] hw_task: Received message: '/done'
+2025-10-04 01:10:47,603 [INFO] hw_task: /done received, task_parts count: 1
+2025-10-04 01:10:47,603 [INFO] hw_task: Task saved, length: 10 chars
+2025-10-04 01:10:47,603 [INFO] hw_task: Attempting to send date prompt...
+2025-10-04 01:10:47,778 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:10:47,780 [INFO] hw_task: Date prompt sent successfully, returning DUE_DATE state
+2025-10-04 01:10:57,680 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:11:07,819 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:11:17,957 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:11:19,109 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:11:19,112 [INFO] hw_date_input: User entered '2025-10-15'
+2025-10-04 01:11:19,407 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:11:19,409 [INFO] hw_date_input: Waiting for confirmation
+2025-10-04 01:11:23,998 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:11:24,002 [INFO] hw_confirm_text: User responded 'yes'
+2025-10-04 01:11:24,092 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:11:24,095 [INFO] Added homework: kombalg - 1ДЗ-3 2, 4...
+2025-10-04 01:11:34,136 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:11:44,273 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:11:54,411 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:12:02,335 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:12:02,584 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:12:07,979 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:12:17,610 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:12:17,847 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:12:17,849 [INFO] Removed: kombalg - 1ДЗ-3 2, 4...
+2025-10-04 01:12:27,807 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:12:28,109 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:12:28,112 [INFO] hw_add_start called by user 5725090631
+2025-10-04 01:12:28,365 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:12:38,239 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:12:48,376 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:12:52,027 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:12:52,030 [INFO] hw_subject: User entered subject 'ДЗ-3 2, 4'
+2025-10-04 01:12:52,266 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:12:56,830 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:12:56,834 [INFO] hw_task: Received message: '/done'
+2025-10-04 01:12:56,835 [INFO] hw_task: /done received, task_parts count: 0
+2025-10-04 01:12:56,835 [WARNING] hw_task: No task parts found
+2025-10-04 01:12:56,930 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:13:07,013 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:13:08,513 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:13:08,743 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:13:11,946 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:13:11,949 [INFO] hw_add_start called by user 5725090631
+2025-10-04 01:13:12,162 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:13:13,828 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:13:13,830 [INFO] hw_subject: User entered subject 'kombalg'
+2025-10-04 01:13:13,958 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:13:16,538 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:13:16,540 [INFO] hw_task: Received message: 'ДЗ-3 2, 4'
+2025-10-04 01:13:16,541 [INFO] hw_task: Added part 1, current state: TASK
+2025-10-04 01:13:16,639 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:13:18,380 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:13:18,383 [INFO] hw_task: Received message: '/done'
+2025-10-04 01:13:18,383 [INFO] hw_task: /done received, task_parts count: 1
+2025-10-04 01:13:18,383 [INFO] hw_task: Task saved, length: 9 chars
+2025-10-04 01:13:18,384 [INFO] hw_task: Attempting to send date prompt...
+2025-10-04 01:13:18,477 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:13:18,479 [INFO] hw_task: Date prompt sent successfully, returning DUE_DATE state
+2025-10-04 01:13:26,149 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:13:26,153 [INFO] hw_date_input: User entered '2025-10-08'
+2025-10-04 01:13:26,403 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:13:26,405 [INFO] hw_date_input: Waiting for confirmation
+2025-10-04 01:13:28,770 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:13:28,773 [INFO] hw_confirm_text: User responded 'yes'
+2025-10-04 01:13:28,877 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:13:28,880 [INFO] Added homework: kombalg - ДЗ-3 2, 4...
+2025-10-04 01:13:38,961 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:13:44,063 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:13:44,067 [INFO] hw_add_start called by user 5725090631
+2025-10-04 01:13:44,297 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:13:45,695 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:13:45,698 [INFO] hw_subject: User entered subject 'lisp'
+2025-10-04 01:13:45,795 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:13:55,858 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:14:05,172 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:14:05,176 [INFO] hw_task: Received message: '1. «Нелинейные списки»'
+2025-10-04 01:14:05,177 [INFO] hw_task: Added part 1, current state: TASK
+2025-10-04 01:14:05,487 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:14:12,231 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:14:12,234 [INFO] hw_task: Received message: '4 «Множества»'
+2025-10-04 01:14:12,234 [INFO] hw_task: Added part 2, current state: TASK
+2025-10-04 01:14:12,465 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:14:21,966 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:14:21,969 [INFO] hw_task: Received message: '6 En erku nkarneric: 4 xndric 1/4, 5 xndric 1/2. Member, equalp functions. Equal(=) and equalp differences.'
+2025-10-04 01:14:21,970 [INFO] hw_task: Added part 3, current state: TASK
+2025-10-04 01:14:22,333 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:14:23,993 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:14:23,996 [INFO] hw_task: Received message: '/done'
+2025-10-04 01:14:23,997 [INFO] hw_task: /done received, task_parts count: 3
+2025-10-04 01:14:23,997 [INFO] hw_task: Task saved, length: 144 chars
+2025-10-04 01:14:23,997 [INFO] hw_task: Attempting to send date prompt...
+2025-10-04 01:14:24,109 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:14:24,113 [INFO] hw_task: Date prompt sent successfully, returning DUE_DATE state
+2025-10-04 01:14:34,073 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:14:41,170 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:14:41,172 [INFO] hw_date_input: User entered '2025-10-04'
+2025-10-04 01:14:41,477 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:14:41,480 [INFO] hw_date_input: Waiting for confirmation
+2025-10-04 01:14:43,782 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:14:43,786 [INFO] hw_confirm_text: User responded 'yes'
+2025-10-04 01:14:43,881 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:14:43,883 [INFO] Added homework: lisp - 1. «Нелинейные списки»
+4 «Множества»
+6 En erku nka...
+2025-10-04 01:14:46,185 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:14:46,284 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:14:56,275 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:15:03,357 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:15:03,752 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/sendMessage "HTTP/1.1 200 OK"
+2025-10-04 01:37:11,095 [ERROR] Exception happened while polling for updates.
+Traceback (most recent call last):
+  File "/usr/lib/python3.13/site-packages/httpx/_transports/default.py", line 72, in map_httpcore_exceptions
+    yield
+  File "/usr/lib/python3.13/site-packages/httpx/_transports/default.py", line 377, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/usr/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        pool_request.request
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/lib/python3.13/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/usr/lib/python3.13/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "/usr/lib/python3.13/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+         ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/usr/lib64/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/lib/python3.13/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno -3] Temporary failure in name resolution
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/request/_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/usr/lib/python3.13/site-packages/httpx/_client.py", line 1585, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/site-packages/httpx/_client.py", line 1674, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "/usr/lib/python3.13/site-packages/httpx/_client.py", line 1702, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/usr/lib/python3.13/site-packages/httpx/_client.py", line 1739, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/site-packages/httpx/_client.py", line 1776, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/site-packages/httpx/_transports/default.py", line 376, in handle_async_request
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib64/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/lib/python3.13/site-packages/httpx/_transports/default.py", line 89, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno -3] Temporary failure in name resolution
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 122, in network_retry_loop
+    await do_action()
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in do_action
+    action_cb_task.result()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 676, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 4780, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 372, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/request/_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno -3] Temporary failure in name resolution
+2025-10-04 01:37:12,160 [ERROR] Exception happened while polling for updates.
+Traceback (most recent call last):
+  File "/usr/lib/python3.13/site-packages/httpx/_transports/default.py", line 72, in map_httpcore_exceptions
+    yield
+  File "/usr/lib/python3.13/site-packages/httpx/_transports/default.py", line 377, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/usr/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        pool_request.request
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/lib/python3.13/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/usr/lib/python3.13/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "/usr/lib/python3.13/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+         ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/usr/lib64/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/lib/python3.13/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno -3] Temporary failure in name resolution
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/request/_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/usr/lib/python3.13/site-packages/httpx/_client.py", line 1585, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/site-packages/httpx/_client.py", line 1674, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "/usr/lib/python3.13/site-packages/httpx/_client.py", line 1702, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/usr/lib/python3.13/site-packages/httpx/_client.py", line 1739, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/site-packages/httpx/_client.py", line 1776, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/site-packages/httpx/_transports/default.py", line 376, in handle_async_request
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib64/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/lib/python3.13/site-packages/httpx/_transports/default.py", line 89, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno -3] Temporary failure in name resolution
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 122, in network_retry_loop
+    await do_action()
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in do_action
+    action_cb_task.result()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 676, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 4780, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 703, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 372, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/_bot.py", line 732, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/blueberry/.local/lib/python3.13/site-packages/telegram/request/_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno -3] Temporary failure in name resolution
+2025-10-04 01:37:24,252 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:37:34,327 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:37:44,448 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:37:54,588 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:38:04,725 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:38:14,863 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:38:25,104 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:38:35,242 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:38:45,380 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:38:55,519 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:39:05,657 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:39:15,794 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:39:25,931 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:39:36,069 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:39:46,207 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:39:56,344 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:40:06,483 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:40:09,330 [INFO] Received signal 2, shutting down...
+2025-10-04 01:40:16,618 [INFO] Shutting down...
+2025-10-04 01:40:16,619 [INFO] Reminder scheduler cancelled
+2025-10-04 01:40:16,621 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:40:16,694 [INFO] HTTP Request: POST https://api.telegram.org/bot8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk/getUpdates "HTTP/1.1 200 OK"
+2025-10-04 01:40:16,696 [INFO] Application is stopping. This might take a moment.
+2025-10-04 01:40:16,697 [INFO] Scheduler has been shut down
+2025-10-04 01:40:16,708 [INFO] Application.stop() complete
+2025-10-04 01:40:16,710 [INFO] App shutdown complete
+2025-10-04 01:40:16,711 [INFO] Lock released

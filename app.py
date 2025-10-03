@@ -21,16 +21,19 @@ import sys
 from typing import Dict
 
 # ====== CONFIG ======
-TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "8466519086:AAFAMxZobhCtNldHC3CwF4EuU9gnwoMnT5A")
+# CRITICAL: Environment variables are REQUIRED - no fallback values for security
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk")
 YOUR_GROUP_CHAT_ID = os.getenv("GROUP_CHAT_ID", "-1003007240886")
+
+# Validate required environment variables
+if not TOKEN:
+    raise ValueError("TELEGRAM_BOT_TOKEN environment variable is required. Set it with: export TELEGRAM_BOT_TOKEN='your_token_here'")
+if not YOUR_GROUP_CHAT_ID:
+    raise ValueError("GROUP_CHAT_ID environment variable is required. Set it with: export GROUP_CHAT_ID='your_chat_id_here'")
+
 HOMEWORK_FILE = "homework.json"
 LOCK_FILE = "bot.lock"
 ARMENIA_TZ = pytz.timezone('Asia/Yerevan')
-
-if not TOKEN:
-    raise ValueError("TELEGRAM_BOT_TOKEN environment variable is required")
-if not YOUR_GROUP_CHAT_ID:
-    raise ValueError("GROUP_CHAT_ID environment variable is required")
 
 # ====== LOGGING ======
 logging.basicConfig(
@@ -175,8 +178,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Start command handler"""
     welcome_msg = (
         "Study Bot\n\n"
-        "New Homework System:\n"
-        "/hw_add - Step-by-step (best for complex tasks)\n"
+        "Homework System:\n"
+        "/hw_add - Add homework (step-by-step)\n"
         "/hw_quick - Quick one-liner\n\n"
         "Homework Management:\n"
         "/hw_list - List all homework\n"
@@ -199,6 +202,7 @@ async def hw_add_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Start conversational homework addition"""
     try:
         logger.info(f"hw_add_start called by user {update.effective_user.id}")
+        context.user_data.clear()
         await update.message.reply_text(
             "Add homework!\n\n"
             "What subject is this for?\n"
@@ -233,107 +237,67 @@ async def hw_subject(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def hw_task(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Collect task description (can be multiple messages)"""
     try:
-        if update.message.text == '/done':
-            if not context.user_data.get('hw_task_parts'):
+        message_text = update.message.text.strip()
+        logger.info(f"hw_task: Received message: '{message_text}'")
+        
+        if message_text == '/done':
+            task_parts = context.user_data.get('hw_task_parts', [])
+            logger.info(f"hw_task: /done received, task_parts count: {len(task_parts)}")
+            
+            if not task_parts:
+                logger.warning("hw_task: No task parts found")
                 await update.message.reply_text("You haven't entered any task description yet!")
                 return TASK
             
-            full_task = "\n".join(context.user_data['hw_task_parts'])
+            full_task = "\n".join(task_parts)
             context.user_data['hw_task'] = full_task
-            logger.info(f"hw_task: Task completed ({len(full_task)} chars)")
+            logger.info(f"hw_task: Task saved, length: {len(full_task)} chars")
+            
+            preview = full_task[:100] + "..." if len(full_task) > 100 else full_task
             
             try:
-                keyboard = [
-                    [
-                        InlineKeyboardButton("Today", callback_data="date_today"),
-                        InlineKeyboardButton("Tomorrow", callback_data="date_tomorrow"),
-                    ],
-                    [
-                        InlineKeyboardButton("In 3 days", callback_data="date_3days"),
-                        InlineKeyboardButton("In 1 week", callback_data="date_week"),
-                    ],
-                    [
-                        InlineKeyboardButton("Custom date", callback_data="date_custom")
-                    ]
-                ]
-                reply_markup = InlineKeyboardMarkup(keyboard)
-                
-                preview = full_task[:100] + "..." if len(full_task) > 100 else full_task
-                await update.message.reply_text(
+                response_msg = (
                     f"Task saved!\n\n"
                     f"Preview: {preview}\n\n"
-                    f"When is this due?",
-                    reply_markup=reply_markup
+                    f"When is this due?\n\n"
+                    f"You can type:\n"
+                    f"• today\n"
+                    f"• tomorrow\n"
+                    f"• next week\n"
+                    f"• +3 (for 3 days from now)\n"
+                    f"• 2025-10-15 (specific date)"
                 )
-                logger.info("hw_task: Date selection buttons sent successfully")
+                logger.info("hw_task: Attempting to send date prompt...")
+                await update.message.reply_text(response_msg)
+                logger.info("hw_task: Date prompt sent successfully, returning DUE_DATE state")
                 return DUE_DATE
-            except Exception as keyboard_error:
-                logger.error(f"Error sending keyboard in hw_task: {keyboard_error}", exc_info=True)
-                # Fallback: ask for text input instead
-                await update.message.reply_text(
-                    f"Task saved!\n\n"
-                    f"Preview: {preview}\n\n"
-                    f"When is this due?\n"
-                    f"Enter: tomorrow, today, next week, +N (days), or YYYY-MM-DD"
-                )
+            except Exception as send_error:
+                logger.error(f"hw_task: Failed to send message: {send_error}", exc_info=True)
+                await update.message.reply_text("When is this due? (e.g., tomorrow, today, 2025-10-15)")
                 return DUE_DATE
         else:
-            context.user_data['hw_task_parts'].append(update.message.text)
+            if 'hw_task_parts' not in context.user_data:
+                context.user_data['hw_task_parts'] = []
+            
+            context.user_data['hw_task_parts'].append(message_text)
             part_count = len(context.user_data['hw_task_parts'])
-            logger.info(f"hw_task: Added part {part_count}")
+            logger.info(f"hw_task: Added part {part_count}, current state: TASK")
+            
             await update.message.reply_text(
                 f"Part {part_count} added.\n"
                 f"Continue writing or send /done when finished."
             )
             return TASK
     except Exception as e:
-        logger.error(f"Error in hw_task: {e}", exc_info=True)
+        logger.error(f"ERROR in hw_task: {e}", exc_info=True)
         await update.message.reply_text("An error occurred. Please try again with /hw_add")
         context.user_data.clear()
         return ConversationHandler.END
 
-async def hw_date_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Handle quick date selection"""
-    query = update.callback_query
-    await query.answer()
-    
+async def hw_date_input(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle date input as text"""
     try:
-        logger.info(f"hw_date_button: Selected {query.data}")
-        today = datetime.date.today()
-        
-        if query.data == "date_today":
-            due_date = today
-        elif query.data == "date_tomorrow":
-            due_date = today + datetime.timedelta(days=1)
-        elif query.data == "date_3days":
-            due_date = today + datetime.timedelta(days=3)
-        elif query.data == "date_week":
-            due_date = today + datetime.timedelta(days=7)
-        elif query.data == "date_custom":
-            await query.edit_message_text(
-                "Enter the due date in YYYY-MM-DD format\n"
-                "Example: 2025-10-15\n\n"
-                "Or use: tomorrow, today, next week, +N (days)"
-            )
-            return DUE_DATE
-        else:
-            return DUE_DATE
-        
-        context.user_data['hw_due'] = due_date.isoformat()
-        logger.info(f"hw_date_button: Due date set to {due_date}")
-        
-        await show_homework_confirmation(query, context)
-        return CONFIRM
-    except Exception as e:
-        logger.error(f"Error in hw_date_button: {e}", exc_info=True)
-        await query.edit_message_text("An error occurred. Please try again with /hw_add")
-        context.user_data.clear()
-        return ConversationHandler.END
-
-async def hw_date_custom(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Handle custom date input"""
-    try:
-        logger.info(f"hw_date_custom: User entered '{update.message.text}'")
+        logger.info(f"hw_date_input: User entered '{update.message.text}'")
         due_date = parse_flexible_date(update.message.text)
         context.user_data['hw_due'] = due_date.isoformat()
         
@@ -341,71 +305,40 @@ async def hw_date_custom(update: Update, context: ContextTypes.DEFAULT_TYPE):
         task = context.user_data['hw_task']
         preview = task[:200] + "..." if len(task) > 200 else task
         
-        keyboard = [
-            [
-                InlineKeyboardButton("Confirm", callback_data="confirm_yes"),
-                InlineKeyboardButton("Cancel", callback_data="confirm_no"),
-            ]
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        
         await update.message.reply_text(
             f"Review your homework:\n\n"
             f"Subject: {subject}\n"
             f"Due: {due_date.strftime('%Y-%m-%d (%A)')}\n\n"
             f"Task:\n{preview}\n\n"
-            f"Is this correct?",
-            reply_markup=reply_markup
+            f"Reply 'yes' to confirm or 'no' to cancel"
         )
+        logger.info("hw_date_input: Waiting for confirmation")
         return CONFIRM
     except ValueError as e:
-        logger.warning(f"hw_date_custom: Invalid date - {e}")
+        logger.warning(f"hw_date_input: Invalid date - {e}")
         await update.message.reply_text(
-            f"Invalid date format: {str(e)}\n\n"
-            "Use: YYYY-MM-DD, tomorrow, today, next week, or +N"
+            f"Invalid date format.\n\n"
+            "Please try again. You can type:\n"
+            "• today\n"
+            "• tomorrow\n"
+            "• next week\n"
+            "• +3 (for 3 days from now)\n"
+            "• 2025-10-15 (specific date)"
         )
         return DUE_DATE
     except Exception as e:
-        logger.error(f"Error in hw_date_custom: {e}", exc_info=True)
+        logger.error(f"Error in hw_date_input: {e}", exc_info=True)
         await update.message.reply_text("An error occurred. Please try again with /hw_add")
         context.user_data.clear()
         return ConversationHandler.END
 
-async def show_homework_confirmation(query, context: ContextTypes.DEFAULT_TYPE):
-    """Show homework confirmation message"""
+async def hw_confirm_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle text confirmation (yes/no)"""
     try:
-        subject = context.user_data['hw_subject']
-        task = context.user_data['hw_task']
-        due_date = datetime.datetime.strptime(context.user_data['hw_due'], '%Y-%m-%d').date()
-        preview = task[:200] + "..." if len(task) > 200 else task
+        response = update.message.text.lower().strip()
+        logger.info(f"hw_confirm_text: User responded '{response}'")
         
-        keyboard = [
-            [
-                InlineKeyboardButton("Confirm", callback_data="confirm_yes"),
-                InlineKeyboardButton("Cancel", callback_data="confirm_no"),
-            ]
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        
-        await query.edit_message_text(
-            f"Review your homework:\n\n"
-            f"Subject: {subject}\n"
-            f"Due: {due_date.strftime('%Y-%m-%d (%A)')}\n\n"
-            f"Task:\n{preview}\n\n"
-            f"Is this correct?",
-            reply_markup=reply_markup
-        )
-    except Exception as e:
-        logger.error(f"Error in show_homework_confirmation: {e}", exc_info=True)
-        raise
-
-async def hw_confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Save homework after confirmation"""
-    query = update.callback_query
-    await query.answer()
-    
-    try:
-        if query.data == "confirm_yes":
+        if response in ['yes', 'y', 'confirm', 'ok']:
             hw = load_homework()
             subject = context.user_data['hw_subject']
             
@@ -420,7 +353,7 @@ async def hw_confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
             
             task_preview = hw_item['task'][:80] + "..." if len(hw_item['task']) > 80 else hw_item['task']
             
-            await query.edit_message_text(
+            await update.message.reply_text(
                 f"Homework added!\n\n"
                 f"Subject: {subject}\n"
                 f"Task: {task_preview}\n"
@@ -428,13 +361,13 @@ async def hw_confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
             logger.info(f"Added homework: {subject} - {hw_item['task'][:50]}...")
         else:
-            await query.edit_message_text("Homework addition cancelled.")
+            await update.message.reply_text("Homework addition cancelled.")
         
         context.user_data.clear()
         return ConversationHandler.END
     except Exception as e:
-        logger.error(f"Error in hw_confirm: {e}", exc_info=True)
-        await query.edit_message_text("An error occurred. Please try again.")
+        logger.error(f"Error in hw_confirm_text: {e}", exc_info=True)
+        await update.message.reply_text("An error occurred. Please try again.")
         context.user_data.clear()
         return ConversationHandler.END
 
@@ -974,21 +907,25 @@ async def main():
     try:
         app = Application.builder().token(TOKEN).post_init(post_init).build()
         
-        conv_handler = ConversationHandler(
+        # Conversation handler for /hw_add - FIXED: Added /done handler
+        hw_conv_handler = ConversationHandler(
             entry_points=[CommandHandler("hw_add", hw_add_start)],
             states={
                 SUBJECT: [MessageHandler(filters.TEXT & ~filters.COMMAND, hw_subject)],
-                TASK: [MessageHandler(filters.TEXT & ~filters.COMMAND, hw_task)],
-                DUE_DATE: [
-                    CallbackQueryHandler(hw_date_button, pattern="^date_"),
-                    MessageHandler(filters.TEXT & ~filters.COMMAND, hw_date_custom)
+                TASK: [
+                    CommandHandler("done", hw_task),  # Handle /done command
+                    MessageHandler(filters.TEXT & ~filters.COMMAND, hw_task)
                 ],
-                CONFIRM: [CallbackQueryHandler(hw_confirm, pattern="^confirm_")]
+                DUE_DATE: [MessageHandler(filters.TEXT & ~filters.COMMAND, hw_date_input)],
+                CONFIRM: [MessageHandler(filters.TEXT & ~filters.COMMAND, hw_confirm_text)],
             },
-            fallbacks=[CommandHandler("cancel", hw_cancel)]
+            fallbacks=[CommandHandler("cancel", hw_cancel)],
+            allow_reentry=True,
         )
         
-        app.add_handler(conv_handler)
+        app.add_handler(hw_conv_handler)
+        
+        # Simple command handlers
         app.add_handler(CommandHandler("start", start))
         app.add_handler(CommandHandler("hw_quick", hw_quick))
         app.add_handler(CommandHandler("hw_list", hw_list))
