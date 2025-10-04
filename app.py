@@ -6,6 +6,7 @@ import os
 import fcntl
 import random
 import pytz
+import re
 from telegram import Update, BotCommand, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     Application, 
@@ -180,7 +181,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Study Bot\n\n"
         "Homework System:\n"
         "/hw_add - Add homework (step-by-step)\n"
-        "/hw_quick - Quick one-liner\n\n"
+        "/hw_quick - Quick one-liner\n"
+        "Or just type 'homework' or 'hw' to start\n\n"
         "Homework Management:\n"
         "/hw_list - List all homework\n"
         "/hw_remove - Remove homework\n"
@@ -907,13 +909,20 @@ async def main():
     try:
         app = Application.builder().token(TOKEN).post_init(post_init).build()
         
-        # Conversation handler for /hw_add - FIXED: Added /done handler
+        # Conversation handler for /hw_add - accepts command and keyword triggers
+        # Conversation handler for /hw_add - accepts command and keyword triggers
         hw_conv_handler = ConversationHandler(
-            entry_points=[CommandHandler("hw_add", hw_add_start)],
+            entry_points=[
+                CommandHandler("hw_add", hw_add_start),
+                MessageHandler(
+                    filters.Regex(r'(?i)^(add homework|homework|hw)$') & ~filters.COMMAND, 
+                    hw_add_start
+                )
+            ],
             states={
                 SUBJECT: [MessageHandler(filters.TEXT & ~filters.COMMAND, hw_subject)],
                 TASK: [
-                    CommandHandler("done", hw_task),  # Handle /done command
+                    CommandHandler("done", hw_task),
                     MessageHandler(filters.TEXT & ~filters.COMMAND, hw_task)
                 ],
                 DUE_DATE: [MessageHandler(filters.TEXT & ~filters.COMMAND, hw_date_input)],
@@ -921,6 +930,7 @@ async def main():
             },
             fallbacks=[CommandHandler("cancel", hw_cancel)],
             allow_reentry=True,
+            per_message=False,
         )
         
         app.add_handler(hw_conv_handler)
