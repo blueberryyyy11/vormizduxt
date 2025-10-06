@@ -22,19 +22,18 @@ import sys
 from typing import Dict
 
 # ====== CONFIG ======
-# CRITICAL: Environment variables are REQUIRED - no fallback values for security
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk")
-YOUR_GROUP_CHAT_ID = os.getenv("GROUP_CHAT_ID", "-1003007240886")
 
 # Validate required environment variables
 if not TOKEN:
     raise ValueError("TELEGRAM_BOT_TOKEN environment variable is required. Set it with: export TELEGRAM_BOT_TOKEN='your_token_here'")
-if not YOUR_GROUP_CHAT_ID:
-    raise ValueError("GROUP_CHAT_ID environment variable is required. Set it with: export GROUP_CHAT_ID='your_chat_id_here'")
 
-HOMEWORK_FILE = "homework.json"
+DATA_DIR = "group_data"
 LOCK_FILE = "bot.lock"
 ARMENIA_TZ = pytz.timezone('Asia/Yerevan')
+
+# Create data directory if it doesn't exist
+os.makedirs(DATA_DIR, exist_ok=True)
 
 # ====== LOGGING ======
 logging.basicConfig(
@@ -91,6 +90,16 @@ app = None
 reminder_task = None
 shutdown_event = asyncio.Event()
 lock_file = None
+last_reminder_data = {}  # Stores last reminder times per group
+
+# ====== GROUP-SPECIFIC FILE PATHS ======
+def get_homework_file(chat_id: int) -> str:
+    """Get homework file path for specific group"""
+    return os.path.join(DATA_DIR, f"homework_{chat_id}.json")
+
+def get_config_file(chat_id: int) -> str:
+    """Get config file path for specific group"""
+    return os.path.join(DATA_DIR, f"config_{chat_id}.json")
 
 # ====== DATA HELPERS ======
 def load_json_file(filename: str) -> Dict:
@@ -110,11 +119,35 @@ def save_json_file(filename: str, data: Dict):
     except Exception as e:
         logger.error(f"Error saving {filename}: {e}")
 
-def load_homework():
-    return load_json_file(HOMEWORK_FILE)
+def load_homework(chat_id: int):
+    """Load homework for specific group"""
+    return load_json_file(get_homework_file(chat_id))
 
-def save_homework(hw):
-    save_json_file(HOMEWORK_FILE, hw)
+def save_homework(chat_id: int, hw: Dict):
+    """Save homework for specific group"""
+    save_json_file(get_homework_file(chat_id), hw)
+
+def load_group_config(chat_id: int) -> Dict:
+    """Load group configuration"""
+    config = load_json_file(get_config_file(chat_id))
+    if not config:
+        # Default configuration
+        config = {
+            "reminders_enabled": True,
+            "morning_reminder": "08:00",
+            "evening_reminder": "18:00",
+            "timezone": "Asia/Yerevan"
+        }
+        save_group_config(chat_id, config)
+    return config
+
+def save_group_config(chat_id: int, config: Dict):
+    """Save group configuration"""
+    save_json_file(get_config_file(chat_id), config)
+
+def get_chat_id(update: Update) -> int:
+    """Get chat ID from update"""
+    return update.effective_chat.id
 
 def acquire_lock():
     global lock_file
@@ -177,8 +210,11 @@ def parse_flexible_date(date_str: str) -> datetime.date:
 # ====== BASIC COMMANDS ======
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Start command handler"""
+    chat_id = get_chat_id(update)
+    chat_type = update.effective_chat.type
+    
     welcome_msg = (
-        "Study Bot\n\n"
+        f"Study Bot (Group: {chat_id})\n\n"
         "Homework System:\n"
         "/hw_add - Add homework (step-by-step)\n"
         "/hw_quick - Quick one-liner\n"
@@ -195,7 +231,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/next - Next class\n\n"
         "Motivation:\n"
         "/motivate - type of motivation you always needed\n"
-        "/kys - )))"
+        "/kys - )))\n\n"
+        f"Chat Type: {chat_type}"
     )
     await update.message.reply_text(welcome_msg)
 
@@ -203,8 +240,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def hw_add_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Start conversational homework addition"""
     try:
-        logger.info(f"hw_add_start called by user {update.effective_user.id}")
+        chat_id = get_chat_id(update)
+        logger.info(f"hw_add_start called in group {chat_id} by user {update.effective_user.id}")
         context.user_data.clear()
+        context.user_data['chat_id'] = chat_id
         await update.message.reply_text(
             "Add homework!\n\n"
             "What subject is this for?\n"
@@ -338,10 +377,11 @@ async def hw_confirm_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle text confirmation (yes/no)"""
     try:
         response = update.message.text.lower().strip()
-        logger.info(f"hw_confirm_text: User responded '{response}'")
+        chat_id = context.user_data.get('chat_id', get_chat_id(update))
+        logger.info(f"hw_confirm_text: User responded '{response}' in group {chat_id}")
         
         if response in ['yes', 'y', 'confirm', 'ok']:
-            hw = load_homework()
+            hw = load_homework(chat_id)
             subject = context.user_data['hw_subject']
             
             hw_item = {
@@ -351,19 +391,19 @@ async def hw_confirm_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
             }
             
             hw.setdefault(subject, []).append(hw_item)
-            save_homework(hw)
+            save_homework(chat_id, hw)
             
             task_preview = hw_item['task'][:80] + "..." if len(hw_item['task']) > 80 else hw_item['task']
             
             await update.message.reply_text(
-                f"Homework added!\n\n"
+                f"✅ Homework added!\n\n"
                 f"Subject: {subject}\n"
                 f"Task: {task_preview}\n"
                 f"Due: {context.user_data['hw_due']}"
             )
-            logger.info(f"Added homework: {subject} - {hw_item['task'][:50]}...")
+            logger.info(f"Added homework in group {chat_id}: {subject} - {hw_item['task'][:50]}...")
         else:
-            await update.message.reply_text("Homework addition cancelled.")
+            await update.message.reply_text("❌ Homework addition cancelled.")
         
         context.user_data.clear()
         return ConversationHandler.END
@@ -375,12 +415,14 @@ async def hw_confirm_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def hw_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Cancel homework addition"""
-    await update.message.reply_text("Homework addition cancelled.")
+    await update.message.reply_text("❌ Homework addition cancelled.")
     context.user_data.clear()
     return ConversationHandler.END
 
 async def hw_quick(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Quick homework add"""
+    chat_id = get_chat_id(update)
+    
     if len(context.args) < 1:
         await update.message.reply_text(
             "Quick add format:\n"
@@ -411,7 +453,7 @@ async def hw_quick(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return
     
-    hw = load_homework()
+    hw = load_homework(chat_id)
     hw_item = {
         "task": task,
         "due": due_date.isoformat(),
@@ -419,22 +461,24 @@ async def hw_quick(update: Update, context: ContextTypes.DEFAULT_TYPE):
     }
     
     hw.setdefault(subject, []).append(hw_item)
-    save_homework(hw)
+    save_homework(chat_id, hw)
     
     task_preview = task[:100] + "..." if len(task) > 100 else task
     
     await update.message.reply_text(
-        f"Added homework:\n\n"
+        f"✅ Added homework:\n\n"
         f"{subject}\n"
         f"{task_preview}\n"
         f"Due: {due_date.strftime('%Y-%m-%d (%A)')}"
     )
-    logger.info(f"Quick added: {subject} - {task[:50]}...")
+    logger.info(f"Quick added in group {chat_id}: {subject} - {task[:50]}...")
 
 # ====== HOMEWORK MANAGEMENT ======
 async def hw_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
-        hw = load_homework()
+        chat_id = get_chat_id(update)
+        hw = load_homework(chat_id)
+        
         if not hw:
             await update.message.reply_text("No homework logged")
             return
@@ -457,7 +501,7 @@ async def hw_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 except ValueError:
                     pass
         
-        msg = (f"Homework Statistics:\n\n"
+        msg = (f"📊 Homework Statistics:\n\n"
                f"Total: {total}\n"
                f"Overdue: {overdue}\n"
                f"Due today: {due_today}\n"
@@ -470,7 +514,9 @@ async def hw_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def hw_clean(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
-        hw = load_homework()
+        chat_id = get_chat_id(update)
+        hw = load_homework(chat_id)
+        
         if not hw:
             await update.message.reply_text("No homework found")
             return
@@ -495,8 +541,8 @@ async def hw_clean(update: Update, context: ContextTypes.DEFAULT_TYPE):
             else:
                 del hw[subject]
         
-        save_homework(hw)
-        msg = f"Cleaned {cleaned} old assignments" if cleaned > 0 else "Nothing to clean"
+        save_homework(chat_id, hw)
+        msg = f"🧹 Cleaned {cleaned} old assignments" if cleaned > 0 else "Nothing to clean"
         await update.message.reply_text(msg)
     except Exception as e:
         logger.error(f"Error in hw_clean: {e}")
@@ -504,7 +550,8 @@ async def hw_clean(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def hw_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
-        hw = load_homework()
+        chat_id = get_chat_id(update)
+        hw = load_homework(chat_id)
         today = datetime.date.today().isoformat()
         
         today_hw = [(s, t) for s, tasks in hw.items() for t in tasks if t["due"] == today]
@@ -513,7 +560,7 @@ async def hw_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("No homework due today")
             return
         
-        msg = "Due today:\n\n"
+        msg = "📅 Due today:\n\n"
         for i, (subj, task) in enumerate(today_hw, 1):
             preview = task['task'][:80] + "..." if len(task['task']) > 80 else task['task']
             msg += f"{i}. {subj}: {preview}\n\n"
@@ -525,7 +572,9 @@ async def hw_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def hw_overdue(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
-        hw = load_homework()
+        chat_id = get_chat_id(update)
+        hw = load_homework(chat_id)
+        
         if not hw:
             await update.message.reply_text("No homework")
             return
@@ -544,11 +593,11 @@ async def hw_overdue(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     pass
         
         if not overdue:
-            await update.message.reply_text("No overdue homework")
+            await update.message.reply_text("✅ No overdue homework")
             return
         
         overdue.sort(key=lambda x: x[3])
-        msg = f"Overdue ({len(overdue)}):\n\n"
+        msg = f"⚠️ Overdue ({len(overdue)}):\n\n"
         
         for i, (subj, task, days, _) in enumerate(overdue, 1):
             preview = task['task'][:60] + "..." if len(task['task']) > 60 else task['task']
@@ -561,12 +610,14 @@ async def hw_overdue(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def hw_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
-        hw = load_homework()
+        chat_id = get_chat_id(update)
+        hw = load_homework(chat_id)
+        
         if not hw:
             await update.message.reply_text("No homework logged")
             return
         
-        msg = "Homework:\n\n"
+        msg = "📚 Homework:\n\n"
         today = datetime.date.today()
         
         for idx, subj in enumerate(sorted(hw.keys()), 1):
@@ -605,6 +656,8 @@ async def hw_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def hw_remove(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
+        chat_id = get_chat_id(update)
+        
         if len(context.args) < 2:
             await update.message.reply_text(
                 "Usage: /hw_remove Subject index\n"
@@ -620,7 +673,7 @@ async def hw_remove(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("Index must be a number")
             return
 
-        hw = load_homework()
+        hw = load_homework(chat_id)
         if not hw:
             await update.message.reply_text("No homework found")
             return
@@ -647,10 +700,10 @@ async def hw_remove(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if not hw[subject]:
             del hw[subject]
         
-        save_homework(hw)
+        save_homework(chat_id, hw)
         preview = removed['task'][:60] + "..." if len(removed['task']) > 60 else removed['task']
-        await update.message.reply_text(f"Removed: {subject} - {preview}")
-        logger.info(f"Removed: {subject} - {removed['task'][:50]}...")
+        await update.message.reply_text(f"🗑️ Removed: {subject} - {preview}")
+        logger.info(f"Removed from group {chat_id}: {subject} - {removed['task'][:50]}...")
     except Exception as e:
         logger.error(f"Error in hw_remove: {e}")
         await update.message.reply_text("Error removing homework")
@@ -665,7 +718,7 @@ async def schedule_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("No classes today")
             return
         
-        msg = f"{day}:\n\n"
+        msg = f"📅 {day}:\n\n"
         count = 0
         
         for lesson in lessons:
@@ -692,7 +745,7 @@ async def next_class(update: Update, context: ContextTypes.DEFAULT_TYPE):
         remaining = [l for l in lessons if l["subject"] and is_lesson_this_week(l, today)]
         
         if remaining:
-            msg = f"Remaining today ({day}):\n\n"
+            msg = f"📍 Remaining today ({day}):\n\n"
             for idx, lesson in enumerate(remaining, 1):
                 type_info = f" ({lesson['type']})" if lesson.get('type') else ""
                 week_info = f" [{lesson['week']}]" if lesson.get('week') else ""
@@ -712,7 +765,7 @@ async def next_class(update: Update, context: ContextTypes.DEFAULT_TYPE):
             upcoming = [l for l in lessons if l["subject"] and is_lesson_this_week(l, next_date)]
             
             if upcoming:
-                msg = f"Next ({next_day} {next_date.strftime('%m-%d')}):\n\n"
+                msg = f"➡️ Next ({next_day} {next_date.strftime('%m-%d')}):\n\n"
                 for idx, lesson in enumerate(upcoming, 1):
                     type_info = f" ({lesson['type']})" if lesson.get('type') else ""
                     week_info = f" [{lesson['week']}]" if lesson.get('week') else ""
@@ -760,11 +813,9 @@ async def motivate(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logger.error(f"Error in motivate: {e}")
 
 # ====== REMINDERS ======
-last_reminder_date = None
-last_reminder_times = set()
-
 async def send_daily_reminder():
-    global last_reminder_date, last_reminder_times
+    """Send daily reminders to all groups that have them enabled"""
+    global last_reminder_data
     
     try:
         if not app:
@@ -774,24 +825,56 @@ async def send_daily_reminder():
         today_date = now.date()
         current_time = now.strftime("%H:%M")
         
-        if last_reminder_date != today_date:
-            last_reminder_date = today_date
-            last_reminder_times = set()
+        # Get all group data files
+        group_files = [f for f in os.listdir(DATA_DIR) if f.startswith("config_")]
         
-        if current_time == "08:00" and "08:00" not in last_reminder_times:
-            await send_morning_reminder()
-            last_reminder_times.add("08:00")
-            logger.info("Sent 8:00 AM reminder")
-        
-        elif current_time == "18:00" and "18:00" not in last_reminder_times:
-            await send_evening_homework_reminder()
-            last_reminder_times.add("18:00")
-            logger.info("Sent 6:00 PM reminder")
-            
+        for config_file in group_files:
+            try:
+                # Extract chat_id from filename
+                chat_id = int(config_file.replace("config_", "").replace(".json", ""))
+                
+                # Initialize reminder tracking for this group
+                if chat_id not in last_reminder_data:
+                    last_reminder_data[chat_id] = {
+                        'date': None,
+                        'times': set()
+                    }
+                
+                # Reset times if it's a new day
+                if last_reminder_data[chat_id]['date'] != today_date:
+                    last_reminder_data[chat_id]['date'] = today_date
+                    last_reminder_data[chat_id]['times'] = set()
+                
+                # Load group config
+                config = load_group_config(chat_id)
+                
+                if not config.get('reminders_enabled', True):
+                    continue
+                
+                morning_time = config.get('morning_reminder', '08:00')
+                evening_time = config.get('evening_reminder', '18:00')
+                
+                # Send morning reminder
+                if current_time == morning_time and morning_time not in last_reminder_data[chat_id]['times']:
+                    await send_morning_reminder(chat_id)
+                    last_reminder_data[chat_id]['times'].add(morning_time)
+                    logger.info(f"Sent morning reminder to group {chat_id}")
+                
+                # Send evening reminder
+                elif current_time == evening_time and evening_time not in last_reminder_data[chat_id]['times']:
+                    await send_evening_homework_reminder(chat_id)
+                    last_reminder_data[chat_id]['times'].add(evening_time)
+                    logger.info(f"Sent evening reminder to group {chat_id}")
+                    
+            except Exception as e:
+                logger.error(f"Error processing reminders for group {chat_id}: {e}")
+                continue
+                
     except Exception as e:
         logger.error(f"Error in daily reminder: {e}")
 
-async def send_morning_reminder():
+async def send_morning_reminder(chat_id: int):
+    """Send morning schedule reminder to specific group"""
     try:
         day = datetime.date.today().strftime("%A")
         lessons = TIMETABLE.get(day, [])
@@ -799,7 +882,7 @@ async def send_morning_reminder():
         if not lessons:
             return
         
-        msg = f"Good morning! Today's classes ({day}):\n\n"
+        msg = f"🌅 Good morning! Today's classes ({day}):\n\n"
         count = 0
         
         for lesson in lessons:
@@ -810,15 +893,16 @@ async def send_morning_reminder():
                 msg += f"{count}. {lesson['subject']} - {lesson['room']}{type_info}{week_info}\n"
         
         if count > 0:
-            await app.bot.send_message(chat_id=YOUR_GROUP_CHAT_ID, text=msg)
+            await app.bot.send_message(chat_id=chat_id, text=msg)
         
     except Exception as e:
-        logger.error(f"Error in morning reminder: {e}")
+        logger.error(f"Error in morning reminder for group {chat_id}: {e}")
 
-async def send_evening_homework_reminder():
+async def send_evening_homework_reminder(chat_id: int):
+    """Send evening homework reminder to specific group"""
     try:
         today = datetime.date.today()
-        hw = load_homework()
+        hw = load_homework(chat_id)
         
         if not hw:
             return
@@ -837,20 +921,21 @@ async def send_evening_homework_reminder():
             return
         
         reminders.sort(key=lambda x: x[2])
-        msg = f"Evening homework check:\n\n"
+        msg = f"🌙 Evening homework check:\n\n"
         
         for subj, task, due in reminders:
             days_overdue = (today - due).days
-            status = f"OVERDUE ({days_overdue}d)" if days_overdue > 0 else "DUE TODAY"
+            status = f"⚠️ OVERDUE ({days_overdue}d)" if days_overdue > 0 else "📅 DUE TODAY"
             preview = task['task'][:60] + "..." if len(task['task']) > 60 else task['task']
             msg += f"• {subj}: {preview}\n  {status} - {task['due']}\n\n"
         
-        await app.bot.send_message(chat_id=YOUR_GROUP_CHAT_ID, text=msg)
+        await app.bot.send_message(chat_id=chat_id, text=msg)
         
     except Exception as e:
-        logger.error(f"Error in evening reminder: {e}")
+        logger.error(f"Error in evening reminder for group {chat_id}: {e}")
 
 async def reminder_scheduler():
+    """Main reminder scheduler loop"""
     logger.info("Reminder scheduler started")
     while not shutdown_event.is_set():
         try:
@@ -901,7 +986,7 @@ async def main():
         print("Error: Another instance is running. Delete bot.lock if needed.")
         sys.exit(1)
     
-    logger.info("Starting bot...")
+    logger.info("Starting multi-group bot...")
     
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
@@ -910,13 +995,14 @@ async def main():
         app = Application.builder().token(TOKEN).post_init(post_init).build()
         
         # Conversation handler for /hw_add - accepts command and keyword triggers
-        # Conversation handler for /hw_add - accepts command and keyword triggers
         hw_conv_handler = ConversationHandler(
             entry_points=[
                 CommandHandler("hw_add", hw_add_start),
                 MessageHandler(
-                    filters.Regex(r'(?i)^(add homework|homework|hw)$') & ~filters.COMMAND, 
-                    hw_add_start
+                    MessageHandler(
+                        filters.Regex(r'(?i)^(add homework|homework|hw)') & ~filters.COMMAND,
+                        hw_add_start
+                    ),
                 )
             ],
             states={
