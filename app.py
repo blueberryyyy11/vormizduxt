@@ -370,7 +370,7 @@ async def hw_quick_add(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"✅ *Homework added\\!*\n\n"
         f"*{escape_markdown_v2(subject)}*\n"
         f"Task: {escape_markdown_v2(task_preview)}\n"
-        f"Due: {escape_markdown_v2(due_date.strftime('%Y-%m-%d \\(%A\\)'))}",
+        f"Due: {escape_markdown_v2(due_date.strftime('%Y-%m-%d (%A)'))}", # FIX: Removed backslashes
         parse_mode='MarkdownV2'
     )
     logger.info(f"Quickly added homework in group {chat_id}: {subject} - {task[:50]}...")
@@ -458,7 +458,7 @@ async def get_date_and_save_long(update: Update, context: ContextTypes.DEFAULT_T
         f"🎉 *Homework Saved Successfully!* \n\n"
         f"*{escape_markdown_v2(subject)}*\n"
         f"Task: {escape_markdown_v2(task_preview)}\n"
-        f"Due: {escape_markdown_v2(due_date.strftime('%Y-%m-%d \\(%A\\)'))}",
+        f"Due: {escape_markdown_v2(due_date.strftime('%Y-%m-%d (%A)'))}", # FIX: Removed backslashes
         parse_mode='MarkdownV2'
     )
     
