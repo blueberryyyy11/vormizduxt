@@ -226,7 +226,7 @@ def release_lock():
         except (IOError, OSError):
             pass
 
-# ====== UTILITY FUNCTIONS (UNCHANGED) ======
+# ====== UTILITY FUNCTIONS (UPDATED) ======
 def get_week_type(date: datetime.date = None) -> str:
     """Get week type for a specific date (defaults to today)"""
     if date is None:
@@ -245,10 +245,14 @@ def is_lesson_this_week(lesson: Dict, date: datetime.date = None) -> bool:
     week_type = get_week_type(date)
     return lesson["week"] == week_type
 
-def parse_flexible_date(date_str: str) -> datetime.date:
-    """Parse flexible date formats"""
+def parse_flexible_date(date_str: str) -> datetime.date | str:
+    """Parse flexible date formats or return 'TBD' for undefined dates."""
     today = datetime.date.today()
     date_lower = date_str.lower().strip()
+    
+    # NEW: Handle undefined date keywords
+    if date_lower in ["none", "tbd", "n/a", "undefined", "-"]:
+        return "TBD"
     
     if date_lower in ["today", "սյօր", "сегодня"]:
         return today
@@ -298,6 +302,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"Study Bot \\(Group: {chat_id}\\)\n\n"
         f"*Homework System \\(Dual Mode\\)*\n"
         f"📚 `/hw_add Subject \\| Task \\| Date` \\- *Quick Add* in one line\\.\n"
+        f"   _Date can be `tomorrow`, `DD\\-MM`, `YYYY\\-MM\\-DD`, or `TBD`_\\.\n" # UPDATED HINT
         f"   _Example: `/hw_add Python \\| Finish exercise 5 \\| 20\\-11`_\n"
         f"✍️ `/hw_long_add` \\- *Interactive Add* with step\\-by\\-step guidance\\.\n\n"
         f"*Timetable Management \\(Group\\-Specific\\)*\n"
@@ -309,7 +314,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     await update.message.reply_text(welcome_msg, parse_mode='MarkdownV2')
 
-# ====== HOMEWORK ADDITION (SPLIT INTO TWO COMMANDS) ======
+# ====== HOMEWORK ADDITION (UPDATED) ======
 
 # --- 1. Quick Add (One-Line) ---
 async def hw_quick_add(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -321,7 +326,7 @@ async def hw_quick_add(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "⚠️ *Invalid format\\.* \n"
             "Use: `/hw_add Subject \\| Task \\| Date`\n\n"
             "Example:\n"
-            "/hw_add Python \\| Create API client \\| tomorrow\n\n"
+            "/hw_add Python \\| Create API client \\| TBD\n\n" # UPDATED HINT
             "For step-by-step guidance, use `/hw_long_add`", 
             parse_mode='MarkdownV2'
         )
@@ -343,20 +348,29 @@ async def hw_quick_add(update: Update, context: ContextTypes.DEFAULT_TYPE):
     subject, task, date_str = parts[0], parts[1], parts[2]
     
     try:
-        due_date = parse_flexible_date(date_str)
+        # Use a more descriptive variable name
+        due_date_or_tbd = parse_flexible_date(date_str)
     except ValueError as e:
         await update.message.reply_text(
             f"⚠️ *Invalid date:* {escape_markdown_v2(date_str)}\n"
             f"Error: {escape_markdown_v2(str(e))}\n"
-            "Use: `tomorrow`, `today`, `+N`, `DD\\-MM`, or `YYYY\\-MM\\-DD`",
+            "Use: `tomorrow`, `+N`, `DD\\-MM`, `YYYY\\-MM\\-DD`, or *`TBD`*", # UPDATED HINT
             parse_mode='MarkdownV2'
         )
         return
     
+    # Determine the saved value (ISO format or "TBD") and the display value
+    if due_date_or_tbd == "TBD":
+        due_iso = "TBD"
+        due_display = "*Undefined*" # Highlight TBD in display
+    else:
+        due_iso = due_date_or_tbd.isoformat()
+        due_display = due_date_or_tbd.strftime('%Y-%m-%d (%A)')
+    
     hw = load_homework(chat_id)
     hw_item = {
         "task": task,
-        "due": due_date.isoformat(),
+        "due": due_iso, # Use the determined ISO or "TBD" string
         "added": datetime.date.today().isoformat()
     }
     
@@ -365,12 +379,12 @@ async def hw_quick_add(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     task_preview = task[:100] + "..." if len(task) > 100 else task
     
-    # Confirmation message the user requested - now protected against common MarkdownV2 errors
+    # Confirmation message
     await update.message.reply_text(
         f"✅ *Homework added\\!*\n\n"
         f"*{escape_markdown_v2(subject)}*\n"
         f"Task: {escape_markdown_v2(task_preview)}\n"
-        f"Due: {escape_markdown_v2(due_date.strftime('%Y-%m-%d (%A)'))}", # FIX: Removed backslashes
+        f"Due: {escape_markdown_v2(due_display)}", 
         parse_mode='MarkdownV2'
     )
     logger.info(f"Quickly added homework in group {chat_id}: {subject} - {task[:50]}...")
@@ -399,7 +413,7 @@ async def get_subject_long(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return LONG_ADDING_TASK
 
 async def get_task_long(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Get task and ask for due date."""
+    """Get task and ask for due date. (UPDATED PROMPT)"""
     task = update.message.text.strip()
     context.user_data['temp_task'] = task
     
@@ -409,13 +423,13 @@ async def get_task_long(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "✅ Task saved\\.\n\n"
         "Finally, what is the *Due Date*\\?\n"
-        "Use formats like: `tomorrow`, `+3 days`, `15\\-10`, or `2025\\-10\\-15`\\.", 
+        "Use formats like: `tomorrow`, `+3 days`, `15\\-10`, `2025\\-10\\-15` or *`TBD`* for an undefined date\\.", # UPDATED HINT
         parse_mode='MarkdownV2'
     )
     return LONG_ADDING_DATE
 
 async def get_date_and_save_long(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Get date, validate, and save the homework entry for the long add."""
+    """Get date, validate, and save the homework entry for the long add. (UPDATED)"""
     date_str = update.message.text.strip()
     
     if context.args:
@@ -431,21 +445,29 @@ async def get_date_and_save_long(update: Update, context: ContextTypes.DEFAULT_T
     chat_id = get_chat_id(update)
 
     try:
-        due_date = parse_flexible_date(date_str)
+        due_date_or_tbd = parse_flexible_date(date_str)
     except ValueError as e:
         await update.message.reply_text(
             f"⚠️ *Invalid date format:* {escape_markdown_v2(date_str)}\n"
             f"Error: {escape_markdown_v2(str(e))}\n"
-            "Please try again with a valid date format \\(e\\.g\\. `tomorrow`, `15\\-10`, `+5`\\) or /cancel\\.",
+            "Please try again with a valid date format \\(e\\.g\\. `tomorrow`, `15\\-10`, `+5`, *`TBD`*\\) or /cancel\\.",
             parse_mode='MarkdownV2'
         )
         return LONG_ADDING_DATE # Stay in the same state
+
+    # Determine the saved value (ISO format or "TBD") and the display value
+    if due_date_or_tbd == "TBD":
+        due_iso = "TBD"
+        due_display = "*Undefined*" # Highlight TBD in display
+    else:
+        due_iso = due_date_or_tbd.isoformat()
+        due_display = due_date_or_tbd.strftime('%Y-%m-%d (%A)')
 
     # Save logic
     hw = load_homework(chat_id)
     hw_item = {
         "task": task,
-        "due": due_date.isoformat(),
+        "due": due_iso, # Use the determined ISO or "TBD" string
         "added": datetime.date.today().isoformat()
     }
     
@@ -458,17 +480,17 @@ async def get_date_and_save_long(update: Update, context: ContextTypes.DEFAULT_T
         f"🎉 *Homework Saved Successfully!* \n\n"
         f"*{escape_markdown_v2(subject)}*\n"
         f"Task: {escape_markdown_v2(task_preview)}\n"
-        f"Due: {escape_markdown_v2(due_date.strftime('%Y-%m-%d (%A)'))}", # FIX: Removed backslashes
+        f"Due: {escape_markdown_v2(due_display)}", # Use the calculated display string
         parse_mode='MarkdownV2'
     )
     
     context.user_data.clear()
     return ConversationHandler.END
 
-# ====== HOMEWORK MANAGEMENT (hw_stats, hw_clean, etc. remain UNCHANGED) ======
+# ====== HOMEWORK MANAGEMENT (hw_stats, hw_clean, etc. remain UPDATED for TBD) ======
 
 async def hw_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # ... (hw_stats implementation remains the same)
+    """Show homework statistics (UPDATED for TBD)"""
     try:
         chat_id = get_chat_id(update)
         hw = load_homework(chat_id)
@@ -478,12 +500,16 @@ async def hw_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
         
         total = sum(len(tasks) for tasks in hw.values())
-        overdue = due_today = due_tomorrow = 0
+        overdue = due_today = due_tomorrow = tbd_count = 0 # Added tbd_count
         today = datetime.date.today()
         tomorrow = today + datetime.timedelta(days=1)
         
         for tasks in hw.values():
             for task in tasks:
+                if task["due"] == "TBD":
+                    tbd_count += 1
+                    continue # Skip TBD for date comparison
+                
                 try:
                     due_date = datetime.datetime.strptime(task["due"], "%Y-%m-%d").date()
                     if due_date < today:
@@ -493,13 +519,14 @@ async def hw_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     elif due_date == tomorrow:
                         due_tomorrow += 1
                 except ValueError:
-                    pass
+                    pass # Ignore invalid date formats
         
         msg = (f"📊 *Homework Statistics:*\n\n"
                f"Total: {total}\n"
                f"Overdue: {overdue}\n"
                f"Due today: {due_today}\n"
-               f"Due tomorrow: {due_tomorrow}")
+               f"Due tomorrow: {due_tomorrow}\n"
+               f"Undefined Date: {tbd_count}") # Display TBD count
         
         await update.message.reply_text(msg, parse_mode='MarkdownV2')
     except Exception as e:
@@ -507,7 +534,7 @@ async def hw_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Error getting statistics", parse_mode='MarkdownV2')
 
 async def hw_clean(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # ... (hw_clean implementation remains the same)
+    """Clean old homework entries (UPDATED for TBD)"""
     try:
         chat_id = get_chat_id(update)
         hw = load_homework(chat_id)
@@ -522,6 +549,10 @@ async def hw_clean(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for subject in list(hw.keys()):
             keep = []
             for task in hw[subject]:
+                if task["due"] == "TBD":
+                    keep.append(task) # Always keep TBD homework
+                    continue
+
                 try:
                     due = datetime.datetime.strptime(task["due"], "%Y-%m-%d").date()
                     if due >= cutoff:
@@ -529,7 +560,7 @@ async def hw_clean(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     else:
                         cleaned += 1
                 except ValueError:
-                    keep.append(task)
+                    keep.append(task) # Keep invalid dates (user may need to fix them)
             
             if keep:
                 hw[subject] = keep
@@ -544,12 +575,13 @@ async def hw_clean(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Error cleaning homework", parse_mode='MarkdownV2')
 
 async def hw_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # ... (hw_today implementation remains the same)
+    """Show homework due today (UPDATED for TBD)"""
     try:
         chat_id = get_chat_id(update)
         hw = load_homework(chat_id)
         today = datetime.date.today().isoformat()
         
+        # Filter out TBD and only select tasks due today
         today_hw = [(s, t) for s, tasks in hw.items() for t in tasks if t["due"] == today]
         
         if not today_hw:
@@ -568,7 +600,7 @@ async def hw_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Error getting today's homework", parse_mode='MarkdownV2')
 
 async def hw_overdue(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # ... (hw_overdue implementation remains the same)
+    """Show overdue homework (UPDATED for TBD)"""
     try:
         chat_id = get_chat_id(update)
         hw = load_homework(chat_id)
@@ -582,6 +614,9 @@ async def hw_overdue(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         for subj, tasks in hw.items():
             for task in tasks:
+                if task["due"] == "TBD":
+                    continue # Skip TBD homework
+                
                 try:
                     due = datetime.datetime.strptime(task["due"], "%Y-%m-%d").date()
                     if due < today:
@@ -608,7 +643,7 @@ async def hw_overdue(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Error getting overdue homework", parse_mode='MarkdownV2')
 
 async def hw_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # ... (hw_list implementation remains the same)
+    """List all pending homework (UPDATED for TBD and better sorting)"""
     try:
         chat_id = get_chat_id(update)
         hw = load_homework(chat_id)
@@ -626,29 +661,44 @@ async def hw_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
             
             tasks_info = []
             for i, task in enumerate(hw[subj], 1):
-                try:
-                    due = datetime.datetime.strptime(task["due"], "%Y-%m-%d").date()
-                    days = (due - today).days
-                    
-                    if days < 0:
-                        status = f"OVERDUE \\({abs(days)}d\\)"
-                    elif days == 0:
-                        status = "DUE TODAY"
-                    elif days == 1:
-                        status = "DUE TOMORROW"
-                    else:
-                        status = f"\\({days}d left\\)"
-                    
-                    tasks_info.append((i, task, status, due))
-                except ValueError:
-                    tasks_info.append((i, task, "Invalid date", None))
+                due_date_str = task["due"]
+                
+                if due_date_str == "TBD":
+                    status = "*Undefined*"
+                    due_date_obj = None # Use None for sorting
+                else:
+                    try:
+                        due_date_obj = datetime.datetime.strptime(due_date_str, "%Y-%m-%d").date()
+                        days = (due_date_obj - today).days
+                        
+                        if days < 0:
+                            status = f"OVERDUE \\({abs(days)}d\\)"
+                        elif days == 0:
+                            status = "DUE TODAY"
+                        elif days == 1:
+                            status = "DUE TOMORROW"
+                        else:
+                            status = f"\\({days}d left\\)"
+                    except ValueError:
+                        status = "Invalid date format"
+                        due_date_obj = None
+                
+                # Append a tuple with (index, task_dict, status_string, due_date_object, due_date_string)
+                tasks_info.append((i, task, status, due_date_obj, due_date_str))
             
-            tasks_info.sort(key=lambda x: x[3] if x[3] else datetime.date.max)
+            # Sort: defined dates first, then invalid/TBD (using max date for None)
+            tasks_info.sort(key=lambda x: x[3] if x[3] else datetime.date.max) 
             
-            for i, task, status, _ in tasks_info:
+            for i, task, status, _, due_date_str in tasks_info:
                 preview = task['task'][:100] + "..." if len(task['task']) > 100 else task['task']
-                # Escaping task and date
-                msg += f"   {i}\\. {escape_markdown_v2(preview)}\n      Due {escape_markdown_v2(task['due'])} {status}\n"
+                
+                # Display Logic
+                if due_date_str == "TBD":
+                    due_line = "Due *Undefined*"
+                else:
+                    due_line = f"Due {escape_markdown_v2(due_date_str)} {status}"
+                
+                msg += f"   {i}\\. {escape_markdown_v2(preview)}\n      {due_line}\n"
             msg += "\n"
         
         await update.message.reply_text(msg, parse_mode='MarkdownV2')
@@ -981,7 +1031,7 @@ async def motivate(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         logger.error(f"Error in motivate: {e}")
 
-# ====== REMINDERS (UNCHANGED) ======
+# ====== REMINDERS (UPDATED for TBD) ======
 
 async def send_daily_reminder():
     """Send daily reminders to all groups that have them enabled"""
@@ -1068,7 +1118,7 @@ async def send_morning_reminder(chat_id: int, timetable: Dict):
         logger.error(f"Error in morning reminder for group {chat_id}: {e}")
 
 async def send_evening_homework_reminder(chat_id: int):
-    # ... (send_evening_homework_reminder implementation remains the same)
+    """Send evening reminder for homework due today or overdue (UPDATED for TBD)"""
     try:
         today = datetime.date.today()
         hw = load_homework(chat_id)
@@ -1079,6 +1129,9 @@ async def send_evening_homework_reminder(chat_id: int):
         reminders = []
         for subj, tasks in hw.items():
             for task in tasks:
+                if task["due"] == "TBD":
+                    continue # Skip TBD homework in evening reminder
+                    
                 try:
                     due = datetime.datetime.strptime(task["due"], "%Y-%m-%d").date()
                     if due <= today:
@@ -1132,8 +1185,8 @@ def signal_handler(signum, frame):
 async def post_init(application: Application):
     commands = [
         BotCommand("start", "Start bot"),
-        BotCommand("hw_add", "Quickly add homework (Subject | Task | Date)"), # UPDATED
-        BotCommand("hw_long_add", "Start the interactive process to add homework"), # NEW INTERACTIVE COMMAND
+        BotCommand("hw_add", "Quickly add homework (Subject | Task | Date)"), 
+        BotCommand("hw_long_add", "Start the interactive process to add homework"), 
         BotCommand("hw_list", "List all pending homework"),
         BotCommand("hw_remove", "Remove homework by Subject and index"),
         BotCommand("hw_today", "Show homework due today"),
