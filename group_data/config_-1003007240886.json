@@ -1,0 +1,117 @@
+{
+  "reminders_enabled": true,
+  "morning_reminder": "08:00",
+  "evening_reminder": "18:00",
+  "timezone": "Asia/Yerevan",
+  "timetable": {
+    "Monday": [
+      {
+        "subject": "Теория вероятности",
+        "room": "321",
+        "type": "л"
+      },
+      {
+        "subject": "Теория вероятности",
+        "room": "313",
+        "type": "пр"
+      },
+      {
+        "subject": "Диффур",
+        "room": "301",
+        "type": "л"
+      },
+      {
+        "subject": "База данных",
+        "room": "321",
+        "type": "л"
+      }
+    ],
+    "Tuesday": [],
+    "Wednesday": [
+      {
+        "subject": "Комбинаторные алгоритмы",
+        "room": "305",
+        "type": "пр"
+      },
+      {
+        "subject": "Python",
+        "room": "321",
+        "type": "л"
+      },
+      {
+        "subject": "Диффур",
+        "room": "325",
+        "type": "л",
+        "week": "ч/н"
+      },
+      {
+        "subject": "Диффур",
+        "room": "321",
+        "type": "пр",
+        "week": "ч/н"
+      }
+    ],
+    "Thursday": [
+      {
+        "subject": "Комбинаторные алгоритмы",
+        "room": "онлайн",
+        "type": "л"
+      },
+      {
+        "subject": "Физика",
+        "room": "321",
+        "type": "л"
+      },
+      {
+        "subject": "Физкультура",
+        "room": "спортзал",
+        "type": ""
+      },
+      {
+        "subject": "Физкультура",
+        "room": "спортзал",
+        "type": ""
+      }
+    ],
+    "Friday": [
+      {
+        "subject": "База данных",
+        "room": "319",
+        "type": "пр"
+      },
+      {
+        "subject": "Python",
+        "room": "319",
+        "type": "пр"
+      },
+      {
+        "subject": "Диффур",
+        "room": "322",
+        "type": "пр"
+      }
+    ],
+    "Saturday": [
+      {
+        "subject": "Комбинаторные алгоритмы",
+        "room": "онлайн",
+        "type": "л"
+      },
+      {
+        "subject": "Функц. программирование",
+        "room": "321",
+        "type": "л"
+      },
+      {
+        "subject": "",
+        "room": "",
+        "type": ""
+      },
+      {
+        "subject": "Функц. программирование",
+        "room": "300",
+        "type": "пр"
+      }
+    ],
+    "Sunday": []
+  }
+}

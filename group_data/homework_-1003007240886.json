@@ -1,0 +1,35 @@
+{
+  "db": [
+    {
+      "task": "https://notifications.googleapis.com/email/redirect?t=AFG8qyVmJRvK2acPV_pGbvFbI-pxo58MNzDOb777obEQJSyle55bmtGiv7fX-2ThctSKpRrifMbQbS_2SkTYTWASL9heB0uJVXu2m95ps7piX_lnH--lQskBHF6BYdcYqkKdrECZ2mPCsTOsL1qZRDIQYMPVz67yUZL__eVazlvJjoYqUJC2vpb2Fr051WT6cutrbhJdv3CxCGTUg5GCgg-s-C45i5A6jcX1mx6vhFvjUB4oUNW834fvMh9_VOYqfE_2YG9W8GAmo0FEZ1RjQUWoHKE1sOaEWsc1P7jCqJKvmU3EN0z76jm71e1Itywb0cS2JclSdg&r=eJzLKCkpKLbS10_JTy7WS8_PT89J1UvOzwXxS3NT80r0U_QNXT1TTC0j002jQircjTKjjDwKHMtCnYvLIywMq3SLggK8EiNyIrKdo9zSkvVTUzJL7EuLC2yLMxKLMvPSNQGCuSIA&s=ALHZ2r6SlQyeDsX90cUbDMY4wwqs",
+      "due": "2025-10-10",
+      "added": "2025-10-06"
+    }
+  ],
+  "diffur": [
+    {
+      "task": "186-210 filippov",
+      "due": "2025-10-10",
+      "added": "2025-10-06"
+    },
+    {
+      "task": "234-241 (Darbu), 242-251 (Rikatti) Karapetyanic",
+      "due": "2025-10-10",
+      "added": "2025-10-06"
+    }
+  ],
+  "kombalg": [
+    {
+      "task": "ДЗ-3 2, 4",
+      "due": "2025-10-08",
+      "added": "2025-10-06"
+    }
+  ],
+  "python": [
+    {
+      "task": "https://colab.research.google.com/drive/1UjZTuBxCMFNDHxoZnyM0lNTiFmdgNGav#scrollTo=3PBIH78f_uNR",
+      "due": "2025-10-10",
+      "added": "2025-10-06"
+    }
+  ]
+}
