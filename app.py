@@ -229,7 +229,7 @@ def parse_flexible_date(date_str: str) -> datetime.date | str:
         return datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
 
 async def cancel_conversation(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Operation cancelled\\.", parse_mode='MarkdownV2')
+    await update.message.reply_text("❌ Operation cancelled\\.", parse_mode='MarkdownV2')
     context.user_data.clear()
     return ConversationHandler.END
 
@@ -240,14 +240,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     welcome_msg = (
         f"Study Bot \\(Group: {chat_id}\\)\n\n"
         f"*Homework System \\(Dual Mode\\)*\n"
-        f"`/hw_add Subject \\| Task \\| Date` \\- *Quick Add* in one line\\.\n"
+        f"📚 `/hw_add Subject \\| Task \\| Date` \\- *Quick Add* in one line\\.\n"
         f"   _Date can be `tomorrow`, `DD\\-MM`, `YYYY\\-MM\\-DD`, or `TBD`_\\.\n"
         f"   _Example: `/hw_add Python \\| Finish exercise 5 \\| 20\\-11`_\n"
-        f"`/hw_long_add` \\- *Interactive Add* with step\\-by\\-step guidance\\.\n\n"
+        f"✍️ `/hw_long_add` \\- *Interactive Add* with step\\-by\\-step guidance\\.\n\n"
         f"*Timetable Management \\(Group\\-Specific\\)*\n"
-        f"`/timetable` \\- Show today's schedule for this group\\.\n"
-        f"`/full_timetable` \\- Show the full weekly schedule for this group\\.\n" 
-        f"`/set_timetable` \\- Start the process to set a new timetable for this group\\.\n\n"
+        f"📅 `/timetable` \\- Show today's schedule for this group\\.\n"
+        f"🗓️ `/full_timetable` \\- Show the full weekly schedule for this group\\.\n" 
+        f"📌 `/set_timetable` \\- Start the process to set a new timetable for this group\\.\n\n"
         f"*Other Commands:*\n"
         f"/hw\\_list, /hw\\_remove, /hw\\_today, /hw\\_overdue, /hw\\_stats, /hw\\_clean, /next, /motivate, /kys"
     )
@@ -258,7 +258,7 @@ async def hw_quick_add(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     if len(context.args) < 1:
         await update.message.reply_text(
-            "*Invalid format\\.* \n"
+            "⚠️ *Invalid format\\.* \n"
             "Use: `/hw_add Subject \\| Task \\| Date`\n\n"
             "Example:\n"
             "/hw_add Python \\| Create API client \\| TBD\n\n"
@@ -273,7 +273,7 @@ async def hw_quick_add(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     if len(parts) < 3:
         await update.message.reply_text(
-            "*Format:* `Subject \\| Task \\| Date`\n"
+            "⚠️ *Format:* `Subject \\| Task \\| Date`\n"
             "Please use the vertical bar `\\|` to separate the 3 parts\\.",
             parse_mode='MarkdownV2'
         )
@@ -285,7 +285,7 @@ async def hw_quick_add(update: Update, context: ContextTypes.DEFAULT_TYPE):
         due_date_or_tbd = parse_flexible_date(date_str)
     except ValueError as e:
         await update.message.reply_text(
-            f"*Invalid date:* {escape_markdown_v2(date_str)}\n"
+            f"⚠️ *Invalid date:* {escape_markdown_v2(date_str)}\n"
             f"Error: {escape_markdown_v2(str(e))}\n"
             "Use: `tomorrow`, `+N`, `DD\\-MM`, `YYYY\\-MM\\-DD`, or *`TBD`*",
             parse_mode='MarkdownV2'
@@ -312,7 +312,7 @@ async def hw_quick_add(update: Update, context: ContextTypes.DEFAULT_TYPE):
     task_preview = task[:100] + "..." if len(task) > 100 else task
     
     await update.message.reply_text(
-        f"*Homework added\\!*\n\n"
+        f"✅ *Homework added\\!*\n\n"
         f"*{escape_markdown_v2(subject)}*\n"
         f"Task: {escape_markdown_v2(task_preview)}\n"
         f"Due: {escape_markdown_v2(due_display)}", 
@@ -332,7 +332,7 @@ async def get_subject_long(update: Update, context: ContextTypes.DEFAULT_TYPE):
          context.args.clear()
          
     await update.message.reply_text(
-        f"Subject set to *{escape_markdown_v2(subject)}*\\.\n\n"
+        f"✅ Subject set to *{escape_markdown_v2(subject)}*\\.\n\n"
         "Now, what is the *Task*\\? \\(e\\.g\\. Finish exercise 5, Read chapter 2\\)", 
         parse_mode='MarkdownV2'
     )
@@ -346,7 +346,7 @@ async def get_task_long(update: Update, context: ContextTypes.DEFAULT_TYPE):
          context.args.clear()
          
     await update.message.reply_text(
-        "Task saved\\.\n\n"
+        "✅ Task saved\\.\n\n"
         "Finally, what is the *Due Date*\\?\n"
         "Use formats like: `tomorrow`, `+3 days`, `15\\-10`, `2025\\-10\\-15` or *`TBD`* for an undefined date\\.",
         parse_mode='MarkdownV2'
@@ -372,7 +372,7 @@ async def get_date_and_save_long(update: Update, context: ContextTypes.DEFAULT_T
         due_date_or_tbd = parse_flexible_date(date_str)
     except ValueError as e:
         await update.message.reply_text(
-            f"*Invalid date format:* {escape_markdown_v2(date_str)}\n"
+            f"⚠️ *Invalid date format:* {escape_markdown_v2(date_str)}\n"
             f"Error: {escape_markdown_v2(str(e))}\n"
             "Please try again with a valid date format \\(e\\.g\\. `tomorrow`, `15\\-10`, `+5`, *`TBD`*\\) or /cancel\\.",
             parse_mode='MarkdownV2'
@@ -439,7 +439,7 @@ async def hw_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 except ValueError:
                     pass
         
-        msg = (f"*Homework Statistics:*\n\n"
+        msg = (f"📊 *Homework Statistics:*\n\n"
                f"Total: {total}\n"
                f"Overdue: {overdue}\n"
                f"Due today: {due_today}\n"
@@ -503,7 +503,7 @@ async def hw_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("No homework due today", parse_mode='MarkdownV2')
             return
         
-        msg = "*Due today:*\n\n"
+        msg = "📅 *Due today:*\n\n"
         for i, (subj, task) in enumerate(today_hw, 1):
             preview = task['task'][:80] + "..." if len(task['task']) > 80 else task['task']
             msg += f"{i}\\. *{escape_markdown_v2(subj)}*: {escape_markdown_v2(preview)}\n\n"
@@ -527,7 +527,7 @@ async def hw_overdue(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         for subj, tasks in hw.items():
             for task in tasks:
-                if task["due"] == "TBD":
+                if not task.get("due") or task["due"] == "TBD":
                     continue
                 
                 try:
@@ -535,23 +535,26 @@ async def hw_overdue(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     if due < today:
                         days = (today - due).days
                         overdue.append((subj, task, days, due))
-                except ValueError:
-                    pass
+                except (ValueError, TypeError) as e:
+                    logger.warning(f"Invalid date format in homework: {task.get('due')} - {e}")
+                    continue
         
         if not overdue:
-            await update.message.reply_text("No overdue homework", parse_mode='MarkdownV2')
+            await update.message.reply_text("✅ No overdue homework", parse_mode='MarkdownV2')
             return
         
         overdue.sort(key=lambda x: x[3])
-        msg = f"*Overdue ({len(overdue)}):*\n\n"
+        msg = f"⚠️ *Overdue \\({len(overdue)}\\):*\n\n"
         
         for i, (subj, task, days, _) in enumerate(overdue, 1):
-            preview = task['task'][:60] + "..." if len(task['task']) > 60 else task['task']
-            msg += f"{i}\\. *{escape_markdown_v2(subj)}*: {escape_markdown_v2(preview)}\n   {escape_markdown_v2(task['due'])} \\({days}d overdue\\)\n\n"
+            task_text = task.get('task', 'No description')
+            preview = task_text[:60] + "..." if len(task_text) > 60 else task_text
+            due_date = task.get('due', 'Unknown')
+            msg += f"{i}\\. *{escape_markdown_v2(subj)}*: {escape_markdown_v2(preview)}\n   {escape_markdown_v2(due_date)} \\({days}d overdue\\)\n\n"
         
         await update.message.reply_text(msg, parse_mode='MarkdownV2')
     except Exception as e:
-        logger.error(f"Error in hw_overdue: {e}")
+        logger.error(f"Error in hw_overdue: {e}", exc_info=True)
         await update.message.reply_text("Error getting overdue homework", parse_mode='MarkdownV2')
 
 async def hw_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -664,7 +667,7 @@ async def hw_remove(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         task_preview = removed['task'][:80] + "..." if len(removed['task']) > 80 else removed['task']
         await update.message.reply_text(
-            f"Removed from *{escape_markdown_v2(subject)}*:\n{escape_markdown_v2(task_preview)}", 
+            f"✅ Removed from *{escape_markdown_v2(subject)}*:\n{escape_markdown_v2(task_preview)}", 
             parse_mode='MarkdownV2'
         )
     except Exception as e:
@@ -688,13 +691,13 @@ async def timetable(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         if day_name not in schedule or not schedule[day_name]:
             await update.message.reply_text(
-                f"*{escape_markdown_v2(day_name)}*: No lessons", 
+                f"📅 *{escape_markdown_v2(day_name)}*: No lessons", 
                 parse_mode='MarkdownV2'
             )
             return
         
         week_type = get_week_type(today)
-        msg = f"*{escape_markdown_v2(day_name)}* \\({week_type}\\):\n\n"
+        msg = f"📅 *{escape_markdown_v2(day_name)}* \\({week_type}\\):\n\n"
         
         displayed_count = 0
         for i, lesson in enumerate(schedule[day_name], 1):
@@ -720,7 +723,7 @@ async def timetable(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         if displayed_count == 0:
             await update.message.reply_text(
-                f"*{escape_markdown_v2(day_name)}*: No lessons this week \\({week_type}\\)", 
+                f"📅 *{escape_markdown_v2(day_name)}*: No lessons this week \\({week_type}\\)", 
                 parse_mode='MarkdownV2'
             )
             return
@@ -744,7 +747,7 @@ async def full_timetable(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         today = datetime.date.today()
         week_type = get_week_type(today)
-        msg = f"*Full Weekly Timetable* \\({week_type}\\):\n\n"
+        msg = f"📅 *Full Weekly Timetable* \\({week_type}\\):\n\n"
         
         days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
         
@@ -789,7 +792,7 @@ async def set_timetable_start(update: Update, context: ContextTypes.DEFAULT_TYPE
     reply_markup = InlineKeyboardMarkup(keyboard)
     
     await update.message.reply_text(
-        "*Timetable Setup*\n\n"
+        "📅 *Timetable Setup*\n\n"
         "Choose how to set the timetable:",
         reply_markup=reply_markup,
         parse_mode='MarkdownV2'
@@ -840,14 +843,14 @@ async def receive_timetable_json(update: Update, context: ContextTypes.DEFAULT_T
         save_group_timetable(chat_id, new_schedule)
         
         await update.message.reply_text(
-            f"Timetable updated for group {chat_id}\\!",
+            f"✅ Timetable updated for group {chat_id}\\!",
             parse_mode='MarkdownV2'
         )
         return ConversationHandler.END
         
     except json.JSONDecodeError as e:
         await update.message.reply_text(
-            f"Invalid JSON: {escape_markdown_v2(str(e))}\nPlease try again or /cancel\\.",
+            f"⚠️ Invalid JSON: {escape_markdown_v2(str(e))}\nPlease try again or /cancel\\.",
             parse_mode='MarkdownV2'
         )
         return SETTING_TIMETABLE
@@ -855,7 +858,7 @@ async def receive_timetable_json(update: Update, context: ContextTypes.DEFAULT_T
 async def timetable_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    await query.edit_message_text("Timetable setup cancelled\\.", parse_mode='MarkdownV2')
+    await query.edit_message_text("❌ Timetable setup cancelled\\.", parse_mode='MarkdownV2')
     return ConversationHandler.END
 
 async def next_lesson(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -890,20 +893,20 @@ async def next_lesson(update: Update, context: ContextTypes.DEFAULT_TYPE):
                             continue
                         
                         week_type = get_week_type(check_date)
-                        msg = f"*Next lesson:*\n\n"
+                        msg = f"📚 *Next lesson:*\n\n"
                         msg += f"*{escape_markdown_v2(subj)}*"
                         
                         if ltype:
                             msg += f" \\({escape_markdown_v2(ltype)}\\)"
                         if room:
-                            msg += f"\n {escape_markdown_v2(room)}"
+                            msg += f"\n📍 {escape_markdown_v2(room)}"
                         
                         if offset == 0:
-                            msg += f"\nToday \\({week_type}\\)"
+                            msg += f"\n📅 Today \\({week_type}\\)"
                         elif offset == 1:
-                            msg += f"\nTomorrow \\({week_type}\\)"
+                            msg += f"\n📅 Tomorrow \\({week_type}\\)"
                         else:
-                            msg += f"\n{escape_markdown_v2(check_day)} \\({week_type}\\)"
+                            msg += f"\n📅 {escape_markdown_v2(check_day)} \\({week_type}\\)"
                         
                         await update.message.reply_text(msg, parse_mode='MarkdownV2')
                         return
@@ -1151,8 +1154,8 @@ def main():
             entry_points=[CommandHandler("set_timetable", set_timetable_start)],
             states={
                 SETTING_TIMETABLE: [
-                    CallbackQueryHandler(timetable_json_prompt, pattern='^timetable_json'),
-                    CallbackQueryHandler(timetable_cancel, pattern='^timetable_cancel'),
+                    CallbackQueryHandler(timetable_json_prompt, pattern='^timetable_json),
+                    CallbackQueryHandler(timetable_cancel, pattern='^timetable_cancel),
                     MessageHandler(filters.TEXT & ~filters.COMMAND, receive_timetable_json),
                 ],
             },
@@ -1161,7 +1164,7 @@ def main():
         app.add_handler(timetable_handler)
         
         app.add_handler(CallbackQueryHandler(kys_confirm, pattern='^kys_confirm_'))
-        app.add_handler(CallbackQueryHandler(kys_cancel, pattern='^kys_cancel'))
+        app.add_handler(CallbackQueryHandler(kys_cancel, pattern='^kys_cancel))
         
         logger.info("Bot started successfully")
         app.run_polling(allowed_updates=Update.ALL_TYPES)
