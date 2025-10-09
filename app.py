@@ -934,22 +934,6 @@ async def motivate(update: Update, context: ContextTypes.DEFAULT_TYPE):
     quote = random.choice(quotes)
     await update.message.reply_text(f"💪 {escape_markdown_v2(quote)}", parse_mode='MarkdownV2')
 
-async def kys_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    chat_id = get_chat_id(update)
-    
-    keyboard = [
-        [InlineKeyboardButton("Yes, delete everything", callback_data=f'kys_confirm_{chat_id}')],
-        [InlineKeyboardButton("No, cancel", callback_data='kys_cancel')]
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    
-    await update.message.reply_text(
-        "⚠️ *WARNING*\n\n"
-        "This will DELETE ALL homework and timetable data for this group\\.\n"
-        "Are you sure\\?",
-        reply_markup=reply_markup,
-        parse_mode='MarkdownV2'
-    )
 
 async def kys(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
@@ -1129,7 +1113,7 @@ def main():
         app.add_handler(CommandHandler("full_timetable", full_timetable))
         app.add_handler(CommandHandler("next", next_lesson))
         app.add_handler(CommandHandler("motivate", motivate))
-        app.add_handler(CommandHandler("kys", kys_command))
+        app.add_handler(CommandHandler("kys", kys))
         
         long_add_handler = ConversationHandler(
             entry_points=[CommandHandler("hw_long_add", hw_long_add_start)],
@@ -1154,10 +1138,7 @@ def main():
             fallbacks=[CommandHandler("cancel", cancel_conversation)],
         )
         app.add_handler(timetable_handler)
-        
-        app.add_handler(CallbackQueryHandler(kys_confirm, pattern='^kys_confirm_'))
-        app.add_handler(CallbackQueryHandler(kys_cancel, pattern='^kys_cancel'))
-        
+                
         logger.info("Bot started successfully")
         app.run_polling(allowed_updates=Update.ALL_TYPES)
         
