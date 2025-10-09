@@ -236,7 +236,7 @@ async def cancel_conversation(update: Update, context: ContextTypes.DEFAULT_TYPE
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = get_chat_id(update)
     chat_type = update.effective_chat.type
-    
+
     welcome_msg = (
         f"Study Bot \\(Group: {chat_id}\\)\n\n"
         f"*Homework System \\(Dual Mode\\)*\n"
@@ -249,7 +249,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"🗓️ `/full_timetable` \\- Show the full weekly schedule for this group\\.\n" 
         f"📌 `/set_timetable` \\- Start the process to set a new timetable for this group\\.\n\n"
         f"*Other Commands:*\n"
-        f"/hw\\_list, /hw\\_remove, /hw\\_today, /hw\\_overdue, /hw\\_stats, /hw\\_clean, /next, /motivate, /kys"
+        f"`/hw_list`, `/hw_remove`, `/hw_today`, `/hw_overdue`, `/hw_stats`, `/hw_clean`, `/next`, `/motivate`, `/kys`"
     )
     await update.message.reply_text(welcome_msg, parse_mode='MarkdownV2')
 
@@ -1080,8 +1080,8 @@ async def post_init(application: Application):
         BotCommand("full_timetable", "Show full weekly schedule"),
         BotCommand("set_timetable", "Set new timetable for this group"),
         BotCommand("next", "Show next lesson"),
-        BotCommand("motivate", "Get a motivational quote"),
-        BotCommand("kys", "Delete all group data"),
+        BotCommand("motivate", "the motivation u always needed"),
+        BotCommand("kys", "random bs"),
     ]
     
     await application.bot.set_my_commands(commands)
