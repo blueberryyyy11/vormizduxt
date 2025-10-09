@@ -1154,8 +1154,8 @@ def main():
             entry_points=[CommandHandler("set_timetable", set_timetable_start)],
             states={
                 SETTING_TIMETABLE: [
-                    CallbackQueryHandler(timetable_json_prompt, pattern='^timetable_json),
-                    CallbackQueryHandler(timetable_cancel, pattern='^timetable_cancel),
+                    CallbackQueryHandler(timetable_json_prompt, pattern='^timetable_json'),
+                    CallbackQueryHandler(timetable_cancel, pattern='^timetable_cancel'),
                     MessageHandler(filters.TEXT & ~filters.COMMAND, receive_timetable_json),
                 ],
             },
@@ -1164,7 +1164,7 @@ def main():
         app.add_handler(timetable_handler)
         
         app.add_handler(CallbackQueryHandler(kys_confirm, pattern='^kys_confirm_'))
-        app.add_handler(CallbackQueryHandler(kys_cancel, pattern='^kys_cancel))
+        app.add_handler(CallbackQueryHandler(kys_cancel, pattern='^kys_cancel'))
         
         logger.info("Bot started successfully")
         app.run_polling(allowed_updates=Update.ALL_TYPES)
