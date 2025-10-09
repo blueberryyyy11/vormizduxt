@@ -918,15 +918,18 @@ async def next_lesson(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def motivate(update: Update, context: ContextTypes.DEFAULT_TYPE):
     quotes = [
-        "Success is not final, failure is not fatal",
-        "Dream big, work hard, stay focused",
-        "The expert in anything was once a beginner",
-        "Education is the passport to the future",
-        "Don't watch the clock; do what it does. Keep going",
-        "Study while others are sleeping",
-        "The only way to learn is to live",
-        "Knowledge is power",
-    ]
+        "soberis tryapka",
+        "ուզում ես մոդուլը գա վատ գրես նեղվես հետո նոր ուշքի գաս հա արա՞՞՞՞՞՞՞",
+        "ape heraxosd shprti dasd ara", 
+        "hishi vor mard ka qeznic poqr a u arden senior a",
+        "Нечетное число - это НЕ четное число",
+        "Եթե չես կարում ասես ուրեմն չգիտես:",
+        "Меня не интересуют твои примеры. Доказывай.",
+        "Конечно могу, это же я написал.",
+        "Я ответил на ваш вопрос?",
+        "es im vaxtov jamy 4in ei zartnum vor matanaliz anei",
+        "porsche es uzum? de sovori (iharke eskortnicayi tarberaky misht ka bayc du sovori)",
+]
     
     quote = random.choice(quotes)
     await update.message.reply_text(f"💪 {escape_markdown_v2(quote)}", parse_mode='MarkdownV2')
@@ -948,30 +951,19 @@ async def kys_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode='MarkdownV2'
     )
 
-async def kys_confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    await query.answer()
-    
-    chat_id = int(query.data.split('_')[-1])
-    
+async def kys(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
-        hw_file = get_homework_file(chat_id)
-        config_file = get_config_file(chat_id)
-        
-        if os.path.exists(hw_file):
-            os.remove(hw_file)
-        if os.path.exists(config_file):
-            os.remove(config_file)
-        
-        await query.edit_message_text("🗑️ All data deleted for this group\\.", parse_mode='MarkdownV2')
+        messages = [
+            "nigga?",
+            "hambal",
+            "а ты не только зашел???",
+            "likvid.",
+            "es el qez em sirum", 
+            "poshol naxuy",
+        ]
+        await update.message.reply_text(escape_markdown_v2(random.choice(messages)), parse_mode='MarkdownV2')
     except Exception as e:
-        logger.error(f"Error in kys_confirm: {e}")
-        await query.edit_message_text("Error deleting data", parse_mode='MarkdownV2')
-
-async def kys_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    await query.answer()
-    await query.edit_message_text("❌ Deletion cancelled\\.", parse_mode='MarkdownV2')
+        logger.error(f"Error in kys: {e}")
 
 async def send_reminder_to_group(app: Application, chat_id: int, message: str):
     try:
