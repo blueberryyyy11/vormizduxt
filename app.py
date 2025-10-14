@@ -208,7 +208,7 @@ def parse_flexible_date(date_str: str) -> datetime.date | str:
     if date_lower in ["none", "tbd", "n/a", "undefined", "-"]:
         return "TBD"
     
-    if date_lower in ["today", "սյօր", "сегодня"]:
+    if date_lower in ["today", "ասյօր", "сегодня"]:
         return today
     elif date_lower in ["tomorrow", "վաղը", "завтра"]:
         return today + datetime.timedelta(days=1)
@@ -284,7 +284,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "`/full_timetable` \\- week\n"
         "`/set_timetable` \\- edit\n"
         "`/next` \\- next lesson\n\n"
-        "_Date: tomorrow, \\+3, 15\\-12, TBD_\n"
+        "_Date: tomorrow, next week_, today_, \\+3, 15\\-12, TBD_, undefined_, none_, -_, n/a_\n"
         "_Deadlines are at 00:00 on the due date_"
     )
     await update.message.reply_text(msg, parse_mode='MarkdownV2')
