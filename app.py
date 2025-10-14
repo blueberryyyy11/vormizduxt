@@ -21,10 +21,12 @@ import signal
 import sys
 from typing import Dict, List, Any, Tuple
 
-TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk")
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 DEFAULT_GROUP_ID = -123456789
 
 if not TOKEN:
+    logger.error("TELEGRAM_BOT_TOKEN environment variable is not set!")
+    logger.error("Please set it with: export TELEGRAM_BOT_TOKEN='your_token_here'")
     raise ValueError("TELEGRAM_BOT_TOKEN environment variable is required")
 
 DATA_DIR = "group_data"
@@ -67,6 +69,8 @@ INITIAL_TIMETABLE: Dict[str, List[Dict[str, str]]] = {
     "Thursday": [
         {"subject": "Комбинаторные алгоритмы", "room": "онлайн", "type": "л"},
         {"subject": "Физика", "room": "321", "type": "л"},
+        {"subject": "Физкультура", "room": "спортзал", "type": ""},
+        {"subject": "Физкультура", "room": "спортзал", "type": ""},
     ],
     "Friday": [
         {"subject": "База данных", "room": "319", "type": "пр"},
@@ -174,6 +178,18 @@ def release_lock():
             os.unlink(LOCK_FILE)
         except (IOError, OSError):
             pass
+
+async def verify_bot_token(token: str) -> bool:
+    """Verify bot token is valid by making a test API call"""
+    try:
+        from telegram import Bot
+        bot = Bot(token=token)
+        me = await bot.get_me()
+        logger.info(f"✓ Bot token valid - Connected as: @{me.username} ({me.first_name})")
+        return True
+    except Exception as e:
+        logger.error(f"✗ Bot token verification failed: {e}")
+        return False
 
 def get_week_type(date: datetime.date = None) -> str:
     if date is None:
@@ -1026,16 +1042,27 @@ async def post_shutdown(application: Application):
 def main():
     global app
     
+    logger.info(f"Bot starting with Python {sys.version}")
+    logger.info(f"TOKEN configured: {TOKEN[:10]}...{TOKEN[-5:]}")
+    logger.info(f"Working directory: {os.getcwd()}")
+    logger.info(f"Data directory: {DATA_DIR}")
+    
     if not acquire_lock():
-        logger.error("Another instance is already running")
+        logger.error("Another instance is already running (lock file exists)")
+        logger.error(f"Lock file location: {os.path.abspath(LOCK_FILE)}")
         sys.exit(1)
+    
+    logger.info("Lock acquired successfully")
     
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
     
     try:
+        logger.info("Building application...")
         app = Application.builder().token(TOKEN).post_init(post_init).post_shutdown(post_shutdown).build()
+        logger.info("Application built successfully")
         
+        logger.info("Adding command handlers...")
         app.add_handler(CommandHandler("start", start))
         app.add_handler(CommandHandler("hw_add", hw_quick_add))
         app.add_handler(CommandHandler("hw_list", hw_list))
@@ -1050,6 +1077,7 @@ def main():
         app.add_handler(CommandHandler("motivate", motivate))
         app.add_handler(CommandHandler("kys", kys))
         
+        logger.info("Adding conversation handlers...")
         long_add_handler = ConversationHandler(
             entry_points=[CommandHandler("hw_long_add", hw_long_add_start)],
             states={
@@ -1074,11 +1102,27 @@ def main():
         )
         app.add_handler(timetable_handler)
         
-        logger.info("Starting bot...")
-        app.run_polling(allowed_updates=Update.ALL_TYPES)
+        logger.info("All handlers registered successfully")
+        logger.info("Starting polling...")
+        logger.info("=" * 50)
+        logger.info("BOT IS NOW RUNNING - Press Ctrl+C to stop")
+        logger.info("=" * 50)
         
+        app.run_polling(
+            allowed_updates=Update.ALL_TYPES,
+            drop_pending_updates=True,
+            close_loop=False
+        )
+        
+        logger.info("Polling stopped normally")
+        
+    except KeyboardInterrupt:
+        logger.info("Received keyboard interrupt")
     except Exception as e:
         logger.error(f"Fatal error: {e}", exc_info=True)
+        import traceback
+        logger.error(f"Traceback: {traceback.format_exc()}")
     finally:
+        logger.info("Cleaning up...")
         release_lock()
-        logger.info("Bot stopped")
+        logger.info("Bot stopped gracefully")
