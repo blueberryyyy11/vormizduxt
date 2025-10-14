@@ -69,8 +69,6 @@ INITIAL_TIMETABLE: Dict[str, List[Dict[str, str]]] = {
     "Thursday": [
         {"subject": "Комбинаторные алгоритмы", "room": "онлайн", "type": "л"},
         {"subject": "Физика", "room": "321", "type": "л"},
-        {"subject": "Физкультура", "room": "спортзал", "type": ""},
-        {"subject": "Физкультура", "room": "спортзал", "type": ""},
     ],
     "Friday": [
         {"subject": "База данных", "room": "319", "type": "пр"},
@@ -983,7 +981,11 @@ async def reminder_loop():
     while not shutdown_event.is_set():
         try:
             await check_and_send_reminders()
-            await asyncio.sleep(60)
+            # Wait for 60 seconds or until the shutdown event is set
+            await asyncio.wait_for(shutdown_event.wait(), timeout=60)
+        except asyncio.TimeoutError:
+            # Expected on timeout, continue loop
+            pass
         except asyncio.CancelledError:
             logger.info("Reminder loop cancelled")
             break
@@ -1021,6 +1023,15 @@ async def post_init(application: Application):
     ]
     
     await application.bot.set_my_commands(commands)
+    # Check if a reminder_task is already running (e.g., from a previous run or restart)
+    if reminder_task and not reminder_task.done():
+        reminder_task.cancel()
+        try:
+            await reminder_task
+        except asyncio.CancelledError:
+            pass
+            
+    # Start the reminder loop as a new task
     reminder_task = asyncio.create_task(reminder_loop())
     logger.info("Bot initialized successfully")
 
@@ -1054,6 +1065,7 @@ def main():
     
     logger.info("Lock acquired successfully")
     
+    # Register system signal handlers for graceful shutdown
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
     
@@ -1108,10 +1120,11 @@ def main():
         logger.info("BOT IS NOW RUNNING - Press Ctrl+C to stop")
         logger.info("=" * 50)
         
+        # --- FIX APPLIED HERE: Removed close_loop=False to block main thread ---
         app.run_polling(
             allowed_updates=Update.ALL_TYPES,
-            drop_pending_updates=True,
-            close_loop=False
+            drop_pending_updates=True
+            # Note: close_loop=False was removed
         )
         
         logger.info("Polling stopped normally")
@@ -1126,3 +1139,6 @@ def main():
         logger.info("Cleaning up...")
         release_lock()
         logger.info("Bot stopped gracefully")
+
+if __name__ == '__main__':
+    main()
