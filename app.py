@@ -21,7 +21,7 @@ import signal
 import sys
 from typing import Dict, List, Any, Tuple
 
-TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk")
 DEFAULT_GROUP_ID = -123456789
 
 if not TOKEN:
