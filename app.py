@@ -19,7 +19,7 @@ from telegram.ext import (
 )
 import signal
 import sys
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Tuple
 
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "8466519086:AAFKIpz3d30irZH5UedMwWyIIF62QeoNJvk")
 DEFAULT_GROUP_ID = -123456789
@@ -67,8 +67,6 @@ INITIAL_TIMETABLE: Dict[str, List[Dict[str, str]]] = {
     "Thursday": [
         {"subject": "Комбинаторные алгоритмы", "room": "онлайн", "type": "л"},
         {"subject": "Физика", "room": "321", "type": "л"},
-        {"subject": "Физкультура", "room": "спортзал", "type": ""},
-        {"subject": "Физкультура", "room": "спортзал", "type": ""},
     ],
     "Friday": [
         {"subject": "База данных", "room": "319", "type": "пр"},
@@ -126,7 +124,7 @@ def load_group_config(chat_id: int) -> Dict[str, Any]:
         config = {
             "reminders_enabled": True,
             "morning_reminder": "08:00",
-            "evening_reminder": "16:00",
+            "evening_reminder": "18:00",
             "timezone": "Asia/Yerevan",
         }
 
@@ -215,6 +213,43 @@ def parse_flexible_date(date_str: str) -> datetime.date | str:
             return target_date
         return datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
 
+def format_deadline_status(due_date_str: str) -> Tuple[str, int, datetime.datetime]:
+    """
+    Returns (status_emoji_text, priority, deadline_datetime)
+    Deadline is at 00:00 (midnight at start of the due date)
+    Priority: lower number = higher urgency
+    """
+    if due_date_str == "TBD":
+        return ("TBD", 999, datetime.datetime.max)
+    
+    try:
+        due_date = datetime.datetime.strptime(due_date_str, "%Y-%m-%d").date()
+        deadline_dt = datetime.datetime.combine(due_date, datetime.time.min)
+        deadline_dt = ARMENIA_TZ.localize(deadline_dt)
+        
+        now = datetime.datetime.now(ARMENIA_TZ)
+        time_left = deadline_dt - now
+        
+        hours_left = time_left.total_seconds() / 3600
+        
+        if hours_left < 0:
+            days_overdue = abs(int(hours_left / 24))
+            return (f"⚠️ {days_overdue}d overdue", 0, deadline_dt)
+        elif hours_left < 24:
+            if hours_left < 1:
+                mins = int(hours_left * 60)
+                return (f"🔴 {mins}min left", 1, deadline_dt)
+            else:
+                hrs = int(hours_left)
+                return (f"🔴 {hrs}h left", 1, deadline_dt)
+        elif hours_left < 48:
+            return ("🟡 tomorrow", 2, deadline_dt)
+        else:
+            days = int(hours_left / 24)
+            return (f"{days}d", 3, deadline_dt)
+    except (ValueError, TypeError):
+        return ("?", 998, datetime.datetime.max)
+
 async def cancel_conversation(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("✗ Cancelled", parse_mode='MarkdownV2')
     context.user_data.clear()
@@ -235,7 +270,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "`/full_timetable` \\- week\n"
         "`/set_timetable` \\- edit\n"
         "`/next` \\- next lesson\n\n"
-        "_Date: tomorrow, \\+3, 15\\-12, TBD_"
+        "_Date: tomorrow, \\+3, 15\\-12, TBD_\n"
+        "_Deadlines are at 00:00 on the due date_"
     )
     await update.message.reply_text(msg, parse_mode='MarkdownV2')
 
@@ -270,10 +306,10 @@ async def hw_quick_add(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     if due_date_or_tbd == "TBD":
         due_iso = "TBD"
-        due_display = "TBD"
+        status_text = "TBD"
     else:
         due_iso = due_date_or_tbd.isoformat()
-        due_display = due_date_or_tbd.strftime('%d/%m')
+        status_text, _, _ = format_deadline_status(due_iso)
     
     hw = load_homework(chat_id)
     hw_item = {
@@ -290,7 +326,7 @@ async def hw_quick_add(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         f"✓ *{escape_markdown_v2(subject)}*\n"
         f"{escape_markdown_v2(task_preview)}\n"
-        f"Due: {escape_markdown_v2(due_display)}", 
+        f"Due: {escape_markdown_v2(status_text)}", 
         parse_mode='MarkdownV2'
     )
 
@@ -350,10 +386,10 @@ async def get_date_and_save_long(update: Update, context: ContextTypes.DEFAULT_T
 
     if due_date_or_tbd == "TBD":
         due_iso = "TBD"
-        due_display = "TBD"
+        status_text = "TBD"
     else:
         due_iso = due_date_or_tbd.isoformat()
-        due_display = due_date_or_tbd.strftime('%d/%m')
+        status_text, _, _ = format_deadline_status(due_iso)
 
     hw = load_homework(chat_id)
     hw_item = {
@@ -369,7 +405,7 @@ async def get_date_and_save_long(update: Update, context: ContextTypes.DEFAULT_T
     await update.message.reply_text(
         f"✓ *{escape_markdown_v2(subject)}*\n"
         f"{escape_markdown_v2(task_preview)}\n"
-        f"Due: {escape_markdown_v2(due_display)}",
+        f"Due: {escape_markdown_v2(status_text)}",
         parse_mode='MarkdownV2'
     )
     
@@ -386,8 +422,8 @@ async def hw_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     total = sum(len(tasks) for tasks in hw.values())
     overdue = due_today = due_tomorrow = tbd_count = 0
-    today = datetime.date.today()
-    tomorrow = today + datetime.timedelta(days=1)
+    
+    now = datetime.datetime.now(ARMENIA_TZ)
     
     for tasks in hw.values():
         for task in tasks:
@@ -395,23 +431,20 @@ async def hw_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 tbd_count += 1
                 continue
             
-            try:
-                due_date = datetime.datetime.strptime(task["due"], "%Y-%m-%d").date()
-                if due_date < today:
-                    overdue += 1
-                elif due_date == today:
-                    due_today += 1
-                elif due_date == tomorrow:
-                    due_tomorrow += 1
-            except ValueError:
-                pass
+            status_text, priority, _ = format_deadline_status(task["due"])
+            if priority == 0:
+                overdue += 1
+            elif priority == 1:
+                due_today += 1
+            elif priority == 2:
+                due_tomorrow += 1
     
     msg = (
         f"*Stats*\n\n"
         f"Total: {total}\n"
         f"Overdue: {overdue}\n"
-        f"Today: {due_today}\n"
-        f"Tomorrow: {due_tomorrow}\n"
+        f"Due today: {due_today}\n"
+        f"Due tomorrow: {due_tomorrow}\n"
         f"TBD: {tbd_count}"
     )
     
@@ -456,18 +489,22 @@ async def hw_clean(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def hw_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = get_chat_id(update)
     hw = load_homework(chat_id)
-    today = datetime.date.today().isoformat()
     
-    today_hw = [(s, t) for s, tasks in hw.items() for t in tasks if t["due"] == today]
+    today_hw = []
+    for subj, tasks in hw.items():
+        for task in tasks:
+            status_text, priority, _ = format_deadline_status(task["due"])
+            if priority == 1:
+                today_hw.append((subj, task, status_text))
     
     if not today_hw:
         await update.message.reply_text("Nothing due today", parse_mode='MarkdownV2')
         return
     
     msg = "*Due Today*\n\n"
-    for subj, task in today_hw:
+    for subj, task, status in today_hw:
         preview = task['task'][:60] if len(task['task']) <= 60 else task['task'][:60] + "..."
-        msg += f"*{escape_markdown_v2(subj)}*\n{escape_markdown_v2(preview)}\n\n"
+        msg += f"*{escape_markdown_v2(subj)}* {escape_markdown_v2(status)}\n{escape_markdown_v2(preview)}\n\n"
     
     await update.message.reply_text(msg, parse_mode='MarkdownV2')
 
@@ -479,21 +516,13 @@ async def hw_overdue(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("No homework", parse_mode='MarkdownV2')
         return
     
-    today = datetime.date.today()
     overdue = []
     
     for subj, tasks in hw.items():
         for task in tasks:
-            if not task.get("due") or task["due"] == "TBD":
-                continue
-            
-            try:
-                due = datetime.datetime.strptime(task["due"], "%Y-%m-%d").date()
-                if due < today:
-                    days = (today - due).days
-                    overdue.append((subj, task, days, due))
-            except (ValueError, TypeError):
-                continue
+            status_text, priority, deadline_dt = format_deadline_status(task["due"])
+            if priority == 0:
+                overdue.append((subj, task, status_text, deadline_dt))
     
     if not overdue:
         await update.message.reply_text("✓ Nothing overdue", parse_mode='MarkdownV2')
@@ -502,9 +531,9 @@ async def hw_overdue(update: Update, context: ContextTypes.DEFAULT_TYPE):
     overdue.sort(key=lambda x: x[3])
     msg = f"*Overdue \\({len(overdue)}\\)*\n\n"
     
-    for subj, task, days, _ in overdue[:10]:
+    for subj, task, status, _ in overdue[:10]:
         preview = task['task'][:50] if len(task['task']) <= 50 else task['task'][:50] + "..."
-        msg += f"*{escape_markdown_v2(subj)}*\n{escape_markdown_v2(preview)}\n\\({days}d overdue\\)\n\n"
+        msg += f"*{escape_markdown_v2(subj)}* {escape_markdown_v2(status)}\n{escape_markdown_v2(preview)}\n\n"
     
     if len(overdue) > 10:
         msg += f"_\\.\\.\\. {len(overdue) - 10} more_"
@@ -520,42 +549,20 @@ async def hw_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     
     msg = "*Homework*\n\n"
-    today = datetime.date.today()
     
     for idx, subj in enumerate(sorted(hw.keys()), 1):
         msg += f"*{idx}\\. {escape_markdown_v2(subj)}*\n"
         
         tasks_info = []
         for i, task in enumerate(hw[subj], 1):
-            due_date_str = task["due"]
-            
-            if due_date_str == "TBD":
-                status = "TBD"
-                due_date_obj = None
-            else:
-                try:
-                    due_date_obj = datetime.datetime.strptime(due_date_str, "%Y-%m-%d").date()
-                    days = (due_date_obj - today).days
-                    
-                    if days < 0:
-                        status = f"⚠️ {abs(days)}d"
-                    elif days == 0:
-                        status = "📍 today"
-                    elif days == 1:
-                        status = "📌 tomorrow"
-                    else:
-                        status = f"{days}d"
-                except ValueError:
-                    status = "?"
-                    due_date_obj = None
-            
-            tasks_info.append((i, task, status, due_date_obj))
+            status_text, priority, deadline_dt = format_deadline_status(task["due"])
+            tasks_info.append((i, task, status_text, priority, deadline_dt))
         
-        tasks_info.sort(key=lambda x: x[3] if x[3] else datetime.date.max)
+        tasks_info.sort(key=lambda x: (x[3], x[4]))
         
-        for i, task, status, _ in tasks_info:
+        for i, task, status, _, _ in tasks_info:
             preview = task['task'][:70] if len(task['task']) <= 70 else task['task'][:70] + "..."
-            msg += f"   `{i}` {escape_markdown_v2(preview)} \\({status}\\)\n"
+            msg += f"   `{i}` {escape_markdown_v2(preview)} {escape_markdown_v2(status)}\n"
         msg += "\n"
     
     await update.message.reply_text(msg, parse_mode='MarkdownV2')
@@ -852,12 +859,15 @@ async def kys(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(escape_markdown_v2(random.choice(messages)), parse_mode='MarkdownV2')
 
 async def send_reminder_to_group(app: Application, chat_id: int, message: str):
+    """Send reminder with error handling"""
     try:
         await app.bot.send_message(chat_id=chat_id, text=message, parse_mode='MarkdownV2')
+        logger.info(f"Reminder sent to {chat_id}")
     except Exception as e:
         logger.error(f"Failed to send reminder to {chat_id}: {e}")
 
 async def check_and_send_reminders():
+    """Check and send reminders based on time"""
     global app, last_reminder_data
     
     if not app:
@@ -873,20 +883,25 @@ async def check_and_send_reminders():
             if not filename.startswith("config_"):
                 continue
             
-            chat_id = int(filename.replace("config_", "").replace(".json", ""))
+            try:
+                chat_id = int(filename.replace("config_", "").replace(".json", ""))
+            except ValueError:
+                continue
+                
             config = load_group_config(chat_id)
             
             if not config.get("reminders_enabled", True):
                 continue
             
             morning_time = config.get("morning_reminder", "08:00")
-            evening_time = config.get("evening_reminder", "16:00")
+            evening_time = config.get("evening_reminder", "18:00")
             
             reminder_key = f"{chat_id}_{current_time}_{today.isoformat()}"
             
             if reminder_key in last_reminder_data:
                 continue
             
+            # Morning reminder: Today's lessons
             if current_time == morning_time:
                 schedule = load_group_timetable(chat_id)
                 day_name = today.strftime('%A')
@@ -896,20 +911,30 @@ async def check_and_send_reminders():
                     for lesson in schedule[day_name]:
                         if is_lesson_this_week(lesson, today):
                             subj = lesson.get("subject", "").strip()
+                            room = lesson.get("room", "").strip()
+                            ltype = lesson.get("type", "").strip()
+                            
                             if subj:
-                                lessons_today.append(subj)
+                                lesson_info = subj
+                                if ltype:
+                                    lesson_info += f" ({ltype})"
+                                if room:
+                                    lesson_info += f" - {room}"
+                                lessons_today.append(lesson_info)
                     
                     if lessons_today:
-                        msg = f"*Today's lessons*\n\n"
-                        for i, subj in enumerate(lessons_today, 1):
-                            msg += f"`{i}` {escape_markdown_v2(subj)}\n"
+                        msg = f"🌅 *Today's Lessons*\n\n"
+                        for i, lesson_info in enumerate(lessons_today, 1):
+                            msg += f"`{i}` {escape_markdown_v2(lesson_info)}\n"
                         
                         await send_reminder_to_group(app, chat_id, msg)
                         last_reminder_data[reminder_key] = True
             
+            # Evening reminder: Homework due tomorrow at 00:00
             elif current_time == evening_time:
                 hw = load_homework(chat_id)
                 
+                # Find homework due tomorrow (deadline is at 00:00 tomorrow)
                 tomorrow_hw = []
                 for subj, tasks in hw.items():
                     for task in tasks:
@@ -917,7 +942,7 @@ async def check_and_send_reminders():
                             tomorrow_hw.append((subj, task))
                 
                 if tomorrow_hw:
-                    msg = f"*Due tomorrow*\n\n"
+                    msg = f"🌙 *Due Tomorrow at 00:00*\n\n"
                     for subj, task in tomorrow_hw[:5]:
                         preview = task['task'][:60] if len(task['task']) <= 60 else task['task'][:60] + "..."
                         msg += f"*{escape_markdown_v2(subj)}*\n{escape_markdown_v2(preview)}\n\n"
@@ -928,28 +953,36 @@ async def check_and_send_reminders():
                     await send_reminder_to_group(app, chat_id, msg)
                     last_reminder_data[reminder_key] = True
         
+        # Clean old reminder data
         keys_to_remove = [k for k in last_reminder_data.keys() if k.split('_')[-1] != today.isoformat()]
         for k in keys_to_remove:
             del last_reminder_data[k]
     
     except Exception as e:
-        logger.error(f"Error in reminders: {e}")
+        logger.error(f"Error in reminders: {e}", exc_info=True)
 
 async def reminder_loop():
+    """Main reminder loop with graceful shutdown"""
+    logger.info("Reminder loop started")
     while not shutdown_event.is_set():
         try:
             await check_and_send_reminders()
             await asyncio.sleep(60)
         except asyncio.CancelledError:
+            logger.info("Reminder loop cancelled")
             break
         except Exception as e:
-            logger.error(f"Error in reminder loop: {e}")
+            logger.error(f"Error in reminder loop: {e}", exc_info=True)
             await asyncio.sleep(60)
+    logger.info("Reminder loop stopped")
 
 def signal_handler(signum, frame):
+    """Handle shutdown signals"""
+    logger.info(f"Received signal {signum}, shutting down...")
     shutdown_event.set()
 
 async def post_init(application: Application):
+    """Initialize bot after startup"""
     global app, reminder_task
     app = application
     
@@ -973,10 +1006,12 @@ async def post_init(application: Application):
     
     await application.bot.set_my_commands(commands)
     reminder_task = asyncio.create_task(reminder_loop())
-    logger.info("Bot started")
+    logger.info("Bot initialized successfully")
 
 async def post_shutdown(application: Application):
+    """Cleanup on shutdown"""
     global reminder_task
+    logger.info("Shutting down bot...")
     shutdown_event.set()
     
     if reminder_task:
@@ -985,12 +1020,14 @@ async def post_shutdown(application: Application):
             await reminder_task
         except asyncio.CancelledError:
             pass
+    
+    logger.info("Bot shutdown complete")
 
 def main():
     global app
     
     if not acquire_lock():
-        logger.error("Another instance running")
+        logger.error("Another instance is already running")
         sys.exit(1)
     
     signal.signal(signal.SIGINT, signal_handler)
@@ -1037,12 +1074,11 @@ def main():
         )
         app.add_handler(timetable_handler)
         
+        logger.info("Starting bot...")
         app.run_polling(allowed_updates=Update.ALL_TYPES)
         
     except Exception as e:
         logger.error(f"Fatal error: {e}", exc_info=True)
     finally:
         release_lock()
-
-if __name__ == "__main__":
-    main()
+        logger.info("Bot stopped")
